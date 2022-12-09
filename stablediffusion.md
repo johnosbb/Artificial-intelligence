@@ -105,6 +105,7 @@ Let us say we create the image below:
 
 | ![image](https://user-images.githubusercontent.com/12407183/206700189-25f6e7be-b927-41d2-beb9-5622a000b5a8.png) |
 |:--:|
-| CFG Scale: 8, Sampling Steps: 70, prompt: Goddess of all the goddesses from every place ever, highly detailed, digital painting, artstation, concept art, smooth, (sharp focus), illustration, unreal engine 5, 8k, art by ross tran and greg rutkowski and ((alphonse mucha)) |
+| Goddess of all the goddesses from every place ever, highly detailed, digital painting, artstation, concept art, smooth, (sharp focus), illustration, unreal engine 5, 8k, art by ross tran and greg rutkowski and ((alphonse mucha))
+Steps: 70, Sampler: LMS, CFG scale: 8, Seed: 3376993924, Size: 512x512, Model hash: 7460a6fa Time taken: 2m 17.03sTorch active/reserved: 3715/4752 MiB, Sys VRAM: 6144/6144 MiB (100.0%) |
 
 
