@@ -134,11 +134,12 @@ Steps: 70, Sampler: Euler a, CFG scale: 12, Seed: 3376993924, Size: 512x512, Mod
 
 ## Inpainting
 
-I can further control the creative process by using inpainting to mask out aspects of my image I may wish to keep.
+One can further control the creative process by using inpainting to mask out aspects of my image I may wish to keep.
 
-![image](https://user-images.githubusercontent.com/12407183/206704232-27e8c04f-21a9-44f0-bad5-d10955b5e8dd.png)
+![image](https://user-images.githubusercontent.com/12407183/206738673-b1588ca2-0e6d-4812-a722-14c5d909121f.png)
 
 The inpaint area can be either masked or not masked. If you wish to preserve what you have masked then select inpaint not masked. We can also increase the denoise value and reduce the scale as they masked area will not be affected.
 
+![image](https://user-images.githubusercontent.com/12407183/206738601-080e53d7-507c-41be-9ed8-01c714fa1e48.png)
 
-![image](https://user-images.githubusercontent.com/12407183/206704909-333bf84c-d309-4544-b33c-432df5895e0e.png)
+
