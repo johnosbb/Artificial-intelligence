@@ -35,6 +35,6 @@ Every image starts as a blur, increasing the steps inccreases the iterations ove
 
 
 | ![image](https://user-images.githubusercontent.com/12407183/206692164-3878229c-dde6-48b4-91c7-97ef1ba5e2d9.png) | ![image](https://user-images.githubusercontent.com/12407183/206692593-92378342-3f31-4c39-8a60-c8937eb6c5d3.png) |
-|----|----| 
+|:--:|:--:| 
 | *LMS with 50 Steps* | *LMS with 20 Steps* |
 
