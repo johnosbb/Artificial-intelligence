@@ -13,6 +13,8 @@
 
 ## Creating Images with Stable Diffusion
 
+### Prompts
+
 The prompt is your primary means of creating an image. Sample prompts can be found on [the Stable Diffusion Search Engine](https://lexica.art/). For example:
 
 ```txt
@@ -25,8 +27,21 @@ produces
 
 Notice SD legendry difficulty with eyes and fingers. This can be addressed to some degree with:
 
+We can use parenthesis to emphasise certain word so that they get more focus. Each additional pair of parenthesis adds more empahsis to the selected word.
+
+```txt
+Goddess of all the goddesses from every place ever, highly detailed, digital painting, artstation, concept art, smooth, (sharp focus), illustration, unreal engine 5, 8k, art by ross tran and greg rutkowski and ((alphonse mucha))
+```
+
+![image](https://user-images.githubusercontent.com/12407183/206697311-46645825-a879-414d-aa30-245335d0cd13.png)
+
+We can see that the emphasis on ((alphonse mucha)) has changed the style to more closely follow that style.
+
+- [Stable Diffusion prompting cheatsheet](https://moritz.pm/posts/parameters)
+
 ![image](https://user-images.githubusercontent.com/12407183/206690910-e1ccc00b-1702-4a21-9432-0dd906e72ee8.png)
 
+The items at the start of the prompt generally have a more significant impact than those at the end.
 
 ### Steps
 
@@ -58,10 +73,16 @@ We can use the seed to regenerate an image by copying that number to the Seed bo
 
 Batch size controls the number of images that will be generated.
 
-When we run batches each additional image gets a new seed so to re-iterate an image you must use the appropriate seed for the image.
+When we run batches each additional image gets a new seed so to re-iterate an image you must use the appropriate seed for the image you have selected.
+
+![image](https://user-images.githubusercontent.com/12407183/206695280-d6707a6f-3f39-4392-bd97-39a6ce926f88.png)
+
+
 
 ### CFG Scale
 
 ![image](https://user-images.githubusercontent.com/12407183/206694211-10ed0d72-b09f-47df-888e-35ac932adcf6.png)
 
-The scale determines the degree to which Stable Diffusion will use the information in your prompt to influence the creation of your image.
+The scale determines the degree to which Stable Diffusion will use the information in your prompt to influence the creation of your image. The maximum value (30) will track very closely while the minimum value will largely ignore the prompt.
+
+We can control this loyalty to the prompt by using parenthesis around certain elements of the prompt.
