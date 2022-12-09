@@ -95,4 +95,16 @@ We can control this loyalty to the prompt by using parenthesis around certain el
 |:--:|:--:|:--:| 
 | *CFG Scale of 1 using LMS at 70 Steps* |  *CFG Scale of 15 using LMS at 70 Steps* |*CFG Scale of 30 using LMS at 70 Steps* |
 
-Notice that with a very low scale value or image does not resemble our prompt. If we push the scale value to the maximum we risk introducing noise into the image. The amount of this noise varies greatly depending on the algorithm used
+Notice that with a very low scale value or image does not resemble our prompt. If we push the scale value to the maximum we risk introducing noise into the image. The amount of this noise varies greatly depending on the algorithm used.
+
+## Image to Image
+
+We can further refine images with Stable Diffusion by sending the image to the "Image to Image" processing engine.
+
+Let us say we create the image below:
+
+| ![image](https://user-images.githubusercontent.com/12407183/206700189-25f6e7be-b927-41d2-beb9-5622a000b5a8.png) |
+|:--:|
+| CFG Scale: 8, Sampling Steps: 70, prompt: Goddess of all the goddesses from every place ever, highly detailed, digital painting, artstation, concept art, smooth, (sharp focus), illustration, unreal engine 5, 8k, art by ross tran and greg rutkowski and ((alphonse mucha)) |
+
+
