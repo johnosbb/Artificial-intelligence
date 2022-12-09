@@ -54,4 +54,10 @@ We can use the seed to regenerate an image by copying that number to the Seed bo
 ![image](https://user-images.githubusercontent.com/12407183/206693324-121e9969-9abe-4138-a0c4-631bfa4a27ec.png)
 
 
+### Batch Size
+
+Batch size controls the number of images that will be generated.
+
+When we run batches each additional image gets a new seed so to re-iterate an image you must use the appropriate seed for the image.
+
 
