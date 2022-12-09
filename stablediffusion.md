@@ -131,3 +131,14 @@ We are not really getting the desired "ocean in background) so I increase the de
 |:--:|
 | *Goddess alphonse mucha (ocean in background)
 Steps: 70, Sampler: Euler a, CFG scale: 12, Seed: 3376993924, Size: 512x512, Model hash: 7460a6fa, Denoising strength: 0.37, Mask blur: 4* |
+
+## Inpainting
+
+I can further control the creative process by using inpainting to mask out aspects of my image I may wish to keep.
+
+![image](https://user-images.githubusercontent.com/12407183/206704232-27e8c04f-21a9-44f0-bad5-d10955b5e8dd.png)
+
+The inpaint area can be either masked or not masked. If you wish to preserve what you have masked then select inpaint not masked. We can also increase the denoise value and reduce the scale as they masked area will not be affected.
+
+
+![image](https://user-images.githubusercontent.com/12407183/206704909-333bf84c-d309-4544-b33c-432df5895e0e.png)
