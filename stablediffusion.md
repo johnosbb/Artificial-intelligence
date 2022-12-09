@@ -68,6 +68,9 @@ We can use the seed to regenerate an image by copying that number to the Seed bo
 
 ![image](https://user-images.githubusercontent.com/12407183/206693324-121e9969-9abe-4138-a0c4-631bfa4a27ec.png)
 
+### Width and Height
+
+The Widthh and Height parameters change the resolution, but remember the computational effort required also increases. The Stable Diffusion image library has been trained on images with a size of 512x512 so best results are obtained by staying at this resolution and using upscaling later to increase the image size.
 
 ### Batch Size
 
@@ -86,3 +89,11 @@ When we run batches each additional image gets a new seed so to re-iterate an im
 The scale determines the degree to which Stable Diffusion will use the information in your prompt to influence the creation of your image. The maximum value (30) will track very closely while the minimum value will largely ignore the prompt.
 
 We can control this loyalty to the prompt by using parenthesis around certain elements of the prompt.
+
+
+| ![image](https://user-images.githubusercontent.com/12407183/206698168-6f3b5d5b-6ae9-4f56-9640-5079336a24c9.png)) | ![image](https://user-images.githubusercontent.com/12407183/206699515-758bbbf3-bbec-4042-a234-c90867b74fb8.png)
+ | ![image](https://user-images.githubusercontent.com/12407183/206698785-7615ec33-c387-49c7-ac60-f93b70827c2b.png) | 
+|:--:|:--:|:--:| 
+| *CFG Scale of 1 using LMS at 70 Steps* |  *CFG Scale of 15 using LMS at 70 Steps* |*CFG Scale of 30 using LMS at 70 Steps* |
+
+Notice that with a very low scale value or image does not resemble our prompt. If we push the scale value to the maximum we risk introducing noise into the image. The amount of this noise varies greatly depending on the algorithm used
