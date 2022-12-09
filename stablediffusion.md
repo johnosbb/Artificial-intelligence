@@ -91,8 +91,7 @@ The scale determines the degree to which Stable Diffusion will use the informati
 We can control this loyalty to the prompt by using parenthesis around certain elements of the prompt.
 
 
-| ![image](https://user-images.githubusercontent.com/12407183/206698168-6f3b5d5b-6ae9-4f56-9640-5079336a24c9.png)) | ![image](https://user-images.githubusercontent.com/12407183/206699515-758bbbf3-bbec-4042-a234-c90867b74fb8.png)
- | ![image](https://user-images.githubusercontent.com/12407183/206698785-7615ec33-c387-49c7-ac60-f93b70827c2b.png) | 
+| ![image](https://user-images.githubusercontent.com/12407183/206698168-6f3b5d5b-6ae9-4f56-9640-5079336a24c9.png)) | ![image](https://user-images.githubusercontent.com/12407183/206699515-758bbbf3-bbec-4042-a234-c90867b74fb8.png) | ![image](https://user-images.githubusercontent.com/12407183/206698785-7615ec33-c387-49c7-ac60-f93b70827c2b.png) | 
 |:--:|:--:|:--:| 
 | *CFG Scale of 1 using LMS at 70 Steps* |  *CFG Scale of 15 using LMS at 70 Steps* |*CFG Scale of 30 using LMS at 70 Steps* |
 
