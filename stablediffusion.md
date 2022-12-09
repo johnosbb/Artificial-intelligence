@@ -106,7 +106,7 @@ Let us say we create the image below:
 | ![image](https://user-images.githubusercontent.com/12407183/206700189-25f6e7be-b927-41d2-beb9-5622a000b5a8.png) |
 |:--:|
 | Goddess of all the goddesses from every place ever, highly detailed, digital painting, artstation, concept art, smooth, (sharp focus), illustration, unreal engine 5, 8k, art by ross tran and greg rutkowski and ((alphonse mucha))
-Steps: 70, Sampler: LMS, CFG scale: 8, Seed: 3376993924, Size: 512x512, Model hash: 7460a6fa Torch active/reserved: 3715/4752 MiB, Sys VRAM: 6144/6144 MiB (100.0%) |
+Steps: 70, Sampler: LMS, CFG scale: 8, Seed: 3376993924, Size: 512x512, Model hash: 7460a6fa  |
 
 ### Denoising
 In the Image to Image window we have a new setting called denoising:
@@ -118,3 +118,10 @@ A denoising value of 0 would mean that we generate the same input image. Increas
 | ![image](https://user-images.githubusercontent.com/12407183/206701411-2717f6d6-d740-423a-806a-c6f1a0587652.png) |
 |:--:|
 | *Goddess alphonse mucha ocean in background Steps: 70, Sampler: Euler a, CFG scale: 7, Seed: 3376993924, Size: 512x512, Model hash: 7460a6fa, Denoising strength: 0.75, Mask blur: 4*  |
+
+We have moved quite far from our original image. We can control this by reducing the denoising factor.
+
+| ![image](https://user-images.githubusercontent.com/12407183/206702110-10155767-be77-4969-acdc-2b7095676096.png) | ![image](https://user-images.githubusercontent.com/12407183/206702506-1c9b7948-7754-4b97-917f-877f8637c8a3.png) |
+|:--:|:--:|
+| *Goddess alphonse mucha ocean in background Steps: 70, Sampler: Euler a, CFG scale: 7, Seed: 3376993924, Size: 512x512, Model hash: 7460a6fa, Denoising strength: 0.42, Mask blur: 4* | *Goddess alphonse mucha ocean in background Steps: 70, Sampler: Euler a, CFG scale: 7, Seed: 3376993924, Size: 512x512, Model hash: 7460a6fa, Denoising strength: 0.15, Mask blur: 4* |
+
