@@ -27,6 +27,9 @@ Notice SD legendry difficulty with eyes and fingers. This can be addressed to so
 
 ![image](https://user-images.githubusercontent.com/12407183/206690910-e1ccc00b-1702-4a21-9432-0dd906e72ee8.png)
 
+
+### Steps
+
 The second control we have is the number of sampling steps:
 
 ![image](https://user-images.githubusercontent.com/12407183/206691283-7c02f43e-9ada-485a-8862-fe9bf4d5e44f.png)
@@ -37,4 +40,17 @@ Every image starts as a blur, increasing the steps inccreases the iterations ove
 | ![image](https://user-images.githubusercontent.com/12407183/206692164-3878229c-dde6-48b4-91c7-97ef1ba5e2d9.png) | ![image](https://user-images.githubusercontent.com/12407183/206692593-92378342-3f31-4c39-8a60-c8937eb6c5d3.png) |
 |:--:|:--:| 
 | *LMS with 50 Steps* | *LMS with 20 Steps* |
+
+
+### Seeding
+
+We can use the seed to regenerate an image
+
+![image](https://user-images.githubusercontent.com/12407183/206693382-4c54ac93-9f0a-4961-b201-16233e88f9e0.png)
+
+When an image is generated it produces a seed.
+
+![image](https://user-images.githubusercontent.com/12407183/206693324-121e9969-9abe-4138-a0c4-631bfa4a27ec.png)
+
+
 
