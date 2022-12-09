@@ -114,3 +114,8 @@ In the Image to Image window we have a new setting called denoising:
 ![image](https://user-images.githubusercontent.com/12407183/206700717-e1e459e4-6780-4c5e-98cf-bda17b6e9cc1.png)
 
 A denoising value of 0 would mean that we generate the same input image. Increasing the denoising strenght moves us further away from our starting image.
+
+| ![image](https://user-images.githubusercontent.com/12407183/206701411-2717f6d6-d740-423a-806a-c6f1a0587652.png) |
+|:--:|
+| *Goddess alphonse mucha ocean in background
+Steps: 70, Sampler: Euler a, CFG scale: 7, Seed: 3376993924, Size: 512x512, Model hash: 7460a6fa, Denoising strength: 0.75, Mask blur: 4*  |
