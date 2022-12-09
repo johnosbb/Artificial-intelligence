@@ -60,4 +60,8 @@ Batch size controls the number of images that will be generated.
 
 When we run batches each additional image gets a new seed so to re-iterate an image you must use the appropriate seed for the image.
 
+### CFG Scale
 
+![image](https://user-images.githubusercontent.com/12407183/206694211-10ed0d72-b09f-47df-888e-35ac932adcf6.png)
+
+The scale determines the degree to which Stable Diffusion will use the information in your prompt to influence the creation of your image.
