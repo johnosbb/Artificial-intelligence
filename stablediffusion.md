@@ -125,3 +125,9 @@ We have moved quite far from our original image. We can control this by reducing
 |:--:|:--:|
 | *Goddess alphonse mucha ocean in background Steps: 70, Sampler: Euler a, CFG scale: 7, Seed: 3376993924, Size: 512x512, Model hash: 7460a6fa, Denoising strength: 0.42, Mask blur: 4* | *Goddess alphonse mucha ocean in background Steps: 70, Sampler: Euler a, CFG scale: 7, Seed: 3376993924, Size: 512x512, Model hash: 7460a6fa, Denoising strength: 0.15, Mask blur: 4* |
 
+We are not really getting the desired "ocean in background) so I increase the denoise value and the CFG Scale so that I follow the prompt more closely and I allow the algorithm the permission to deconstruct and reconstruct the image a little more.
+
+! ![image](https://user-images.githubusercontent.com/12407183/206703589-e5f9c074-f02b-4ddb-9ce1-1e92f967af20.png) |
+|:--:|
+| *Goddess alphonse mucha (ocean in background)
+Steps: 70, Sampler: Euler a, CFG scale: 12, Seed: 3376993924, Size: 512x512, Model hash: 7460a6fa, Denoising strength: 0.37, Mask blur: 4* |
