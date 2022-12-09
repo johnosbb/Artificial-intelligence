@@ -117,5 +117,4 @@ A denoising value of 0 would mean that we generate the same input image. Increas
 
 | ![image](https://user-images.githubusercontent.com/12407183/206701411-2717f6d6-d740-423a-806a-c6f1a0587652.png) |
 |:--:|
-| *Goddess alphonse mucha ocean in background
-Steps: 70, Sampler: Euler a, CFG scale: 7, Seed: 3376993924, Size: 512x512, Model hash: 7460a6fa, Denoising strength: 0.75, Mask blur: 4*  |
+| *Goddess alphonse mucha ocean in background Steps: 70, Sampler: Euler a, CFG scale: 7, Seed: 3376993924, Size: 512x512, Model hash: 7460a6fa, Denoising strength: 0.75, Mask blur: 4*  |
