@@ -31,10 +31,11 @@ The second control we have is the number of sampling steps:
 
 ![image](https://user-images.githubusercontent.com/12407183/206691283-7c02f43e-9ada-485a-8862-fe9bf4d5e44f.png)
 
-Everyimage starts as a blur, increasing the steps inccreases the iterations over which the image will be developed. The type of algorithm also affects the impact increasing the steps will have on the final image.
+Every image starts as a blur, increasing the steps inccreases the iterations over which the image will be developed. The type of algorithm also affects the impact increasing the steps will have on the final image.
 
 
-| ![image](https://user-images.githubusercontent.com/12407183/206692164-3878229c-dde6-48b4-91c7-97ef1ba5e2d9.png) | 
-|:--:| 
-| *LMS with 50 Steps* |
+| ![image](https://user-images.githubusercontent.com/12407183/206692164-3878229c-dde6-48b4-91c7-97ef1ba5e2d9.png) | ![image](https://user-images.githubusercontent.com/12407183/206692593-92378342-3f31-4c39-8a60-c8937eb6c5d3.png)
+
+|:--:|:--:| 
+| *LMS with 50 Steps* | *LMS with 20 Steps* |
 
