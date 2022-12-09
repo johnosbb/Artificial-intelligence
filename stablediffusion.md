@@ -45,12 +45,13 @@ Every image starts as a blur, increasing the steps inccreases the iterations ove
 ### Seeding
 
 When an image is generated it produces a seed.
+![image](https://user-images.githubusercontent.com/12407183/206693382-4c54ac93-9f0a-4961-b201-16233e88f9e0.png)
+
+
+
+We can use the seed to regenerate an image by copying that number to the Seed box.
 
 ![image](https://user-images.githubusercontent.com/12407183/206693324-121e9969-9abe-4138-a0c4-631bfa4a27ec.png)
-
-We can use the seed to regenerate an image
-
-![image](https://user-images.githubusercontent.com/12407183/206693382-4c54ac93-9f0a-4961-b201-16233e88f9e0.png)
 
 
 
