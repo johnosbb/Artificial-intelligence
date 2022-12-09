@@ -1,7 +1,7 @@
 
 # Stable Diffusion
 
-Stable Diffusion - High-Resolution Image Synthesis with Latent Diffusion Models
-Stable Diffusion web UI
-Installation and Tutorial
-The Stable Diffusion Search Engine
+- [Stable Diffusion - High-Resolution Image Synthesis with Latent Diffusion Models](https://github.com/CompVis/stable-diffusion)
+- [Stable Diffusion web UI](https://github.com/AUTOMATIC1111/stable-diffusion-webui)
+- [Installation and Tutorial](https://www.youtube.com/watch?v=DHaL56P6f5M&list=PL3C_1qgacm_qPG_t1r1Fad7kggUCroWxs&index=1)
+- [The Stable Diffusion Search Engine](https://lexica.art/)
