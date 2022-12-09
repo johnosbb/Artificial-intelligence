@@ -18,4 +18,15 @@ The prompt is your primary means of creating an image. Sample prompts can be fou
 ```txt
 Goddess of all the goddesses from every place ever, highly detailed, digital painting, artstation, concept art, smooth, sharp focus, illustration, unreal engine 5, 8k, art by ross tran and greg rutkowski and alphonse mucha
 ```
+produces
 
+
+![image](https://user-images.githubusercontent.com/12407183/206690770-29ab2020-cdf4-43be-8965-a29fe3368597.png)
+
+Notice SD legendry difficulty with eyes and fingers. This can be addressed to some degree with:
+
+![image](https://user-images.githubusercontent.com/12407183/206690910-e1ccc00b-1702-4a21-9432-0dd906e72ee8.png)
+
+The second control we have is the number of sampling steps:
+
+![image](https://user-images.githubusercontent.com/12407183/206691283-7c02f43e-9ada-485a-8862-fe9bf4d5e44f.png)
