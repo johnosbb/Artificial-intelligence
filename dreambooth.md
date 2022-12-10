@@ -1,5 +1,42 @@
 # Stable Diffusion Addon - Dream Booth
 
+## Using Colab
+
+- [Colab Link](https://colab.research.google.com/github/TheLastBen/fast-stable-diffusion/blob/main/fast-DreamBooth.ipynb#scrollTo=O3KHGKqyeJp9)
+
+Click on the first option to connect google drive
+Click on the generate dependencies link and wait for the green tick to appear
+
+![image](https://user-images.githubusercontent.com/12407183/206867762-0f10abf5-f7ff-4125-9f7a-aa98a249f44a.png)
+
+A green tick mark will appear once these steps complete
+
+Now paste in the HuggingFace token and press play:
+
+![image](https://user-images.githubusercontent.com/12407183/206867925-5cf46ad1-9d39-4e06-b82e-6753e7258cbd.png)
+
+Wait for the green tick to appear to confirm that the model has downloaded
+
+![image](https://user-images.githubusercontent.com/12407183/206868045-e6d00065-1442-4eb5-b9e6-3ebb0d764238.png)
+
+Give the session a name and press play again
+
+![image](https://user-images.githubusercontent.com/12407183/206868102-122e62ce-a14b-4f56-8c07-91338fc9e170.png)
+
+Now click the Session IMages play button and wait for the **choose files** button to appear.
+
+![image](https://user-images.githubusercontent.com/12407183/206868180-c9664b63-c052-4a3e-bcd5-04f1fc4bcec6.png)
+
+Once the images have uploaded we set the number of steps. As a guide, we use 100 steps for each image uploaded
+
+![image](https://user-images.githubusercontent.com/12407183/206868298-f4e9b557-bdd0-4686-8e7c-67c90b5a68ab.png)
+
+The new model will appear in your google drive once the training has completed.
+
+
+
+## Installing Locally
+
 Go to the Extensions tab and select Load From:
 
 Once the extensions appear, select Dream Booth
