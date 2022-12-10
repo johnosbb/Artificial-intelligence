@@ -33,7 +33,9 @@ Once the images have uploaded we set the number of steps. As a guide, we use 100
 
 The new model will appear in your google drive once the training has completed.
 
+![image](https://user-images.githubusercontent.com/12407183/206870320-a1343480-f94e-495d-ac1a-643b713324ae.png)
 
+You can then download this to use in your local version of Stable Diffusion.
 
 ## Installing Locally
 
