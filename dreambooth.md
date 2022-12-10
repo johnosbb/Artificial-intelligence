@@ -23,7 +23,7 @@ Give the session a name and press play again
 
 ![image](https://user-images.githubusercontent.com/12407183/206868102-122e62ce-a14b-4f56-8c07-91338fc9e170.png)
 
-Now click the Session IMages play button and wait for the **choose files** button to appear.
+Now click the Session Images play button and wait for the **choose files** button to appear. Make sure you use a unique name for your images as you will need to reference this name in your prompt later on.
 
 ![image](https://user-images.githubusercontent.com/12407183/206868180-c9664b63-c052-4a3e-bcd5-04f1fc4bcec6.png)
 
@@ -35,7 +35,7 @@ The new model will appear in your google drive once the training has completed.
 
 ![image](https://user-images.githubusercontent.com/12407183/206870320-a1343480-f94e-495d-ac1a-643b713324ae.png)
 
-You can then download this to use in your local version of Stable Diffusion.
+You can then download this to use in your local version of Stable Diffusion by copying it in to the models directory. This model can then be used to render the images by selecting the prompt
 
 ## Installing Locally
 
