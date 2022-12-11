@@ -65,4 +65,4 @@ After creating the model we can configure the training parameters.
 - The Dataset Directory contains the data against which we wish to train the model.
 - The instance prompt is a prompt used to generate this instance. It should not be a generic term like dog or man but something unique to the instance you are going to create.
 - We could also supply a **Class Prompt**, this could be something generic like: man, dog, boat etc. If we decide to use this we can specifiy an additional path that allows us reference class images. These could be selected images of our choosen class, for example images of men or dogs etc.
-- 
+
