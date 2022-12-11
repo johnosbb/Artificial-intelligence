@@ -39,6 +39,8 @@ You can then download this to use in your local version of Stable Diffusion by c
 
 ## Installing Locally
 
+**Note**: This feature requires at least 10 Gb of video ram
+
 Go to the Extensions tab and select Load From:
 
 Once the extensions appear, select Dream Booth
