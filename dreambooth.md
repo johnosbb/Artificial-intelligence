@@ -66,3 +66,17 @@ After creating the model we can configure the training parameters.
 - The instance prompt is a prompt used to generate this instance. It should not be a generic term like dog or man but something unique to the instance you are going to create.
 - We could also supply a **Class Prompt**, this could be something generic like: man, dog, boat etc. If we decide to use this we can specifiy an additional path that allows us reference class images. These could be selected images of our choosen class, for example images of men or dogs etc.
 
+# Using your new model
+
+You can generate images using your new model in the normal way. Select you dreambooth generated model in txt2img.
+
+![image](https://user-images.githubusercontent.com/12407183/206916360-41ce5115-3ac8-4b9d-8519-04f68059ebca.png)
+
+
+Then enter a prompt that references the images that we used for training the dreamboot model.
+
+![image](https://user-images.githubusercontent.com/12407183/206916447-5d0b89b7-1889-489b-9b72-53824ef1554a.png)
+
+
+
+
