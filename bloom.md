@@ -22,6 +22,4 @@ Install required dependencies
 
 ![image](https://user-images.githubusercontent.com/12407183/207441061-cec34062-c2ec-42a5-bdaf-4bc55ac56ea9.png)
 
-![image](https://user-images.githubusercontent.com/12407183/207441132-13f5928b-1e27-4490-8c5b-c6f58ffc20f3.png)
-
 ![image](https://user-images.githubusercontent.com/12407183/207441626-ed7c2439-ae6c-4e1e-8a94-c0db4749de30.png)
