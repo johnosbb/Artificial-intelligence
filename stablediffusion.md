@@ -143,3 +143,15 @@ The inpaint area can be either masked or not masked. If you wish to preserve wha
 ![image](https://user-images.githubusercontent.com/12407183/206738601-080e53d7-507c-41be-9ed8-01c714fa1e48.png)
 
 
+# Merging Models in Stable Diffusion
+
+For merging models we use the Checkpoint Merger tab.
+
+![image](https://user-images.githubusercontent.com/12407183/208090501-dd39bab4-16bb-4da6-a9b5-4a4b3508429d.png)
+
+We can merge upto three models at once. 
+
+![image](https://user-images.githubusercontent.com/12407183/208091510-c5dcf7c2-30ff-4a1a-96d7-dd07dc40e897.png)
+
+
+
