@@ -181,7 +181,11 @@ photorealistic oil painting by tom chambers ; highly detailed ; glasses; trendin
 
 ```txt
 cinematic focus, polaroid photo bleached vintage pastel colors high - key lighting, soft lights, foggy, by steve hanks, by lisa yuskavage, by serov valentin, by tarkovsky, 8 detailed, oil on canvas
+```
 
+```txt
+photorealistic oil painting by tom chambers ; highly detailed cute faces by wlop ; trending on artstation ; 8 k high resolution, symmetrical, cinematic, high coherence, golden ratio, rule of thirds, perfectly centered ; anatomically correct faces
+```
 
 ## Negative Prompt
 
