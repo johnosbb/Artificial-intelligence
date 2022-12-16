@@ -157,4 +157,11 @@ The primary model is normally the model you have trained in Dreambooth, the seco
 
 Give your model a custom name that reflects the models you are mixing. This will help when you later try to identify the model's origins.
 
+The Multiplier setting determines how much of model B will be merged into model A. A value of .3 means 30% of B will be merged into A.
+
+![image](https://user-images.githubusercontent.com/12407183/208097364-95ba25ca-d7e2-4fd6-ba05-467cd84a23ef.png)
+
+When you press the **run** button the models will be merged and the resultant model will be placed in your stable diffusion models directory.
+
+
 
