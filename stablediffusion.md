@@ -175,6 +175,14 @@ Stable Diffusion accepts both positive and negative prompts. A good prompt is cr
 centered portrait of ((subject_a)) and ((aubject_b)) as couple, award winning photography,soft bokeh,cinematic lighting,artgerm,greg rutkowski, mucha
 ```
 
+```txt
+photorealistic oil painting by tom chambers ; highly detailed ; glasses; trending on artstation
+```
+
+```txt
+cinematic focus, polaroid photo bleached vintage pastel colors high - key lighting, soft lights, foggy, by steve hanks, by lisa yuskavage, by serov valentin, by tarkovsky, 8 detailed, oil on canvas
+
+
 ## Negative Prompt
 
 ```txt
