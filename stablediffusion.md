@@ -164,4 +164,20 @@ The Multiplier setting determines how much of model B will be merged into model 
 When you press the **run** button the models will be merged and the resultant model will be placed in your stable diffusion models directory.
 
 
+# Prompts
+
+Stable Diffusion accepts both positive and negative prompts. A good prompt is critical to achieving acceptable outputs.
+
+
+## Positive prompt
+
+```txt
+centered portrait of ((subject_a)) and ((aubject_b)) as couple, award winning photography,soft bokeh,cinematic lighting,artgerm,greg rutkowski, mucha
+```
+
+## Negative Prompt
+
+```txt
+t-shirt,ugly,disfigured,blurred
+```
 
