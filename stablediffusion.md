@@ -153,5 +153,8 @@ We can merge upto three models at once.
 
 ![image](https://user-images.githubusercontent.com/12407183/208091510-c5dcf7c2-30ff-4a1a-96d7-dd07dc40e897.png)
 
+The primary model is normally the model you have trained in Dreambooth, the secondary model is the model you wish to mix your model into. This secondary model could be a main stream model or a model that complements your existing model.
+
+Give your model a custom name that reflects the models you are mixing. This will help when you later try to identify the model's origins.
 
 
