@@ -193,3 +193,5 @@ photorealistic oil painting by tom chambers ; highly detailed cute faces by wlop
 t-shirt,ugly,disfigured,blurred
 ```
 
+# Image Upscaling
+
