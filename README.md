@@ -7,6 +7,7 @@ All Things Artificial intelligence
 
 
 - [Stable Diffusion](stablediffusion.md)
+- [Textural Inversion](https://huggingface.co/docs/diffusers/training/text_inversion)
 
 
 ## Text Generation
