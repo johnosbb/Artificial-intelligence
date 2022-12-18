@@ -1,0 +1,12 @@
+# Textural Inversion
+
+## Reference
+
+- [Textural Inversion on Hugginface](https://huggingface.co/docs/diffusers/training/text_inversion)
+- [Youtube Tutorial](https://www.youtube.com/watch?v=ueetKxsF25g)
+- [Fast Image Resizer](https://fast-image-resizer.en.softonic.com/download)
+
+## Introduction
+
+Textual Inversion is a technique for capturing novel concepts from a small number of example images in a way that can later be used to control text-to-image pipelines. It does so by learning new ‘words’ in the embedding space of the pipeline’s text encoder. These special words can then be used within text prompts to achieve very fine-grained control of the resulting images.
+
