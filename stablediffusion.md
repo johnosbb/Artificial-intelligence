@@ -205,7 +205,7 @@ t-shirt,ugly,disfigured,blurred
 
 ### Positive
 ```txt
-beautiful, vivid, radiant, nice skinn texture, studio light, award winning photography, hyper realistic
+beautiful, vivid, radiant, nice skin texture, studio light, award winning photography, hyper realistic
 ```
 
 ### Negative
