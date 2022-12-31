@@ -11,6 +11,12 @@
 
 
 
+## Models
+
+- [mdjrny-v4 style](https://huggingface.co/prompthero/openjourney)
+- [PaperCut](https://huggingface.co/Fictiverse/Stable_Diffusion_PaperCut_Model)
+
+
 ## Creating Images with Stable Diffusion
 
 ### Prompts
