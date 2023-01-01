@@ -5,7 +5,7 @@ All Things Artificial intelligence
 
 ### Common Sense
 
-AI cannot do "Common Sense" and this is the dark matter of intelligence. Normal matter is what we see, what we can interact with. Common sense the unspoken, implicit knowledge thatwe all have. It’s so obvious that we often don’t talk about it. Consider the question "Can birds fly?" The obvious anser is "yes", but there are exceptions and it turns out that exceptions are not exceptional, humans can think of them even though nobody told us specifically about these exceptions - we simply apply common sense to derive these exceptions.
+AI cannot do "Common Sense" and this is the dark matter of intelligence. Normal matter is what we see, what we can interact with, but dark matter is the stuff of the universe that we know is there but cannot see. Common sense is like that dark matter, it is the unspoken, implicit knowledge that we all have. It’s so obvious that we often don’t talk about it. Consider the question "Can birds fly?" The obvious anser is "yes", but there are exceptions and it turns out that exceptions are not exceptional, humans can think of them even though nobody told us specifically about these exceptions - we simply apply common sense to derive these exceptions.
 
 ### Value pluralism
 
