@@ -1,6 +1,18 @@
 # Artificial-intelligence
 All Things Artificial intelligence
 
+## Remaining AI challenges in 2023
+
+### Common Sense
+
+AI cannot do "Common Sense" and this is the dark matter of intelligence. Normal matter is what we see, what we can interact with. Common sense the unspoken, implicit knowledge thatwe all have. It’s so obvious that we often don’t talk about it. Consider the question "Can birds fly?" The obvious anser is "yes", but there are exceptions and it turns out that exceptions are not exceptional, humans can think of them even though nobody told us specifically about these exceptions - we simply apply common sense to derive these exceptions.
+
+### Value pluralism
+
+Value is not singular, when it comes to value there is no universal truth. A lot of people feel uncomfortable about this because as scientists, we are trained to be very precise and strive for one truth, but in many areas of human knowledge there is no universal truth. The rules that might derive truth cannot easily be written down as universal truths, because when applied in different contexts, that assumed truth will lose its relevence.
+
+
+
 
 ## Image Generation
 
