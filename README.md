@@ -19,6 +19,7 @@ Value is not singular, when it comes to value there is no universal truth. A lot
 
 
 - [Stable Diffusion](stablediffusion.md)
+- [DreamBooth](dreambooth.md)
 - [Textural Inversion](https://huggingface.co/docs/diffusers/training/text_inversion)
 
 
