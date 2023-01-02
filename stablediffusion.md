@@ -9,7 +9,10 @@
 - [Installation and Tutorial](https://www.youtube.com/watch?v=DHaL56P6f5M&list=PL3C_1qgacm_qPG_t1r1Fad7kggUCroWxs&index=1)
 - [The Stable Diffusion Search Engine](https://lexica.art/)
 
+## Index
 
+- [Stable Diffusion Prompts](stable-diffusion-prompts.md)
+- [Stable Diffusion Inpaintings](stable-diffusion-inpainting.md)
 
 ## Models
 
