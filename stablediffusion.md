@@ -176,3 +176,4 @@ When you press the **run** button the models will be merged and the resultant mo
 
 # Image Upscaling
 
+- [tiny wow upscaler](https://tinywow.com/image/upscale)
