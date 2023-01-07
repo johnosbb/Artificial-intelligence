@@ -31,7 +31,7 @@ Value is not singular, when it comes to value there is no universal truth. A lot
 - [GPT-3 Tutorial](https://www.youtube.com/watch?v=Zb5Nylziu6E)
 - [Open AI Python Library](https://github.com/openai/openai-python)
 - [OpenAI Quick Start](https://beta.openai.com/docs/quickstart/build-your-application)
-- [Galactica](galactica.md)
+- [Galactica - scientific model](galactica.md)
 
 ## Animation Generation
 
