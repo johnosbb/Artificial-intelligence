@@ -1,3 +1,13 @@
+
+# Galactica
+
+The original promise of computing was to solve information overload in science. But classical computers were specialized for retrieval and storage, not pattern recognition. As a result, we've had an explosion of information but not of intelligence: the means to process it. Researchers are buried under a mass of papers, increasingly unable to distinguish between the meaningful and the inconsequential. Galactica aims to solve this problem.
+
+
+# References
+
+- [The Paper](https://galactica.org/static/paper.pdf)
+
 ```sh
 pip install galai
 ```
