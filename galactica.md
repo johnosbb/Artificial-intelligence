@@ -6,10 +6,12 @@ The original promise of computing was to solve information overload in science. 
 
 # References
 
+- [Homepage](https://galactica.org/mission/)
 - [The Paper](https://galactica.org/static/paper.pdf)
 
 
-# Installation and use
+# Installation and Use
+
 
 ```sh
 pip install galai
