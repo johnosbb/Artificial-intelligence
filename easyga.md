@@ -4,4 +4,4 @@ EasyGA is a python package designed to provide an easy-to-use Genetic Algorithm.
 
 ## Reference
 
-- [](https://github.com/danielwilczak101/EasyGA)
+- [EasyGA Github](https://github.com/danielwilczak101/EasyGA)
