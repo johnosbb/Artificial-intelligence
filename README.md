@@ -39,3 +39,8 @@ Value is not singular, when it comes to value there is no universal truth. A lot
 - [Deforum Model](https://colab.research.google.com/github/deforum/stable-diffusion/blob/main/Deforum_Stable_Diffusion.ipynb)
 - [FiLM: Frame Interpolation for Large Motion](https://colab.research.google.com/github/pytti-tools/frame-interpolation/blob/main/PyTTI_Tools_FiLM-colab.ipynb#scrollTo=-7TD7YZJbsy_)
 - [Stable Diffusion Videos](https://colab.research.google.com/github/nateraw/stable-diffusion-videos/blob/main/stable_diffusion_videos.ipynb)
+
+
+## Genetic Algorithms
+
+- [EasyGA](easyga.md)
