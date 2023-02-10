@@ -45,5 +45,5 @@ Value is not singular, when it comes to value there is no universal truth. A lot
 
 - [EasyGA](./easyga.md)
 - [pyEasyGA](./pyeasyga.md)
-- [PyGAD](./pyGAD.md)
+- [PyGAD](./PyGAD.md)
 - [Using GA to generate Music](https://www.cse.chalmers.se/~abela/supervision/kandidat2014/DATX02_14_11.pdf)
