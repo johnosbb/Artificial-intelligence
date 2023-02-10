@@ -43,7 +43,7 @@ Value is not singular, when it comes to value there is no universal truth. A lot
 
 ## Genetic Algorithms
 
-- [EasyGA](easyga.md)
-- [pyEasyGA](pyeasyga.md)
-- [PyGAD](pyGAD.md)
+- [EasyGA](./easyga.md)
+- [pyEasyGA](./pyeasyga.md)
+- [PyGAD](./pyGAD.md)
 - [Using GA to generate Music](https://www.cse.chalmers.se/~abela/supervision/kandidat2014/DATX02_14_11.pdf)
