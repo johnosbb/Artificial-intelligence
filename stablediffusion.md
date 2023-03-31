@@ -9,6 +9,19 @@
 - [Installation and Tutorial](https://www.youtube.com/watch?v=DHaL56P6f5M&list=PL3C_1qgacm_qPG_t1r1Fad7kggUCroWxs&index=1)
 - [The Stable Diffusion Search Engine](https://lexica.art/)
 
+
+## Installation
+
+Clone the repository at 
+- https://github.com/AUTOMATIC1111/stable-diffusion-webui.git
+
+```sh
+git clone https://github.com/AUTOMATIC1111/stable-diffusion-webui.git
+
+```
+- Install you ckpt model from huggingface into the stable-diffusion-webui\models\Stable-diffusion directory
+- from the stable diffusion directory run: webui-user.bat
+
 ## Index
 
 - [Stable Diffusion Prompts](stable-diffusion-prompts.md)
