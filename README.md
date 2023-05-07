@@ -45,6 +45,15 @@ Supervised learning is a type of machine learning where the input data is labele
 
 Unsupervised learning is a type of machine learning where the input data is not labeled with the correct output values. Instead, the goal of unsupervised learning is to find patterns or structure in the input data. Unsupervised learning algorithms try to learn relationships and structure in the data without any explicit guidance. Examples of unsupervised learning include clustering, anomaly detection, and dimensionality reduction.
 
+
+### The difference between Machine Learning and Deep Learning
+
+Machine learning is a subfield of artificial intelligence that focuses on the development of algorithms that can learn from data without being explicitly programmed. It includes various techniques such as linear regression, logistic regression, decision trees, random forests, and support vector machines.
+
+Deep learning is a subset of machine learning that uses artificial neural networks with multiple layers to extract features from data and learn more complex representations. It can handle high-dimensional input data such as images, speech, and text. Deep learning algorithms, such as convolutional neural networks (CNNs) and recurrent neural networks (RNNs), have achieved state-of-the-art performance in various tasks such as image recognition, speech recognition, natural language processing, and game playing.
+
+Traditional machine learning algorithms such as decision trees, random forests, support vector machines, and k-nearest neighbors do not involve neural networks, but increasingly machine learning is beginning to use neual networks.
+
 ## Image Generation
 
 
