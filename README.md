@@ -3,6 +3,27 @@ All Things Artificial intelligence
 
 ## Remaining AI challenges in 2023
 
+
+### The Alignment Problem
+
+In AI, the alignment problem refers to the challenge of ensuring that an AI system's objectives and behaviors remain aligned with the objectives of its human operators or designers over time. This is particularly important in cases where the AI system has a high degree of autonomy or where its actions can have significant real-world consequences.
+
+For example, in the case of a self-driving car, the alignment problem arises when we want the car to take actions that are in line with human values and preferences. However, as the car's algorithms become more complex and the car encounters novel situations, there is a risk that it may deviate from these values and act in ways that are unexpected or undesirable.
+
+"The Alignment Problem: Machine Learning and Human Values" by Brian Christian is a book that explores the challenges of aligning artificial intelligence (AI) with human values and the potential risks associated with AI systems that operate in misalignment with human values.
+
+The book argues that the alignment problem is not just a technical issue but also a philosophical, sociological, and ethical one, and that solving it requires interdisciplinary collaboration across multiple fields.
+
+It discusses various approaches to achieving alignment, such as value alignment, corrigibility, and interpretability, and examines their limitations and potential drawbacks. The book also explores the risks associated with AI systems that are not aligned with human values, such as unintended consequences, misuse, and the potential loss of control over the systems.
+
+The book identifies a number of Ethical Issues associated with AI:
+
+- Bias and fairness: Machine learning algorithms can perpetuate and even amplify existing biases in society, leading to unfair treatment of certain groups.
+- Privacy and surveillance: AI systems can collect and process large amounts of personal data, raising concerns about privacy violations and the potential for surveillance.
+- Autonomy and control: As AI systems become more autonomous, questions arise about who is responsible for their decisions and actions, and how much control humans should have over them.
+- Accountability and transparency: It can be difficult to understand how some AI systems make decisions, which can make it challenging to hold them accountable for their actions.
+- Existential risk: Some experts worry about the potential for superintelligent AI to pose an existential risk to humanity if it is not aligned with human values.
+
 ### Common Sense
 
 AI cannot do "Common Sense" and this is the dark matter of intelligence. Normal matter is what we see, what we can interact with, but dark matter is the stuff of the universe that we know is there but cannot see. Common sense is like that dark matter, it is the unspoken, implicit knowledge that we all have. It’s so obvious that we often don’t talk about it. Consider the question "Can birds fly?" The obvious anser is "yes", but there are exceptions and it turns out that exceptions are not exceptional, humans can think of them even though nobody told us specifically about these exceptions - we simply apply common sense to derive these exceptions.
