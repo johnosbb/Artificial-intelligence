@@ -1,5 +1,5 @@
 # Artificial-intelligence
-All Things Artificial intelligence
+All Things Artificial intelligence - John O'Sullivan
 
 ## Remaining AI challenges in 2023
 
