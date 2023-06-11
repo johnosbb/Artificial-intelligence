@@ -92,3 +92,9 @@ Traditional machine learning algorithms such as decision trees, random forests, 
 - [pyEasyGA](./pyeasyga.md)
 - [PyGAD](./PyGAD.md)
 - [Using GA to generate Music](https://www.cse.chalmers.se/~abela/supervision/kandidat2014/DATX02_14_11.pdf)
+
+## Pytorch
+
+- [Pytorch Functional Api](https://jeancochrane.com/blog/pytorch-functional-api)
+
+
