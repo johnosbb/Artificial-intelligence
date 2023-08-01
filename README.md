@@ -59,6 +59,12 @@ Deep learning is a subset of machine learning that uses artificial neural networ
 
 Traditional machine learning algorithms such as decision trees, random forests, support vector machines, and k-nearest neighbors do not involve neural networks, but increasingly machine learning is beginning to use neual networks.
 
+## Natural Language Processing
+
+- [Spacy](https://github.com/johnosbb/ProgrammingInPyQT/tree/main/Spacy)
+
+
+
 ## Image Generation
 
 
