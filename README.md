@@ -65,7 +65,7 @@ Traditional machine learning algorithms such as decision trees, random forests, 
 
 ### Text Classification
 
-- [Text Classification in NLP](https://github.com/johnosbb/Artifical-intelligence/text-classificatioon.md)
+- [Text Classification in NLP](https://github.com/johnosbb/Artifical-intelligence/text-classification.md)
 
 
 ## Image Generation
