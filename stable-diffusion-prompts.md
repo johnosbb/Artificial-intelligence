@@ -41,3 +41,10 @@ beautiful, vivid, radiant, nice skin texture, studio light, award winning photog
 ```txt
 nudity,blurry,ugly,deformed,distorted,3d,drawing
 ```
+
+
+## Stained Glass Project
+
+- Positive: beautiful woman, blonde hair, writing a letter on an ipad, abstract and simplified, glass tiles,in the style of stained glass artists harry clarke and edgar miller
+- Negative: no veil,ugly,  poorly drawn hands, poorly drawn feet, poorly drawn face
+- Seeds: Steps: 20, Sampler: Euler a, CFG scale: 7, Seed: 4056650214, Size: 512x512, Model hash: cc6cb27103, Model: v1-5-pruned-emaonly, Version: v1.5.1
