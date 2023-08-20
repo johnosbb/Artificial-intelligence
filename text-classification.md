@@ -1,5 +1,8 @@
 # Text Classification in NLP
 
+
+## The Text Classification Process
+
 ![Text Classification Process](https://github.com/johnosbb/Artificial-intelligence/blob/main/ProcessFlow_TextClassification.png)
 
 ## Glossary of NLP Terms
