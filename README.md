@@ -63,6 +63,9 @@ Traditional machine learning algorithms such as decision trees, random forests, 
 
 - [Spacy](https://github.com/johnosbb/ProgrammingInPyQT/tree/main/Spacy)
 
+### Text Classification
+
+- [Text Classification in NLP](https://github.com/johnosbb/Artifical-intelligence/text-classificatioon.md)
 
 
 ## Image Generation
