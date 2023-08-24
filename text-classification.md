@@ -45,18 +45,11 @@ __Supervised Learning__: Supervised learning algorithms are evaluated based on t
 
 __Unsupervised Learning__: Unsupervised learning algorithms are evaluated differently depending on the specific task. For clustering, metrics like silhouette score or inertia can be used. For dimensionality reduction, the quality of the reduced representation is assessed. Evaluation can be more subjective and context-dependent compared to supervised learning.
 
-###Examples:
+### Examples:
 
 __Supervised Learning Examples__: Spam email classification, image recognition, sentiment analysis, and predicting house prices.
 
 __Unsupervised Learning Examples__: Customer segmentation, topic modeling, image compression, and anomaly detection.
-
-In summary, the key distinction between supervised and unsupervised learning is the presence or absence of labeled training data and the nature of the learning tasks. Supervised learning focuses on making predictions or classifications based on labeled data, while unsupervised learning aims to uncover hidden patterns or structures within unlabeled data. These two paradigms are used in different contexts and have distinct applications in machine learning.
-
-
-
-
-
 
   
 
