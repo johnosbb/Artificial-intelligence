@@ -15,7 +15,7 @@
 - Supervised Learning: In supervised learning, the algorithm is trained on a labeled dataset. This means that for each input data point, the correct output or target is provided. The algorithm's objective is to learn a mapping from inputs to outputs by finding patterns and relationships in the labeled data.
 
 
-## Supervised versus Unspervised Learning
+## Supervised versus Unsupervised Learning
 
 ![Learning](https://github.com/johnosbb/Artificial-intelligence/blob/main/supervised_unsupervised.png)
 
