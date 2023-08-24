@@ -12,7 +12,53 @@
 - __Matrix__: A matrix is a two-dimensional array of numbers or values consisting of rows and columns and is often used to represent data in a tabular format.
 - __Dense Matrix__: A dense matrix is one in which most of the elements are non-zero and explicitly stored. It is characterized by having a value assigned to almost every element, regardless of whether it's zero or non-zero. Dense matrices are memory-intensive because they store every element, even if many of them are zero.
 - __Sparse Matrix__: A sparse matrix is one in which most of the elements are zero, and only the non-zero elements are explicitly stored. It is characterized by having very few non-zero elements relative to the total number of elements in the matrix. Sparse matrices are memory-efficient because they only store non-zero elements and their positions.
-- 
+- Supervised Learning: In supervised learning, the algorithm is trained on a labeled dataset. This means that for each input data point, the correct output or target is provided. The algorithm's objective is to learn a mapping from inputs to outputs by finding patterns and relationships in the labeled data.
+
+
+## Supervised versus Unspervised Learning
+
+![Learning](https://github.com/johnosbb/Artificial-intelligence/blob/main/supervised_unsupervised.png)
+
+Supervised learning and unsupervised learning are two fundamental categories of machine learning, and they differ primarily in the way they are trained and the nature of the tasks they are designed to solve. Here are the key differences between the two:
+
+### Training Data 
+
+__Supervised Learning__: In supervised learning, the algorithm is trained on a labeled dataset. This means that for each input data point, the correct output or target is provided. The algorithm's objective is to learn a mapping from inputs to outputs by finding patterns and relationships in the labeled data.
+
+__Unsupervised Learning__: In unsupervised learning, the algorithm is trained on an unlabeled dataset. There are no explicit target values provided. Instead, the algorithm's goal is to discover hidden patterns, structures, or relationships within the data without any predefined guidance.
+
+### Task:
+
+__Supervised Learning__: Supervised learning is used for tasks where the goal is to make predictions or classify data into predefined categories. Common tasks include classification (e.g., spam detection, image classification) and regression (e.g., predicting prices, estimating a continuous value).
+
+__Unsupervised Learning__: Unsupervised learning is used for tasks focused on discovering the inherent structure or organization within data. Common tasks include clustering (grouping similar data points together), dimensionality reduction (reducing the number of features while preserving important information), and anomaly detection (identifying data points that deviate significantly from the norm).
+
+### Output:
+
+__Supervised Learning__: The output of a supervised learning algorithm is a predictive model that can make accurate predictions or classifications on new, unseen data.
+
+__Unsupervised Learning__: The output of an unsupervised learning algorithm typically consists of insights about the data, such as cluster assignments or reduced-dimensional representations. It doesn't produce explicit predictions.
+
+### Evaluation:
+
+__Supervised Learning__: Supervised learning algorithms are evaluated based on their ability to make accurate predictions or classifications. Common evaluation metrics include accuracy, precision, recall, F1-score, and mean squared error (for regression).
+
+__Unsupervised Learning__: Unsupervised learning algorithms are evaluated differently depending on the specific task. For clustering, metrics like silhouette score or inertia can be used. For dimensionality reduction, the quality of the reduced representation is assessed. Evaluation can be more subjective and context-dependent compared to supervised learning.
+
+###Examples:
+
+__Supervised Learning Examples__: Spam email classification, image recognition, sentiment analysis, and predicting house prices.
+
+__Unsupervised Learning Examples__: Customer segmentation, topic modeling, image compression, and anomaly detection.
+
+In summary, the key distinction between supervised and unsupervised learning is the presence or absence of labeled training data and the nature of the learning tasks. Supervised learning focuses on making predictions or classifications based on labeled data, while unsupervised learning aims to uncover hidden patterns or structures within unlabeled data. These two paradigms are used in different contexts and have distinct applications in machine learning.
+
+
+
+
+
+
+  
 
 ## Vectorizers
 A vectorizer, in the context of natural language processing (NLP) and machine learning, is a component or tool that is used to convert raw text data into numerical vectors. It's a crucial step in preparing text data for machine learning algorithms, as most machine learning models require numerical input data. Vectorization allows you to represent text in a format that can be processed and analyzed by these models.
@@ -49,6 +95,11 @@ In some cases, custom vectorization techniques are developed to address specific
 The choice of vectorizer depends on the specific NLP task, the nature of the text data, and the machine learning algorithm being used. Vectorizers are an essential part of text preprocessing and feature engineering in NLP pipelines, enabling the transformation of text data into a format suitable for training and applying machine learning models.
 
 
+## Classification Algorithms
+
+### SVMs
+
+Support Vector Machine (SVM) is a supervised machine learning algorithm used for classification and regression tasks, with a primary focus on classification. It's a powerful and versatile algorithm that works by finding the optimal hyperplane (decision boundary) that best separates different classes in a dataset.
 
 
 
