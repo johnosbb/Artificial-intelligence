@@ -7,13 +7,14 @@
 
 ## Glossary of NLP Terms
 
+- __Deep Learning__: Deep learning, in the context of Natural Language Processing (NLP), refers to a subset of machine learning techniques that involve the use of deep neural networks to understand, process, and generate human language. The term "deep" in deep learning refers to the presence of multiple hidden layers in a neural network. Deep learning models used in NLP often have many layers, which allow them to capture intricate patterns and representations in text data.
 - __Vectorizer__:  A component or tool that is used to convert raw text data into numerical vectors.
 - __Vectors__: A vector is a one-dimensional array of numbers or values. These are typically used to represent individual data points or features and can represent quantities like position, direction, or a list of values. A vector is often represented as a column matrix (n x 1) or a row matrix (1 x n), where 'n' is the number of elements in the vector.
 - __Matrix__: A matrix is a two-dimensional array of numbers or values consisting of rows and columns and is often used to represent data in a tabular format.
 - __Dense Matrix__: A dense matrix is one in which most of the elements are non-zero and explicitly stored. It is characterized by having a value assigned to almost every element, regardless of whether it's zero or non-zero. Dense matrices are memory-intensive because they store every element, even if many of them are zero.
 - __Sparse Matrix__: A sparse matrix is one in which most of the elements are zero, and only the non-zero elements are explicitly stored. It is characterized by having very few non-zero elements relative to the total number of elements in the matrix. Sparse matrices are memory-efficient because they only store non-zero elements and their positions.
-- Supervised Learning: In supervised learning, the algorithm is trained on a labeled dataset. This means that for each input data point, the correct output or target is provided. The algorithm's objective is to learn a mapping from inputs to outputs by finding patterns and relationships in the labeled data.
-
+- __Supervised Learning__: In supervised learning, the algorithm is trained on a labeled dataset. This means that for each input data point, the correct output or target is provided. The algorithm's objective is to learn a mapping from inputs to outputs by finding patterns and relationships in the labeled data.
+- __Unsupervised Learning__: In unsupervised learning, the algorithm is trained on an unlabeled dataset. The algorithm's goal is to discover hidden patterns, structures, or relationships within the data without any predefined guidance.
 
 ## Supervised versus Unsupervised Learning
 
