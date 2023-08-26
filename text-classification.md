@@ -107,4 +107,14 @@ __Key characteristics and advantages of SVM in text classification include__
 - Note that SVMs can be computationally intensive, especially with large text datasets. In such cases, more efficient algorithms like linear classifiers or deep learning models might be considered. 
 
 
+### Text Similarity Metrics
+
+The Levenshtein distance, also known as the edit distance, is a metric used to measure the similarity or dissimilarity between two strings or sequences. It quantifies the minimum number of single-character edits (insertions, deletions, or substitutions) required to transform one string into another. In the context of similarity, a lower Levenshtein distance implies greater similarity between the two strings.
+
+##### Methodology
+
+- Insertion: Adding a character to one of the strings. - Example: "kitten" and "kittens" have a Levenshtein distance of 1 because you need to insert an 's' to make them the same.
+- Deletion: Removing a character from one of the strings. - Example: "flaw" and "law" have a Levenshtein distance of 1 because you need to delete the 'f' from the first string to make them the same.
+- Substitution: Replacing a character in one of the strings with another character. - Example: "cat" and "hat" have a Levenshtein distance of 1 because you need to substitute 'c' with 'h' to make them the same.
+- The Levenshtein distance can be useful in various applications, including spell-checking, DNA sequence alignment, and natural language processing. It provides a way to quantify how different two strings are, which is often used to determine the similarity or dissimilarity between words or phrases in a text analysis context. The smaller the Levenshtein distance between two strings, the more similar they are considered to be. 
 
