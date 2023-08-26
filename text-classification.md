@@ -109,9 +109,11 @@ __Key characteristics and advantages of SVM in text classification include__
 
 ### Text Similarity Metrics
 
+#### The Levenshtein distance
+
 The Levenshtein distance, also known as the edit distance, is a metric used to measure the similarity or dissimilarity between two strings or sequences. It quantifies the minimum number of single-character edits (insertions, deletions, or substitutions) required to transform one string into another. In the context of similarity, a lower Levenshtein distance implies greater similarity between the two strings.
 
-##### Methodology
+__Methodology__
 
 - Insertion: Adding a character to one of the strings. - Example: "kitten" and "kittens" have a Levenshtein distance of 1 because you need to insert an 's' to make them the same.
 - Deletion: Removing a character from one of the strings. - Example: "flaw" and "law" have a Levenshtein distance of 1 because you need to delete the 'f' from the first string to make them the same.
