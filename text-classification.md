@@ -7,6 +7,8 @@
 
 ## Glossary of NLP Terms
 
+- __Bag_of Words__: A "Bag of Words" (BoW) is a simple and fundamental technique used for text analysis and feature extraction. It's a way to represent text data, such as sentences or documents, as numerical vectors that can be used in machine learning algorithms.
+- __Dimensionality Expansion__: This process is also called "vector space transformation." It aims to enrich the original bag of words representations to capture more complex relationships between words or documents. These representations of vectors into higher-dimensional spaces using techniques like TF-IDF, word embeddings, LSA, or neural networks allow one to capture more nuanced and meaningful information from text data.
 - __Deep Learning__: Deep learning, in the context of Natural Language Processing (NLP), refers to a subset of machine learning techniques that involve the use of deep neural networks to understand, process, and generate human language. The term "deep" in deep learning refers to the presence of multiple hidden layers in a neural network. Deep learning models used in NLP often have many layers, which allow them to capture intricate patterns and representations in text data.
 - __Vectorizer__:  A component or tool that is used to convert raw text data into numerical vectors.
 - __Vectors__: A vector is a one-dimensional array of numbers or values. These are typically used to represent individual data points or features and can represent quantities like position, direction, or a list of values. A vector is often represented as a column matrix (n x 1) or a row matrix (1 x n), where 'n' is the number of elements in the vector.
@@ -14,7 +16,15 @@
 - __Dense Matrix__: A dense matrix is one in which most of the elements are non-zero and explicitly stored. It is characterized by having a value assigned to almost every element, regardless of whether it's zero or non-zero. Dense matrices are memory-intensive because they store every element, even if many of them are zero.
 - __Sparse Matrix__: A sparse matrix is one in which most of the elements are zero, and only the non-zero elements are explicitly stored. It is characterized by having very few non-zero elements relative to the total number of elements in the matrix. Sparse matrices are memory-efficient because they only store non-zero elements and their positions.
 - __Supervised Learning__: In supervised learning, the algorithm is trained on a labeled dataset. This means that for each input data point, the correct output or target is provided. The algorithm's objective is to learn a mapping from inputs to outputs by finding patterns and relationships in the labeled data.
+- __Word Vectors__: Word vectors, or word embeddings, are numerical representations of words in multidimensional space through matrices. The purpose of the word vector is to get a computer system to understand a word. Computers cannot understand text efficiently. They can, however, process numbers quickly and well. For this reason, it is important to convert a word into a number.
 - __Unsupervised Learning__: In unsupervised learning, the algorithm is trained on an unlabeled dataset. The algorithm's goal is to discover hidden patterns, structures, or relationships within the data without any predefined guidance.
+
+
+## Word Vectors
+
+Word vectors are like word representations in a computer. They have a fixed number of properties (dimensions) that the computer learns on its own. It figures this out by looking at how often words appear in texts and how they appear next to other words. This helps the computer understand how words are similar in terms of meaning.  The actual meanings encoded in each dimension are not explicitly defined. Word vectors are learned through neural network models, and the model determines the relationships and patterns during training by processing a vast amount of text data. Researchers often analyze word vectors to understand the relationships they capture, but the precise meaning of each dimension can be complex and context-dependent.
+Consider a word vector for the word "king" with 300 dimensions. Each of these 300 dimensions is a separate numerical value, and together, they make up the complete word vector for a word like "king." Think of these dimensions as individual axes in a multi-dimensional space. In a 2D space, you have two axes (x and y), and you can pinpoint a location on a plane by specifying coordinates on both axes. In the case of a word vector with 300 dimensions, you have 300 separate axes, and each axis has its own numerical value. The distances and relationships between words are determined by the positions of their word vectors in this high-dimensional space. Words that are similar in meaning will have word vectors that are closer in this multi-dimensional space across all 300 dimensions, not just one. The individual values in these dimensions collectively capture various aspects of the word's meaning and context.
+
 
 ## Supervised versus Unsupervised Learning
 
@@ -61,26 +71,20 @@ There are different types of vectorizers commonly used in NLP:
 
 ### Count Vectorizer:
 
-Count vectorization, often referred to as the "Bag of Words" model, represents text by counting the frequency of each word in a document.
-Each document is represented as a vector where each element corresponds to the count of a specific word.
-It results in a high-dimensional and sparse vector representation.
+Count vectorization, often referred to as the "Bag of Words" model, represents text by counting the frequency (or presence) of each word in a document. Each document is represented as a vector where each element corresponds to the count (or presence) of a specific word. It results in a high-dimensional and sparse vector representation. In some cases, you might want to normalize the vectors by dividing each count by the total number of words in the document. This helps account for varying document lengths. This simple technique has some limitations, such as not preserving word order or considering word semantics. 
 
 ### TF-IDF Vectorizer (Term Frequency-Inverse Document Frequency):
 
-TF-IDF vectorization represents text by considering both the term frequency (how often a word appears in a document) and the inverse document frequency (how unique a word is across all documents).
-It assigns a weight to each term in a document, emphasizing important terms while reducing the impact of common words.
+TF-IDF vectorization represents text by considering both the term frequency (how often a word appears in a document) and the inverse document frequency (how unique a word is across all documents). It assigns a weight to each term in a document, emphasizing important terms while reducing the impact of common words.
 Like count vectorization, it results in high-dimensional and sparse vectors.
 
 ### Word Embedding Vectorizer:
 
-Word embedding techniques like Word2Vec, GloVe, and FastText map words to continuous-valued vectors in a lower-dimensional space.
-These embeddings capture semantic relationships between words, making them more informative than simple word counts.
-Word embeddings are dense vectors, meaning they have fewer dimensions than the vocabulary size.
+Word embedding techniques like Word2Vec, GloVe, and FastText map words to continuous-valued vectors in a lower-dimensional space. These embeddings capture semantic relationships between words, making them more informative than simple word counts. Word embeddings are dense vectors, meaning they have fewer dimensions than the vocabulary size.
 
 ### Character-level Vectorizer:
 
-Character-level vectorization represents text by encoding characters or character n-grams as numerical vectors.
-It is useful for capturing morphological and spelling patterns in text.
+Character-level vectorization represents text by encoding characters or character n-grams as numerical vectors. It is useful for capturing morphological and spelling patterns in text.
 
 ### Custom Vectorizers:
 
