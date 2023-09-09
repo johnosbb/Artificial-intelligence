@@ -122,5 +122,43 @@ __Methodology__
 - Insertion: Adding a character to one of the strings. - Example: "kitten" and "kittens" have a Levenshtein distance of 1 because you need to insert an 's' to make them the same.
 - Deletion: Removing a character from one of the strings. - Example: "flaw" and "law" have a Levenshtein distance of 1 because you need to delete the 'f' from the first string to make them the same.
 - Substitution: Replacing a character in one of the strings with another character. - Example: "cat" and "hat" have a Levenshtein distance of 1 because you need to substitute 'c' with 'h' to make them the same.
-- The Levenshtein distance can be useful in various applications, including spell-checking, DNA sequence alignment, and natural language processing. It provides a way to quantify how different two strings are, which is often used to determine the similarity or dissimilarity between words or phrases in a text analysis context. The smaller the Levenshtein distance between two strings, the more similar they are considered to be. 
+- The Levenshtein distance can be useful in various applications, including spell-checking, DNA sequence alignment, and natural language processing. It provides a way to quantify how different two strings are, which is often used to determine the similarity or dissimilarity between words or phrases in a text analysis context. The smaller the Levenshtein distance between two strings, the more similar they are considered to be.
+
+## Sampling Methods
+
+### Oversampling:
+
+Oversampling involves increasing the number of instances in the minority class (the less frequent class) to balance the class distribution.
+__How it works__: It's done by duplicating or creating synthetic instances of the minority class. Common oversampling techniques include Random Oversampling, Synthetic Minority Over-sampling Technique (SMOTE), and Adaptive Synthetic Sampling (ADASYN).
+__Advantages__: Oversampling can help the model learn the minority class better by providing more examples for training.
+__Considerations__: Be cautious about oversampling too much, as it can lead to overfitting, where the model becomes overly tuned to the minority class.
+
+### Undersampling:
+
+Undersampling involves reducing the number of instances in the majority class to balance the class distribution.
+__How it works__: It's done by randomly selecting a subset of instances from the majority class to match the number of instances in the minority class.
+__Advantages__: Undersampling can help mitigate the risk of overfitting, as it reduces the influence of the majority class.
+__Considerations__: Undersampling may result in the loss of potentially valuable information from the majority class. Ensure that the undersampled dataset still represents the underlying data distribution.
+
+
+### Synthetic Data Generation (SMOTE):
+
+SMOTE (Synthetic Minority Over-sampling Technique) is a widely used oversampling method.
+__How it works__: SMOTE generates synthetic samples for the minority class by interpolating between existing minority class instances. It creates new instances that are combinations of neighboring minority class samples.
+__Advantages__: SMOTE helps prevent overfitting and can improve the model's ability to generalize.
+__Considerations__: Like oversampling, SMOTE should be used with care to avoid overemphasizing the minority class.
+
+
+### Combined Approaches:
+
+In some cases, a combination of oversampling and undersampling techniques can be effective. For example, you can undersample the majority class and then apply SMOTE to the minority class to balance the dataset more effectively.
+When deciding whether to use oversampling or undersampling, or a combination of both, consider the specifics of your dataset and the problem you're trying to solve. Experiment with different techniques and evaluate their impact on model performance using techniques like cross-validation.
+
+Balancing the dataset is just one step in addressing class imbalance. Other strategies, such as choosing appropriate evaluation metrics (e.g., F1-score, precision-recall curves), adjusting class weights in the model, or using ensemble methods, may also be necessary to handle imbalanced data effectively.
+
+
+
+
+
+
 
