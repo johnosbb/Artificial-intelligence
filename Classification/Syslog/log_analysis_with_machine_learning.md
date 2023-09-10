@@ -269,3 +269,6 @@ We can see that for the previously unseen data:
 That it had a 50% success rate. The first entry is deliberately ambiguous so its classification of this as a negative could be considered a mis-classification.
 
 Clearly the model struggled to predict the new log entries and the previously predicted accuracy.
+
+We would like to understand why we achieved such poor results so we can look a little more closely at the workings of the model and consider some of the factors that may have contributed to the performance.
+
