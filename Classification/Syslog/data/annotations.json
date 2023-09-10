@@ -1,0 +1,290 @@
+{
+    "classes": [
+        "SOFTWARE_COMPONENT",
+        "PROGRAM",
+        "MQTT_MESSAGE",
+        "CLIENT_COMMAND",
+        "ERROR"
+    ],
+    "annotations": [
+        [
+            "Jul 11 16:38:47 snuc-sdkvm app.py: Workspace_Management: Terminating workspace 5 /workspace - new workspace",
+            {
+                "entities": [
+                    [
+                        35,
+                        55,
+                        "SOFTWARE_COMPONENT"
+                    ]
+                ]
+            }
+        ],
+        [
+            "Jul 11 16:38:47 snuc-sdkvm app.py: Terminating workspace connections ",
+            {
+                "entities": [
+                    [
+                        27,
+                        33,
+                        "PROGRAM"
+                    ]
+                ]
+            }
+        ],
+        [
+            "Jul 11 16:38:47 snuc-sdkvm app.py: WorkspaceStatus: Terminating all connections with general command blackbox/sdkvm/deskvue/cmd/clients/terminate ",
+            {
+                "entities": [
+                    [
+                        101,
+                        145,
+                        "PROGRAM"
+                    ]
+                ]
+            }
+        ],
+        [
+            "Jul 11 16:38:47 snuc-sdkvm app.py: mqtt: send_message: topic blackbox/sdkvm/deskvue/cmd/clients/terminate",
+            {
+                "entities": [
+                    [
+                        27,
+                        33,
+                        "PROGRAM"
+                    ],
+                    [
+                        61,
+                        105,
+                        "MQTT_MESSAGE"
+                    ]
+                ]
+            }
+        ],
+        [
+            "Jul 11 16:38:47 snuc-sdkvm app.py: WorkspaceStatus: Updating OSD status for terminated connections blackbox/sdkvm/deskvue/status/osd_sdkvm/connection/inactive ",
+            {
+                "entities": [
+                    [
+                        27,
+                        33,
+                        "PROGRAM"
+                    ],
+                    [
+                        99,
+                        158,
+                        "MQTT_MESSAGE"
+                    ]
+                ]
+            }
+        ],
+        [
+            "Jul 11 16:38:47 snuc-sdkvm bb_kvm_client[153484]: Mqtt terminate command received: blackbox/sdkvm/deskvue/cmd/clients/terminate : <no payload>",
+            {
+                "entities": [
+                    [
+                        27,
+                        40,
+                        "SOFTWARE_COMPONENT"
+                    ],
+                    [
+                        83,
+                        127,
+                        "MQTT_MESSAGE"
+                    ]
+                ]
+            }
+        ],
+        [
+            "Jul 11 16:38:47 snuc-sdkvm bb_rdp_client[153486]: Mqtt terminate command received: blackbox/sdkvm/deskvue/cmd/clients/terminate : <no payload>",
+            {
+                "entities": [
+                    [
+                        27,
+                        40,
+                        "SOFTWARE_COMPONENT"
+                    ],
+                    [
+                        83,
+                        127,
+                        "MQTT_MESSAGE"
+                    ]
+                ]
+            }
+        ],
+        [
+            "Jul 11 16:38:47 snuc-sdkvm bb_kvm_client[153490]: Mqtt terminate command received: blackbox/sdkvm/deskvue/cmd/clients/terminate : <no payload>",
+            {
+                "entities": [
+                    [
+                        27,
+                        40,
+                        "SOFTWARE_COMPONENT"
+                    ],
+                    [
+                        83,
+                        127,
+                        "SOFTWARE_COMPONENT"
+                    ]
+                ]
+            }
+        ],
+        [
+            "Jul 11 16:38:47 snuc-sdkvm app.py: mqtt: send_message: topic blackbox/sdkvm/deskvue/status/osd_sdkvm/connection/inactive",
+            {
+                "entities": [
+                    [
+                        27,
+                        33,
+                        "PROGRAM"
+                    ],
+                    [
+                        61,
+                        120,
+                        "MQTT_MESSAGE"
+                    ]
+                ]
+            }
+        ],
+        [
+            "Jul 11 16:38:47 snuc-sdkvm app.py: Command: /usr/local/bin/bb_kvm_client /boxilla:id:08:00:27:c0:a1:9d /gdi:sw /smart-sizing:1916x1055 /sec-rdp /rfx /client-uid:5_51_83ED2364CE /mqtt-endpoint:127.0.0.1:1883 -grab-keyboard /shared /window-noresize /window-position:2x0 /t:'TX: 2K_OP_161_Shared: 192.168.1.161 0' /v:192.168.1.161",
+            {
+                "entities": [
+                    [
+                        44,
+                        327,
+                        "MQTT_MESSAGE"
+                    ]
+                ]
+            }
+        ],
+        [
+            "Jul 11 16:38:47 snuc-sdkvm app.py: MONITOR: HDMI-3 (2): pos 1920x0 res 3840x2160",
+            {
+                "entities": [
+                    [
+                        27,
+                        33,
+                        "PROGRAM"
+                    ]
+                ]
+            }
+        ],
+        [
+            "Jul 11 16:38:47 snuc-sdkvm app.py: TILE_CALC: pos: 1922x0 size: 1916x1055",
+            {
+                "entities": []
+            }
+        ],
+        [
+            "Jul 11 16:38:47 snuc-sdkvm app.py: Command: /usr/local/bin/bb_kvm_client /boxilla:id:08:00:27:c0:a1:9d /gdi:sw /smart-sizing:1916x1055 /sec-rdp /rfx /client-uid:5_50_83ED2364CE /mqtt-endpoint:127.0.0.1:1883 -grab-keyboard /shared /window-noresize /window-position:1922x0 /t:'TX: 4K_OP_169_Shared: 192.168.1.169 0' /v:192.168.1.169",
+            {
+                "entities": [
+                    [
+                        44,
+                        330,
+                        "CLIENT_COMMAND"
+                    ]
+                ]
+            }
+        ],
+        [
+            "Jul 11 16:38:47 snuc-sdkvm app.py: Command: /usr/local/bin/bb_rdp_client /w:1920 /h:1080 /smart-sizing:1916x1055 /u:BBOX /p:cloud /client-uid:5_53_83ED2364CE -grab-keyboard /mqtt-endpoint:127.0.0.1:1883 /cert-ignore /window-noresize /window-position:1922x1098 /t:'RDP: RDP_10_DellNUK: 192.168.1.10 0' /port:3389 /v:192.168.1.10",
+            {
+                "entities": [
+                    [
+                        44,
+                        327,
+                        "CLIENT_COMMAND"
+                    ]
+                ]
+            }
+        ],
+        [
+            "Jul 11 16:38:47 snuc-sdkvm bb_rdp_client[153486]: freerdp_abort_connect_context:freerdp_set_last_error_ex ERRCONNECT_CONNECT_CANCELLED [0x0002000B]",
+            {
+                "entities": [
+                    [
+                        80,
+                        105,
+                        "ERROR"
+                    ],
+                    [
+                        106,
+                        134,
+                        "ERROR"
+                    ]
+                ]
+            }
+        ],
+        [
+            "Jul 11 16:38:47 snuc-sdkvm bb_kvm_client[153482]: freerdp_check_fds() failed - 0",
+            {
+                "entities": [
+                    [
+                        70,
+                        76,
+                        "ERROR"
+                    ]
+                ]
+            }
+        ],
+        [
+            "Jul 11 16:38:47 snuc-sdkvm bb_kvm_client[153482]: rdp_print_errinfo wCloudBB ERRINFO_PEER_DISCONNECTED (0x00001196):The peer connection was lost.",
+            {
+                "entities": [
+                    [
+                        50,
+                        67,
+                        "ERROR"
+                    ],
+                    [
+                        77,
+                        102,
+                        "ERROR"
+                    ]
+                ]
+            }
+        ],
+        [
+            "Jul 11 16:38:47 snuc-sdkvm bb_kvm_client[153488]: freerdp_check_fds() failed - 0",
+            {
+                "entities": [
+                    [
+                        70,
+                        76,
+                        "ERROR"
+                    ]
+                ]
+            }
+        ],
+        [
+            "Jul 11 16:38:47 snuc-sdkvm bb_kvm_client[153488]: rdp_print_errinfo wCloudBB ERRINFO_PEER_DISCONNECTED (0x00001196):The peer connection was lost.",
+            {
+                "entities": [
+                    [
+                        50,
+                        67,
+                        "CLIENT_COMMAND"
+                    ],
+                    [
+                        77,
+                        102,
+                        "ERROR"
+                    ]
+                ]
+            }
+        ],
+        [
+            "Jul 11 16:38:47 snuc-sdkvm snuc: [OSD] : [2023-07-11T16:38:47.181322] [INFO ] - Received MQTT:TOPIC - [blackbox/sdkvm/deskvue/status/osd_sdkvm/connection/inactive] MQTT:MESSAGE - []",
+            {
+                "entities": [
+                    [
+                        103,
+                        162,
+                        "MQTT_MESSAGE"
+                    ]
+                ]
+            }
+        ]
+    ]
+}

@@ -1,0 +1,40 @@
+Jul 11 16:38:48 snuc-sdkvm bb_rdp_client[154040]: tzid: Europe/Dublin
+Jul 11 16:38:48 snuc-sdkvm snuc: [OSD] : [2023-07-11T16:38:48.788741] [DEBUG] - Inactive status is detected of workspce on - [Test2][5]
+Jul 11 16:38:48 snuc-sdkvm snuc: [OSD] : [2023-07-11T16:38:48.788770] [INFO ] - Received MQTT:TOPIC - [blackbox/sdkvm/deskvue/status/osd_sdkvm/workspace/5/inactive] MQTT:MESSAGE - []
+Jul 11 16:38:48 snuc-sdkvm snuc: [OSD] : [2023-07-11T16:38:48.788959] [DEBUG] - Inactive status is detected of workspce on - [Test2][5]
+Jul 11 16:38:48 snuc-sdkvm snuc: [OSD] : [2023-07-11T16:38:48.788935] [DEBUG] - Get workspace status - [inactive] on workspaceID - [Test2][5]
+Jul 11 16:38:48 snuc-sdkvm snuc: [OSD] : [2023-07-11T16:38:48.788993] [INFO ] - Received MQTT:TOPIC - [blackbox/sdkvm/deskvue/status/osd_sdkvm/connection/55/active] MQTT:MESSAGE - []
+Jul 11 16:38:48 snuc-sdkvm snuc: [OSD] : [2023-07-11T16:38:48.789157] [DEBUG] - Get connection status - [active] on connectionID - [Ubuntu_ZU_172_shared][55]
+Jul 11 16:38:48 snuc-sdkvm snuc: [OSD] : [2023-07-11T16:38:48.789180] [DEBUG] - Active status is detected of connection on - [Ubuntu_ZU_172_shared][55]
+Jul 11 16:38:49 snuc-sdkvm bb_rdp_client[154040]: Publishing mqtt connection status={#012    "boxilla": "",#012    "client_uid": "5_53_83ED2364CE",#012    "connection_mode": "private",#012    "connection_type": "rdp",#012    "error": "none",#012    "reason": "",#012    "server_hostname": "192.168.1.10",#012    "server_port": 3389,#012    "status": "connected",#012    "timestamp": "16:38:49 11-07-2023"#012}
+Jul 11 16:38:49 snuc-sdkvm bb_rdp_client[154040]: Published connection status=connected
+Jul 11 16:38:49 snuc-sdkvm bb_rdp_client[154040]: Local framebuffer format  PIXEL_FORMAT_RGBA32
+Jul 11 16:38:49 snuc-sdkvm bb_rdp_client[154040]: Remote framebuffer format PIXEL_FORMAT_BGRA32
+Jul 11 16:38:49 snuc-sdkvm app.py:  Received message b'{\n    "boxilla": "",\n    "client_uid": "5_53_83ED2364CE",\n    "connection_mode": "private",\n    "connection_type": "rdp",\n    "error": "none",\n    "reason": "",\n    "server_hostname": "192.168.1.10",\n    "server_port": 3389,\n    "status": "connected",\n    "timestamp": "16:38:49 11-07-2023"\n}' on topic 'blackbox/sdkvm/deskvue/workspace_server/event/connection' with QoS 1
+Jul 11 16:38:49 snuc-sdkvm app.py: QMonitor: received connection event from a client
+Jul 11 16:38:49 snuc-sdkvm app.py: MQTTConnectionEvent - client_uid: 5_53_83ED2364CE type: rdp  mode: private status: connected
+Jul 11 16:38:49 snuc-sdkvm app.py: WorkspaceStatus: 5 Could not find matching connection for client: 5_53_83ED2364CE 
+Jul 11 16:38:49 snuc-sdkvm app.py: WorkspaceStatus: 5 Not Sending inactive status for a previous workspace: 5 
+Jul 11 16:38:49 snuc-sdkvm app.py: mqtt: send_message: topic blackbox/sdkvm/deskvue/status/osd_sdkvm/workspace/5/inactive
+Jul 11 16:38:49 snuc-sdkvm app.py: mqtt: send_message: topic blackbox/sdkvm/deskvue/status/osd_sdkvm/workspace/5/inactive
+Jul 11 16:38:49 snuc-sdkvm app.py: publish_status: blackbox/sdkvm/deskvue/status/osd_sdkvm/connection/53/active
+Jul 11 16:38:49 snuc-sdkvm app.py: mqtt: send_message: topic blackbox/sdkvm/deskvue/status/osd_sdkvm/connection/53/active
+Jul 11 16:38:49 snuc-sdkvm /usr/libexec/gdm-x-session[8733]: flutter: Received MQTT:TOPIC - [blackbox/sdkvm/deskvue/status/osd_sdkvm/workspace/5/inactive] MQTT:MESSAGE - []
+Jul 11 16:38:49 snuc-sdkvm /usr/libexec/gdm-x-session[8733]: flutter: Getting the payload
+Jul 11 16:38:49 snuc-sdkvm /usr/libexec/gdm-x-session[8733]: flutter: Received MQTT:TOPIC - [blackbox/sdkvm/deskvue/status/osd_sdkvm/workspace/5/inactive] MQTT:MESSAGE - []
+Jul 11 16:38:49 snuc-sdkvm /usr/libexec/gdm-x-session[8733]: flutter: Getting the payload
+Jul 11 16:38:49 snuc-sdkvm /usr/libexec/gdm-x-session[8733]: flutter: Received MQTT:TOPIC - [blackbox/sdkvm/deskvue/status/osd_sdkvm/connection/53/active] MQTT:MESSAGE - []
+Jul 11 16:38:49 snuc-sdkvm /usr/libexec/gdm-x-session[8733]: flutter: Getting the payload
+Jul 11 16:38:49 snuc-sdkvm snuc: [OSD] : [2023-07-11T16:38:49.489058] [INFO ] - Received MQTT:TOPIC - [blackbox/sdkvm/deskvue/status/osd_sdkvm/workspace/5/inactive] MQTT:MESSAGE - []
+Jul 11 16:38:49 snuc-sdkvm snuc: [OSD] : [2023-07-11T16:38:49.489257] [DEBUG] - Get workspace status - [inactive] on workspaceID - [Test2][5]
+Jul 11 16:38:49 snuc-sdkvm snuc: [OSD] : [2023-07-11T16:38:49.489325] [INFO ] - Received MQTT:TOPIC - [blackbox/sdkvm/deskvue/status/osd_sdkvm/workspace/5/inactive] MQTT:MESSAGE - []
+Jul 11 16:38:49 snuc-sdkvm snuc: [OSD] : [2023-07-11T16:38:49.489291] [DEBUG] - Inactive status is detected of workspce on - [Test2][5]
+Jul 11 16:38:49 snuc-sdkvm snuc: [OSD] : [2023-07-11T16:38:49.489353] [DEBUG] - Get workspace status - [inactive] on workspaceID - [Test2][5]
+Jul 11 16:38:49 snuc-sdkvm snuc: [OSD] : [2023-07-11T16:38:49.489377] [DEBUG] - Inactive status is detected of workspce on - [Test2][5]
+Jul 11 16:38:49 snuc-sdkvm snuc: [OSD] : [2023-07-11T16:38:49.489433] [INFO ] - Received MQTT:TOPIC - [blackbox/sdkvm/deskvue/status/osd_sdkvm/connection/53/active] MQTT:MESSAGE - []
+Jul 11 16:38:49 snuc-sdkvm snuc: [OSD] : [2023-07-11T16:38:49.489497] [DEBUG] - Get connection status - [active] on connectionID - [RDP_10_DellNUK][53]
+Jul 11 16:38:49 snuc-sdkvm snuc: [OSD] : [2023-07-11T16:38:49.489518] [DEBUG] - Active status is detected of connection on - [RDP_10_DellNUK][53]
+Jul 11 16:38:49 snuc-sdkvm bb_kvm_client[154037]: Received output report mask 0
+Jul 11 16:38:49 snuc-sdkvm bb_kvm_client[154044]: Received output report mask 0
+Jul 11 16:38:50 snuc-sdkvm /usr/libexec/gdm-x-session[8733]: flutter: MQTTClient::Ping response received
+Jul 11 16:38:51 snuc-sdkvm bb_rdp_client[154040]: [SERVER-BUG] 2.2.10.1.1.2 Logon Info Version 2 (TS_LOGON_INFO_VERSION_2) Size expected 576 bytes, got 18, ignoring

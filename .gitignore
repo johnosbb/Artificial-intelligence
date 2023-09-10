@@ -127,3 +127,9 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+
+Classification/Syslog/data/syslog
+Classification/Syslog/data/syslog.cvs
+Classification/Syslog/data/*.joblib
+Classification/Syslog/data/output/
