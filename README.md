@@ -66,7 +66,7 @@ Traditional machine learning algorithms such as decision trees, random forests, 
 ### Text Classification
 
 - [Text Classification in NLP](https://github.com/johnosbb/Artificial-intelligence/blob/main/text-classification.md)  
-- [Log Analysis Example](log_analysis_with_machine_learning.md)
+- [Log Analysis Example](./log_analysis_with_machine_learning.md)
 
 ## Image Generation
 
