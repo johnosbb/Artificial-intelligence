@@ -332,6 +332,95 @@ When we rerun our classification code we get the same result as before:
     "Jul 11 16:38:47 my-device client[153488]: This thing is an indication of failure "                                                                           - 0
 ```
 
+#### Automating our Hypertuning using Gridsearch
+
+The RandomForestClassifier is a meta estimator that fits a number of decision tree classifiers on various sub-samples of the dataset and uses averaging to improve the predictive accuracy and control over-fitting. There are a number of parameters that we can vary while attempting to tune the model [see](https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.RandomForestClassifier.html).
+
+We can automate the hypertuning  by using grid search. Grid search is a technique used for hyperparameter tuning in machine learning. Hyperparameters are settings for a machine learning algorithm that are not learned from the data but are set prior to training. They can significantly affect the performance of a model, and finding the best combination of hyperparameters is essential for building an effective model.
+
+Grid search works by exhaustively searching through a predefined set of hyperparameters to find the combination that produces the best model performance. 
+
+We can recode our solution to use gridsearch.
+
+```python
+import re
+import pandas as pd
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import accuracy_score
+import joblib
+from sklearn.model_selection import GridSearchCV
+
+filtered_syslog_file_path = './data/Syslog/syslog.cvs'
+model_filename = './data/Syslog/random_forest_model_tfid.joblib'
+vectorizer_filename = './data/vectorizer_tfid.joblib'
+
+# Preprocess log lines (remove timestamps and other noise)
+df = pd.read_csv(filtered_syslog_file_path)
+details = df["Detail"]
+labels = df["Label"]
+
+# Create a TF-IDF vectorizer
+vectorizer = TfidfVectorizer()
+feature_vectors = vectorizer.fit_transform(details)
+
+# Split data into training and testing sets
+X_train, X_test, y_train, y_test = train_test_split(
+    feature_vectors, labels, test_size=0.2, random_state=42)
+
+# Define the hyperparameter grid
+param_grid = {
+    'n_estimators': [50, 100, 200],
+    'max_depth': [None, 10, 20],
+    'min_samples_split': [2, 5, 10],
+    'min_samples_leaf': [1, 2, 4],
+    'max_features': ['sqrt', 'log2'],
+    'class_weight': ['balanced', 'balanced_subsample']
+}
+
+# Create a GridSearchCV object
+grid_search = GridSearchCV(RandomForestClassifier(
+    random_state=42), param_grid, cv=5, scoring='accuracy')
+
+# Fit the grid search to your training data
+grid_search.fit(X_train, y_train)
+
+# Get the best hyperparameters
+best_params = grid_search.best_params_
+best_estimator = grid_search.best_estimator_
+
+# Use the best estimator for predictions
+y_pred = best_estimator.predict(X_test)
+
+# Evaluate the model
+accuracy = accuracy_score(y_test, y_pred)
+print(f"Best Hyperparameters: {best_params}")
+print(f"Accuracy: {accuracy:.2f}")
+
+# Save the trained model to a file
+joblib.dump(best_estimator, model_filename)
+joblib.dump(vectorizer, vectorizer_filename)
+
+```
+
+This gives us the best performing parameters:
+
+```txt
+Best Hyperparameters:
+{
+    'class_weight': 'balanced',
+    'max_depth': None,
+    'max_features': 'sqrt',
+    'min_samples_leaf': 1,
+    'min_samples_split': 2,
+    'n_estimators': 100
+}
+
+Accuracy: 0.99
+
+```
+
 ### Trying an Alternative Feature Extraction Approach
 
 We can try replacing our Bag of Words with TF-IDF (TF-IDF (Term Frequency-Inverse Document Frequency) to capture the importance of words in the log lines and may improve the model's performance, especially if certain keywords are more informative for your classification task. TF-IDF takes into account both the frequency of words in a document and their importance in the corpus, which can be more effective than simple word counts.
@@ -558,9 +647,9 @@ print(important_features[:10])  # Print the top N important features
 ]
 ```
 
-For the instance that was misclassified, inspect the predicted probability scores for each class.
+For the instance that was misclassified, we inspect the predicted probability scores for each class.
 Most classifiers in scikit-learn, including RandomForestClassifier, have a predict_proba method that provides the probability scores for each class.
-This can help you understand how confident the model was in its prediction.
+This can help us understand how confident the model was in its prediction.
 
 ```python
 predicted_probs = loaded_model.predict_proba(new_data_features)
@@ -574,7 +663,7 @@ print(predicted_probs)
 |    "Internal build version date stamp (yyyy.mm.dd.vv) = 2023.06.21.01.device" |  1.  |  0.  | 0 |
 |    "freerdp_abort_connect_context:freerdp_set_last_error_ex ERRCONNECT_CONNECT_CANCELLED [0x0002000B]" |  0.41 | 0.59 | 1 |
 |    "Jul 11 16:38:47 my-device app.py: publish_status: system/device/deskvue/status/osd_device/connection/51/active" | 0.95 | 0.05 | 0 |
-|   "Jul 11 16:38:47 my-device app.py: mqtt: send_message: topic system/device/deskvue/status/osd_device/connection/51/active" |  0.96 | 0.04 |  0 |
+|    "Jul 11 16:38:47 my-device app.py: mqtt: send_message: topic system/device/deskvue/status/osd_device/connection/51/active" |  0.96 | 0.04 |  0 |
 |    "Jul 11 16:38:47 my-device app.py: publish_status: system/device/deskvue/status/osd_device/connection/51/active" | 0.95 | 0.05 |  0 |
 |    "Jul 11 16:38:47 my-device app.py: mqtt: send_message: topic system/device/deskvue/status/osd_device/connection/51/active" | 0.96 | 0.04 |  0 |
 |    "Jul 11 16:38:47 my-device app.py: mqtt: send_message: topic system/device/deskvue/status/osd_device/connection/51/active this is not an error or a failure" |  0.87 | 0.13 |  0 |
