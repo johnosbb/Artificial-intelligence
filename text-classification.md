@@ -3,7 +3,7 @@
 
 ## The Text Classification Process
 
-![Text Classification Process](https://github.com/johnosbb/Artificial-intelligence/blob/main/ProcessFlow_TextClassification.png)
+![Text Classification Process](./Resources/ProcessFlow_TextClassification.png)
 
 ## Glossary of NLP Terms
 
