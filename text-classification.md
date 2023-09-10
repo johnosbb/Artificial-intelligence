@@ -28,11 +28,11 @@ Consider a word vector for the word "king" with 300 dimensions. Each of these 30
 
 ## Supervised versus Unsupervised Learning
 
-![Learning](https://github.com/johnosbb/Artificial-intelligence/blob/main/supervised_unsupervised.png)
+![Learning](./Resources/supervised_unsupervised.png)
 
 Supervised learning and unsupervised learning are two fundamental categories of machine learning, and they differ primarily in the way they are trained and the nature of the tasks they are designed to solve. Here are the key differences between the two:
 
-### Training Data 
+### Training Data
 
 __Supervised Learning__: In supervised learning, the algorithm is trained on a labeled dataset. This means that for each input data point, the correct output or target is provided. The algorithm's objective is to learn a mapping from inputs to outputs by finding patterns and relationships in the labeled data.
 
