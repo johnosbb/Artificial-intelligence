@@ -66,14 +66,14 @@ Traditional machine learning algorithms such as decision trees, random forests, 
 ### Text Classification
 
 - [Text Classification in NLP](https://github.com/johnosbb/Artificial-intelligence/blob/main/text-classification.md)  
-
+- [Log Analysis Example](log_analysis_with_machine_learning.md)
 
 ## Image Generation
 
 
 
 - [Stable Diffusion](stablediffusion.md)
-- [DreamBooth](dreambooth.md)
+- [DreamBooth](dreambooth.md) 0 |
 - [Textural Inversion](https://huggingface.co/docs/diffusers/training/text_inversion)
 
 

@@ -29,7 +29,16 @@ X_train, X_test, y_train, y_test = train_test_split(
     feature_vectors, labels, test_size=0.2, random_state=42)
 
 # Train a machine learning model (Random Forest classifier in this example)
-clf = RandomForestClassifier(random_state=42)
+clf = RandomForestClassifier(
+    # n_estimators=100,  # Increase the number of trees
+    # max_depth=None,    # Allow trees to grow until fully developed
+    # min_samples_split=2,  # Reduce the minimum samples required to split
+    # min_samples_leaf=1,   # Allow smaller leaf nodes
+    # max_features='sqrt',  # Consider all features for splitting
+    # class_weight='balanced',  # Adjust class weights for imbalanced data
+    # bootstrap=True,   # Use bootstrapped samples
+    random_state=42   # Set a specific random seed for reproducibility
+)
 clf.fit(X_train, y_train)
 
 # Make predictions on the test set
