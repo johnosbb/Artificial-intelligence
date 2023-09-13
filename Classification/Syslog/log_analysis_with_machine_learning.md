@@ -785,5 +785,5 @@ to
 
 Then this change causes the sentence to be correctly classified. If we examine the original log data we find only two instances of logs containing the word "failure" while there are four containing the word "failed". It is quite possible that increasing the amount of training data would further improve the results.
 
-As a next step I will significantly increase the amount of training data and re-run the experiments.
+The amount of data I have used so far fall well short of what a model like this would require. As a next step I will significantly increase the amount of training data that the model will train on. I will then re-run the experiments using unseen data that comes directly from the appliances.
 
