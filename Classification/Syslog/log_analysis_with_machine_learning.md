@@ -242,14 +242,14 @@ vectorizer = joblib.load(vectorizer_filename)
 new_data = [
     "Internal build version date stamp (yyyy.mm.dd.vv) = 2023.06.21.01.device",
     "freerdp_abort_connect_context:freerdp_set_last_error_ex ERRCONNECT_CONNECT_CANCELLED [0x0002000B]",
-    "Jul 11 16:38:47 my-device app.py: publish_status: system/device/deskvue/status/osd_device/connection/51/active",
-    "Jul 11 16:38:47 my-device app.py: mqtt: send_message: topic system/device/deskvue/status/osd_device/connection/51/active",
-    "Jul 11 16:38:47 my-device app.py: publish_status: system/device/deskvue/status/osd_device/connection/51/active",
-    "Jul 11 16:38:47 my-device app.py: mqtt: send_message: topic system/device/deskvue/status/osd_device/connection/51/active",
-    "Jul 11 16:38:47 my-device app.py: mqtt: send_message: topic system/device/deskvue/status/osd_device/connection/51/active this is not an error or a failure",
-    "Jul 11 16:38:47 my-device client[153488]: freerdp_check_fds() failed - 0",
-    "Jul 11 16:38:47 my-device client[153488]: Something has failed",
-    "Jul 11 16:38:47 my-device client[153488]: This thing is an indication of failure "
+    " publish_status: system/device/deskvue/status/osd_device/connection/51/active",
+    "mqtt: send_message: topic system/device/deskvue/status/osd_device/connection/51/active",
+    " publish_status: system/device/deskvue/status/osd_device/connection/51/active",
+    "mqtt: send_message: topic system/device/deskvue/status/osd_device/connection/51/active",
+    "mqtt: send_message: topic system/device/deskvue/status/osd_device/connection/51/active this is not an error or a failure",
+    "freerdp_check_fds() failed - 0",
+    "Something has failed",
+    "This thing is an indication of failure "
 ]
 new_data_features = vectorizer.transform(new_data)
 predictions = loaded_model.predict(new_data_features)
@@ -266,10 +266,10 @@ The program makes the following predictions:
 We can see that for the previously unseen data:
 
 ```txt
-    "Jul 11 16:38:47 my-device app.py: mqtt: send_message: topic system/device/deskvue/status/osd_device/connection/51/active this is not an error or a failure", - 0
-    "Jul 11 16:38:47 my-device client[153488]: freerdp_check_fds() failed - 0",                                                                                   - 1
-    "Jul 11 16:38:47 my-device client[153488]: Something has failed",                                                                                             - 1
-    "Jul 11 16:38:47 my-device client[153488]: This thing is an indication of failure "                                                                           - 0
+    "mqtt: send_message: topic system/device/deskvue/status/osd_device/connection/51/active this is not an error or a failure", - 0
+    "freerdp_check_fds() failed - 0",                                                                                   - 1
+    "Something has failed",                                                                                             - 1
+    "This thing is an indication of failure "                                                                           - 0
 ```
 
 That it had a 50% success rate. The first entry is deliberately ambiguous so its classification of this as a negative could be considered a mis-classification.
@@ -326,10 +326,10 @@ clf = RandomForestClassifier(
 When we rerun our classification code we get the same result as before:
 
 ```txt
-    "Jul 11 16:38:47 my-device app.py: mqtt: send_message: topic system/device/deskvue/status/osd_device/connection/51/active this is not an error or a failure", - 0
-    "Jul 11 16:38:47 my-device client[153488]: freerdp_check_fds() failed - 0",                                                                                   - 1
-    "Jul 11 16:38:47 my-device client[153488]: Something has failed",                                                                                             - 1
-    "Jul 11 16:38:47 my-device client[153488]: This thing is an indication of failure "                                                                           - 0
+    "mqtt: send_message: topic system/device/deskvue/status/osd_device/connection/51/active this is not an error or a failure", - 0
+    "freerdp_check_fds() failed - 0",                                                                                   - 1
+    "Something has failed",                                                                                             - 1
+    "This thing is an indication of failure "                                                                           - 0
 ```
 
 #### Automating our Hypertuning using Gridsearch
@@ -514,14 +514,14 @@ vectorizer = joblib.load(vectorizer_filename)
 new_data = [
     "Internal build version date stamp (yyyy.mm.dd.vv) = 2023.06.21.01.device",
     "freerdp_abort_connect_context:freerdp_set_last_error_ex ERRCONNECT_CONNECT_CANCELLED [0x0002000B]",
-    "Jul 11 16:38:47 my-device app.py: publish_status: system/device/deskvue/status/osd_device/connection/51/active",
-    "Jul 11 16:38:47 my-device app.py: mqtt: send_message: topic system/device/deskvue/status/osd_device/connection/51/active",
-    "Jul 11 16:38:47 my-device app.py: publish_status: system/device/deskvue/status/osd_device/connection/51/active",
-    "Jul 11 16:38:47 my-device app.py: mqtt: send_message: topic system/device/deskvue/status/osd_device/connection/51/active",
-    "Jul 11 16:38:47 my-device app.py: mqtt: send_message: topic system/device/deskvue/status/osd_device/connection/51/active this is not an error or a failure",
-    "Jul 11 16:38:47 my-device client[153488]: freerdp_check_fds() failed - 0",
-    "Jul 11 16:38:47 my-device client[153488]: Something has failed",
-    "Jul 11 16:38:47 my-device client[153488]: This thing is an indication of failure "
+    " publish_status: system/device/deskvue/status/osd_device/connection/51/active",
+    "mqtt: send_message: topic system/device/deskvue/status/osd_device/connection/51/active",
+    " publish_status: system/device/deskvue/status/osd_device/connection/51/active",
+    "mqtt: send_message: topic system/device/deskvue/status/osd_device/connection/51/active",
+    "mqtt: send_message: topic system/device/deskvue/status/osd_device/connection/51/active this is not an error or a failure",
+    "freerdp_check_fds() failed - 0",
+    "Something has failed",
+    "This thing is an indication of failure "
 ]
 new_data_features = vectorizer.transform(new_data)
 predictions = loaded_model.predict(new_data_features)
@@ -537,9 +537,9 @@ With this approach we get the following results:
 
 
 ```txt
-    "Jul 11 16:38:47 my-device app.py: mqtt: send_message: topic system/device/deskvue/status/osd_device/connection/51/active this is not an error or a failure", - 1
-    "Jul 11 16:38:47 my-device client[153488]: freerdp_check_fds() failed - 0",                                                                                   - 0
-    "Jul 11 16:38:47 my-device client[153488]: Something has failed",                                                                                             - 0    
+    "mqtt: send_message: topic system/device/deskvue/status/osd_device/connection/51/active this is not an error or a failure", - 1
+    "freerdp_check_fds() failed - 0",                                                                                   - 0
+    "Something has failed",                                                                                             - 0    
 ```
 
 We saw no significant improvement with this approach. So we will now look at something to more specifically address the lack of balance in the data.
@@ -610,9 +610,9 @@ Following this change we get the these results:
 
 
 ```txt
-    "Jul 11 16:38:47 my-device app.py: mqtt: send_message: topic system/device/deskvue/status/osd_device/connection/51/active this is not an error or a failure", - 1
-    "Jul 11 16:38:47 my-device client[153488]: freerdp_check_fds() failed - 0",                                                                                   - 0
-    "Jul 11 16:38:47 my-device client[153488]: Something has failed",                                                                                             - 0    
+    "mqtt: send_message: topic system/device/deskvue/status/osd_device/connection/51/active this is not an error or a failure", - 1
+    "freerdp_check_fds() failed - 0",                                                                                   - 0
+    "Something has failed",                                                                                             - 0    
 ```
 
 ### Examining the Features
@@ -662,14 +662,14 @@ print(predicted_probs)
 | --------- | ---------------------- | ---------------------- | ---------------------- |
 |    "Internal build version date stamp (yyyy.mm.dd.vv) = 2023.06.21.01.device" |  1.  |  0.  | 0 |
 |    "freerdp_abort_connect_context:freerdp_set_last_error_ex ERRCONNECT_CONNECT_CANCELLED [0x0002000B]" |  0.41 | 0.59 | 1 |
-|    "Jul 11 16:38:47 my-device app.py: publish_status: system/device/deskvue/status/osd_device/connection/51/active" | 0.95 | 0.05 | 0 |
-|    "Jul 11 16:38:47 my-device app.py: mqtt: send_message: topic system/device/deskvue/status/osd_device/connection/51/active" |  0.96 | 0.04 |  0 |
-|    "Jul 11 16:38:47 my-device app.py: publish_status: system/device/deskvue/status/osd_device/connection/51/active" | 0.95 | 0.05 |  0 |
-|    "Jul 11 16:38:47 my-device app.py: mqtt: send_message: topic system/device/deskvue/status/osd_device/connection/51/active" | 0.96 | 0.04 |  0 |
-|    "Jul 11 16:38:47 my-device app.py: mqtt: send_message: topic system/device/deskvue/status/osd_device/connection/51/active this is not an error or a failure" |  0.87 | 0.13 |  0 |
-|    "Jul 11 16:38:47 my-device client[153488]: freerdp_check_fds() failed - 0" | 0.3 |  0.7 |  1 |
-|    "Jul 11 16:38:47 my-device client[153488]: Something has failed" |  0.54 | 0.46 |  0 |
-|    "Jul 11 16:38:47 my-device client[153488]: This thing is an indication of failure " | 0.87 | 0.13 |  0 |
+|    " publish_status: system/device/deskvue/status/osd_device/connection/51/active" | 0.95 | 0.05 | 0 |
+|    "mqtt: send_message: topic system/device/deskvue/status/osd_device/connection/51/active" |  0.96 | 0.04 |  0 |
+|    " publish_status: system/device/deskvue/status/osd_device/connection/51/active" | 0.95 | 0.05 |  0 |
+|    "mqtt: send_message: topic system/device/deskvue/status/osd_device/connection/51/active" | 0.96 | 0.04 |  0 |
+|    "mqtt: send_message: topic system/device/deskvue/status/osd_device/connection/51/active this is not an error or a failure" |  0.87 | 0.13 |  0 |
+|    "freerdp_check_fds() failed - 0" | 0.3 |  0.7 |  1 |
+|    " Something has failed" |  0.54 | 0.46 |  0 |
+|    "This thing is an indication of failure" | 0.87 | 0.13 |  0 |
 
 
 ### Checking for Overfitting
@@ -758,4 +758,32 @@ plt.show()
 ![Learning](./Resources/../../../Resources/validation_curve_random_forest_max_depth.png)
 
 #### Interpreting the Graph
+
+There is usually a point in the graph where the test score is at its highest (Optimal Max Depth). This is the optimal value of the hyperparameter. It indicates the point at which the model generalizes well to unseen data (test data) without overfitting. Beyond this point, increasing the hyperparameter further may lead to overfitting.
+
+If you continue to increase the "Max Depth" beyond the optimal point, you will likely observe that the training score continues to increase, but the test score starts to decrease or plateau. This divergence between the training and test scores is a clear sign of overfitting. The model is becoming too complex and starts fitting the noise in the training data, making it perform poorly on new unseen data.
+
+This suggest a value of Max Depth=10 may be more benefical because it is this point where we see the test score begins to plateau in sympathy with the training score.
+Using this value we rerun our code and get a score of:
+
+```txt
+[0 1 0 0 0 0 0 1 1 0]
+```
+
+Which shows some improvement.
+
+If I rewrite the line:
+
+```txt
+"This thing is an indication of failure"
+```
+to
+
+```txt
+"This thing is an indication of a failed system because of the error",
+```
+
+Then this change causes the sentence to be correctly classified. If we examine the original log data we find only two instances of logs containing the word "failure" while there are four containing the word "failed". It is quite possible that increasing the amount of training data would further improve the results.
+
+As a next step I will significantly increase the amount of training data and re-run the experiments.
 
