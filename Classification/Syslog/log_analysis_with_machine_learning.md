@@ -15,12 +15,12 @@ The first stage of this process involves transforming the log data into a format
 The syslog data takes the following form:
 
 ```txt
-Jul 11 16:38:47 snuc-sdkvm bb_kvm_client[153484]: Client terminated by remote command 
-Jul 11 16:38:47 snuc-sdkvm bb_kvm_client[153482]: Client terminated by remote command 
-Jul 11 16:38:47 snuc-sdkvm bb_kvm_client[153490]: Stopping client stats thread
-Jul 11 16:38:47 snuc-sdkvm bb_kvm_client[153484]: Stopping client stats thread
-Jul 11 16:38:47 snuc-sdkvm bb_kvm_client[153484]: Client stats thread cancelled
-Jul 11 16:38:47 snuc-sdkvm bb_kvm_client[153490]: Client stats thread cancelled
+Jul 11 16:38:47 product_name client_name[153484]: Client terminated by remote command 
+Jul 11 16:38:47 product_name client_name[153482]: Client terminated by remote command 
+Jul 11 16:38:47 product_name client_name[153490]: Stopping client stats thread
+Jul 11 16:38:47 product_name client_name[153484]: Stopping client stats thread
+Jul 11 16:38:47 product_name client_name[153484]: Client stats thread cancelled
+Jul 11 16:38:47 product_name client_name[153490]: Client stats thread cancelled
 ```
 
 To process this data I reformat the data into a pandas data frame with the following structure:
@@ -129,7 +129,7 @@ def convert_syslog_to_dataframe(filepath):
 
 
 # def quick_test():
-#     "Jul 11 16:38:47 snuc-sdkvm bb_kvm_client[154037]: Program parameters:"
+#     "Jul 11 16:38:47 product_name client_name[154037]: Program parameters:"
 
 
 # Save the DataFrame
@@ -241,13 +241,13 @@ vectorizer = joblib.load(vectorizer_filename)
 # Make predictions using the loaded model
 new_data = [
     "Internal build version date stamp (yyyy.mm.dd.vv) = 2023.06.21.01.device",
-    "freerdp_abort_connect_context:freerdp_set_last_error_ex ERRCONNECT_CONNECT_CANCELLED [0x0002000B]",
-    " publish_status: system/device/deskvue/status/osd_device/connection/51/active",
-    "mqtt: send_message: topic system/device/deskvue/status/osd_device/connection/51/active",
-    " publish_status: system/device/deskvue/status/osd_device/connection/51/active",
-    "mqtt: send_message: topic system/device/deskvue/status/osd_device/connection/51/active",
-    "mqtt: send_message: topic system/device/deskvue/status/osd_device/connection/51/active this is not an error or a failure",
-    "freerdp_check_fds() failed - 0",
+    "application_abort_connect_context:application_set_last_error_ex ERRCONNECT_CONNECT_CANCELLED [0x0002000B]",
+    "publish_status: system/device/product_name/status/osd_device/connection/51/active",
+    "mqtt: send_message: topic system/device/product_name/status/osd_device/connection/51/active",
+    "publish_status: system/device/product_name/status/osd_device/connection/51/active",
+    "mqtt: send_message: topic system/device/product_name/status/osd_device/connection/51/active",
+    "mqtt: send_message: topic system/device/product_name/status/osd_device/connection/51/active this is not an error or a failure",
+    "application_check_fds() failed - 0",
     "Something has failed",
     "This thing is an indication of failure "
 ]
@@ -266,8 +266,8 @@ The program makes the following predictions:
 We can see that for the previously unseen data:
 
 ```txt
-    "mqtt: send_message: topic system/device/deskvue/status/osd_device/connection/51/active this is not an error or a failure", - 0
-    "freerdp_check_fds() failed - 0",                                                                                   - 1
+    "mqtt: send_message: topic system/device/product_name/status/osd_device/connection/51/active this is not an error or a failure", - 0
+    "application_check_fds() failed - 0",                                                                                   - 1
     "Something has failed",                                                                                             - 1
     "This thing is an indication of failure "                                                                           - 0
 ```
@@ -301,8 +301,8 @@ I used a Random Forest Classifier algorithm with default parameters. We could co
 ```python
 
 # n_estimators: The number of trees in the forest. Increasing the number of trees can improve model performance up to a point. However, more trees also mean longer training times.
-# max_depth: The maximum depth of each tree in the forest. Increasing max_depth can make the trees more complex and potentially capture more intricate patterns in the data. Be cautious not to set it too high to avoid overfitting.
-# min_samples_split: The minimum number of samples required to split an internal node. Increasing this parameter can make the tree less likely to split, which can reduce overfitting.
+# max_depth: The maximum depth of each tree in the forest. Increasing max_depth can make the trees more complex and potentially capture more intricate patterns in the data. Be cautious not to set it too high to avoid Over-fitting.
+# min_samples_split: The minimum number of samples required to split an internal node. Increasing this parameter can make the tree less likely to split, which can reduce Over-fitting.
 # min_samples_leaf: The minimum number of samples required to be at a leaf node. Similar to min_samples_split, increasing this parameter can regularize the tree.
 # max_features: The number of features to consider when looking for the best split. You can experiment with different values, such as  (sqrt(n_features)), 'log2' (log2(n_features)), or an integer representing the number of features.
 # class_weight: If your dataset is imbalanced (which is common in anomaly detection tasks like log analysis), you can set class_weight to 'balanced' to automatically adjust the weights of classes inversely proportional to their frequencies.
@@ -326,8 +326,8 @@ clf = RandomForestClassifier(
 When we rerun our classification code we get the same result as before:
 
 ```txt
-    "mqtt: send_message: topic system/device/deskvue/status/osd_device/connection/51/active this is not an error or a failure", - 0
-    "freerdp_check_fds() failed - 0",                                                                                   - 1
+    "mqtt: send_message: topic system/device/product_name/status/osd_device/connection/51/active this is not an error or a failure", - 0
+    "application_check_fds() failed - 0",                                                                                   - 1
     "Something has failed",                                                                                             - 1
     "This thing is an indication of failure "                                                                           - 0
 ```
@@ -456,8 +456,8 @@ X_train, X_test, y_train, y_test = train_test_split(
 
 
 # n_estimators: The number of trees in the forest. Increasing the number of trees can improve model performance up to a point. However, more trees also mean longer training times.
-# max_depth: The maximum depth of each tree in the forest. Increasing max_depth can make the trees more complex and potentially capture more intricate patterns in the data. Be cautious not to set it too high to avoid overfitting.
-# min_samples_split: The minimum number of samples required to split an internal node. Increasing this parameter can make the tree less likely to split, which can reduce overfitting.
+# max_depth: The maximum depth of each tree in the forest. Increasing max_depth can make the trees more complex and potentially capture more intricate patterns in the data. Be cautious not to set it too high to avoid Over-fitting.
+# min_samples_split: The minimum number of samples required to split an internal node. Increasing this parameter can make the tree less likely to split, which can reduce Over-fitting.
 # min_samples_leaf: The minimum number of samples required to be at a leaf node. Similar to min_samples_split, increasing this parameter can regularize the tree.
 # max_features: The number of features to consider when looking for the best split. You can experiment with different values, such as  (sqrt(n_features)), 'log2' (log2(n_features)), or an integer representing the number of features.
 # class_weight: If your dataset is imbalanced (which is common in anomaly detection tasks like log analysis), you can set class_weight to 'balanced' to automatically adjust the weights of classes inversely proportional to their frequencies.
@@ -513,13 +513,13 @@ vectorizer = joblib.load(vectorizer_filename)
 # Make predictions using the loaded model
 new_data = [
     "Internal build version date stamp (yyyy.mm.dd.vv) = 2023.06.21.01.device",
-    "freerdp_abort_connect_context:freerdp_set_last_error_ex ERRCONNECT_CONNECT_CANCELLED [0x0002000B]",
-    " publish_status: system/device/deskvue/status/osd_device/connection/51/active",
-    "mqtt: send_message: topic system/device/deskvue/status/osd_device/connection/51/active",
-    " publish_status: system/device/deskvue/status/osd_device/connection/51/active",
-    "mqtt: send_message: topic system/device/deskvue/status/osd_device/connection/51/active",
-    "mqtt: send_message: topic system/device/deskvue/status/osd_device/connection/51/active this is not an error or a failure",
-    "freerdp_check_fds() failed - 0",
+    "application_abort_connect_context:application_set_last_error_ex ERRCONNECT_CONNECT_CANCELLED [0x0002000B]",
+    "publish_status: system/device/product_name/status/osd_device/connection/51/active",
+    "mqtt: send_message: topic system/device/product_name/status/osd_device/connection/51/active",
+    "publish_status: system/device/product_name/status/osd_device/connection/51/active",
+    "mqtt: send_message: topic system/device/product_name/status/osd_device/connection/51/active",
+    "mqtt: send_message: topic system/device/product_name/status/osd_device/connection/51/active this is not an error or a failure",
+    "application_check_fds() failed - 0",
     "Something has failed",
     "This thing is an indication of failure "
 ]
@@ -537,8 +537,8 @@ With this approach we get the following results:
 
 
 ```txt
-    "mqtt: send_message: topic system/device/deskvue/status/osd_device/connection/51/active this is not an error or a failure", - 1
-    "freerdp_check_fds() failed - 0",                                                                                   - 0
+    "mqtt: send_message: topic system/device/product_name/status/osd_device/connection/51/active this is not an error or a failure", - 1
+    "application_check_fds() failed - 0",                                                                                   - 0
     "Something has failed",                                                                                             - 0    
 ```
 
@@ -610,8 +610,8 @@ Following this change we get the these results:
 
 
 ```txt
-    "mqtt: send_message: topic system/device/deskvue/status/osd_device/connection/51/active this is not an error or a failure", - 1
-    "freerdp_check_fds() failed - 0",                                                                                   - 0
+    "mqtt: send_message: topic system/device/product_name/status/osd_device/connection/51/active this is not an error or a failure", - 1
+    "application_check_fds() failed - 0",                                                                                   - 0
     "Something has failed",                                                                                             - 0    
 ```
 
@@ -639,7 +639,7 @@ print(important_features[:10])  # Print the top N important features
  ('setting', 0.05950584768240038),
  ('error', 0.05669028186091807),
  ('glfw', 0.054403262326712734),
- ('freerdp_check_fds', 0.04946882013851324),
+ ('application_check_fds', 0.04946882013851324),
  ('vtrfx_check_transport_events', 0.03925084404923942),
  ('checking', 0.03046707450390108),
  ('connection', 0.025609590594164334),
@@ -661,24 +661,24 @@ print(predicted_probs)
 | Log Entry | Probability of Class 0 | Probability of Class 1 | Actual Classification |
 | --------- | ---------------------- | ---------------------- | ---------------------- |
 |    "Internal build version date stamp (yyyy.mm.dd.vv) = 2023.06.21.01.device" |  1.  |  0.  | 0 |
-|    "freerdp_abort_connect_context:freerdp_set_last_error_ex ERRCONNECT_CONNECT_CANCELLED [0x0002000B]" |  0.41 | 0.59 | 1 |
-|    " publish_status: system/device/deskvue/status/osd_device/connection/51/active" | 0.95 | 0.05 | 0 |
-|    "mqtt: send_message: topic system/device/deskvue/status/osd_device/connection/51/active" |  0.96 | 0.04 |  0 |
-|    " publish_status: system/device/deskvue/status/osd_device/connection/51/active" | 0.95 | 0.05 |  0 |
-|    "mqtt: send_message: topic system/device/deskvue/status/osd_device/connection/51/active" | 0.96 | 0.04 |  0 |
-|    "mqtt: send_message: topic system/device/deskvue/status/osd_device/connection/51/active this is not an error or a failure" |  0.87 | 0.13 |  0 |
-|    "freerdp_check_fds() failed - 0" | 0.3 |  0.7 |  1 |
+|    "application_abort_connect_context:application_set_last_error_ex ERRCONNECT_CONNECT_CANCELLED [0x0002000B]" |  0.41 | 0.59 | 1 |
+|    "publish_status: system/device/product_name/status/osd_device/connection/51/active" | 0.95 | 0.05 | 0 |
+|    "mqtt: send_message: topic system/device/product_name/status/osd_device/connection/51/active" |  0.96 | 0.04 |  0 |
+|    "publish_status: system/device/product_name/status/osd_device/connection/51/active" | 0.95 | 0.05 |  0 |
+|    "mqtt: send_message: topic system/device/product_name/status/osd_device/connection/51/active" | 0.96 | 0.04 |  0 |
+|    "mqtt: send_message: topic system/device/product_name/status/osd_device/connection/51/active this is not an error or a failure" |  0.87 | 0.13 |  0 |
+|    "application_check_fds() failed - 0" | 0.3 |  0.7 |  1 |
 |    " Something has failed" |  0.54 | 0.46 |  0 |
 |    "This thing is an indication of failure" | 0.87 | 0.13 |  0 |
 
 
-### Checking for Overfitting
+### Checking for Over-fitting
 
-Overfitting occurs when your model learns too much from training data and isn’t able to generalize the underlying information. When this happens, the model is able to describe training data very accurately but loses precision on every dataset it has not been trained on. This is completely bad because we want our model to be reasonably good on data that it has never seen before.
+Over-fitting occurs when your model learns too much from training data and isn’t able to generalize the underlying information. When this happens, the model is able to describe training data very accurately but loses precision on every dataset it has not been trained on. This is completely bad because we want our model to be reasonably good on data that it has never seen before.
 
-#### Causes of Overfitting
+#### Causes of Over-fitting
 
-In machine learning, simplicity is the key. We want to generalize the information obtained from the training dataset, so we run the risk of overfitting if we use overly-complex models. A model that is overly-complex models will over-learn from training data and will think that the random error that follows the training data is actually worth learning from. That is the point at which the model stops generalizing and starts overfitting. Complexity is often measured with the number of parameters used by your model during it’s learning procedure. For example, the number of parameters in linear regression, the number of neurons in a neural network, and so on. So, the lower the number of the parameters, the higher the simplicity and, reasonably, the lower the risk of overfitting.
+In machine learning, simplicity is the key. We want to generalize the information obtained from the training dataset, so we run the risk of Over-fitting if we use overly-complex models. A model that is overly-complex models will over-learn from training data and will think that the random error that follows the training data is actually worth learning from. That is the point at which the model stops generalizing and starts Over-fitting. Complexity is often measured with the number of parameters used by your model during it’s learning procedure. For example, the number of parameters in linear regression, the number of neurons in a neural network, and so on. So, the lower the number of the parameters, the higher the simplicity and, reasonably, the lower the risk of Over-fitting.
 
 We can examine our model for over-fitting by plotting 
 ```python
@@ -759,11 +759,11 @@ plt.show()
 
 #### Interpreting the Graph
 
-There is usually a point in the graph where the test score is at its highest (Optimal Max Depth). This is the optimal value of the hyperparameter. It indicates the point at which the model generalizes well to unseen data (test data) without overfitting. Beyond this point, increasing the hyperparameter further may lead to overfitting.
+There is usually a point in the graph where the test score is at its highest (Optimal Max Depth). This is the optimal value of the hyperparameter. It indicates the point at which the model generalizes well to unseen data (test data) without Over-fitting. Beyond this point, increasing the hyperparameter further may lead to Over-fitting.
 
-If you continue to increase the "Max Depth" beyond the optimal point, you will likely observe that the training score continues to increase, but the test score starts to decrease or plateau. This divergence between the training and test scores is a clear sign of overfitting. The model is becoming too complex and starts fitting the noise in the training data, making it perform poorly on new unseen data.
+If you continue to increase the "Max Depth" beyond the optimal point, you will likely observe that the training score continues to increase, but the test score starts to decrease or plateau. This divergence between the training and test scores is a clear sign of Over-fitting. The model is becoming too complex and starts fitting the noise in the training data, making it perform poorly on new unseen data.
 
-This suggest a value of Max Depth=10 may be more benefical because it is this point where we see the test score begins to plateau in sympathy with the training score.
+This suggest a value of Max Depth=10 may be more beneficial because it is this point where we see the test score begins to plateau in sympathy with the training score.
 Using this value we rerun our code and get a score of:
 
 ```txt
