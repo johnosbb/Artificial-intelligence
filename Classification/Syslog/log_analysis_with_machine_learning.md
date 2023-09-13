@@ -334,7 +334,7 @@ When we rerun our classification code we get the same result as before:
 
 #### Automating our Hypertuning using Gridsearch
 
-The RandomForestClassifier is a meta estimator that fits a number of decision tree classifiers on various sub-samples of the dataset and uses averaging to improve the predictive accuracy and control over-fitting. There are a number of parameters that we can vary while attempting to tune the model [see](https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.RandomForestClassifier.html).
+The RandomForestClassifier is a meta estimator that fits a number of decision tree classifiers on various sub-samples of the dataset and uses averaging to improve the predictive accuracy and control over-fitting. There are a number of parameters that we can vary while attempting to tune the model. [For more details on this see https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.RandomForestClassifier.html](https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.RandomForestClassifier.html).
 
 We can automate the hypertuning  by using grid search. Grid search is a technique used for hyperparameter tuning in machine learning. Hyperparameters are settings for a machine learning algorithm that are not learned from the data but are set prior to training. They can significantly affect the performance of a model, and finding the best combination of hyperparameters is essential for building an effective model.
 
