@@ -756,3 +756,6 @@ plt.show()
 ```
 
 ![Learning](./Resources/../../../Resources/validation_curve_random_forest_max_depth.png)
+
+#### Interpreting the Graph
+

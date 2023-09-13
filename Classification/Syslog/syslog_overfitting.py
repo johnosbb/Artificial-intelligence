@@ -62,7 +62,7 @@ plt.plot(param_range, train_mean, label="Training Score", marker="o")
 plt.fill_between(param_range, train_mean - train_std,
                  train_mean + train_std, alpha=0.2)
 
-plt.plot(param_range, test_mean, label="Validation Score", marker="o")
+plt.plot(param_range, test_mean, label="Test Score", marker="o")
 plt.fill_between(param_range, test_mean - test_std,
                  test_mean + test_std, alpha=0.2)
 
