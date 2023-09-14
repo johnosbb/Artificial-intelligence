@@ -5,7 +5,7 @@
 
 Many embedded systems product logs. These logs can provide valuable insights into the functioning of the system. They can provide information on patterns of behaviour and critically, information on errors and potential points of failure in the system.
 
-This project is an attempt to explore how machine learning can be used to analyse system log files. I will be analysing a syslog file from an embedded system. The first task will be to try to predict indicators of failure or error. I have traditionally done this type of analysis using regular expressions and other pattern matching techniques. This approach requires constant update and tweaking. I hope, by using a machine learning approach, to develop a model that can accurately predict errors and system failures using a learned context. This would eliminate or greatly reduce the need to iterative tweaking of the tool.
+This project is an attempt to explore how machine learning can be used to analyse system log files. I will be analysing a syslog file from an embedded system. The first task will be to try to predict indicators of failure or error. I have traditionally done this type of analysis using regular expressions and other pattern matching techniques. This approach requires constant update and tweaking. I hope, by using a machine learning approach, to develop a model that can accurately predict errors and system failures using a learned context. This would eliminate or greatly reduce the need for iterative tweaking of the analysis tool.
 
 
 ## Preparing the data
