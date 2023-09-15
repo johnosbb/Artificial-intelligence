@@ -11,7 +11,7 @@ This project is an attempt to explore how machine learning can be used to analys
 - The presence of these key words does not necessarily indicate an error, for example the trace of a message may have an entry: "Status": "Normal, "Error": "". This indicates that no error was found, but the presence of the "error" keyword could cause this entry to be incorrectly classified.
 - This approach requires constant update and tweaking for it to remain effective.
   
-  I hope, by using a machine learning approach, to develop a model that can accurately predict errors and system failures using a learned context. This would eliminate or greatly reduce the need for iterative tweaking of the analysis tool. This approach could then be extended into a broader classification system where log entries could be classified with greater refinement associating then with certain subsystems or certain patterns of behaviour.
+  I hope, by using a machine learning approach, to develop a model that can accurately predict errors and system failures using a learned context. This would eliminate or greatly reduce the need for iterative tweaking of the analysis tool. This approach could then be extended into a broader classification system where log entries could be classified with greater refinement associating them with certain subsystems or certain patterns of behaviour rather than a simple indication of failure.
 
 
 ## Preparing the data
