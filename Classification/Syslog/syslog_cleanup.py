@@ -91,7 +91,8 @@ def convert_syslog_to_dataframe(filepath):
 #     "Jul 11 16:38:47 snuc-sdkvm bb_kvm_client[154037]: Program parameters:"
 
 
-# Display and save the DataFrame
+# Display the DataFrame
+# print(df)
 df = convert_syslog_to_dataframe(syslog_file_path)
 df.to_csv(filtered_syslog_file_path, index=False)
 # df2 = pd.read_csv(filtered_syslog_file_path)

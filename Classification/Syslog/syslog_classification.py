@@ -21,16 +21,18 @@ vectorizer = joblib.load(vectorizer_filename)
 
 # Make predictions using the loaded model
 new_data = [
-    "Internal build version date stamp (yyyy.mm.dd.vv) = 2023.06.21.01.device",
+    "Internal build version date stamp (yyyy.mm.dd.vv) = 2023.06.21.01.kvm",
     "freerdp_abort_connect_context:freerdp_set_last_error_ex ERRCONNECT_CONNECT_CANCELLED [0x0002000B]",
-    "Jul 11 16:38:47 my-device app.py: publish_status: system/device/deskvue/status/osd_device/connection/51/active",
-    "Jul 11 16:38:47 my-device app.py: mqtt: send_message: topic system/device/deskvue/status/osd_device/connection/51/active",
-    "Jul 11 16:38:47 my-device app.py: publish_status: system/device/deskvue/status/osd_device/connection/51/active",
-    "Jul 11 16:38:47 my-device app.py: mqtt: send_message: topic system/device/deskvue/status/osd_device/connection/51/active",
-    "Jul 11 16:38:47 my-device app.py: mqtt: send_message: topic system/device/deskvue/status/osd_device/connection/51/active this is not an error or a failure",
-    "Jul 11 16:38:47 my-device client[153488]: freerdp_check_fds() failed - 0",
-    "Jul 11 16:38:47 my-device client[153488]: Something has failed",
-    "Jul 11 16:38:47 my-device client[153488]: This thing is an indication of failure "
+    "publish_status: blackbox/sdkvm/deskvue/status/osd_sdkvm/connection/51/active",
+    "mqtt: send_message: topic blackbox/sdkvm/deskvue/status/osd_sdkvm/connection/51/active",
+    "publish_status: blackbox/sdkvm/deskvue/status/osd_sdkvm/connection/51/active",
+    "mqtt: send_message: topic blackbox/sdkvm/deskvue/status/osd_sdkvm/connection/51/active",
+    "mqtt: send_message: topic blackbox/sdkvm/deskvue/status/osd_sdkvm/connection/51/active this is not an error or a failure",
+    "freerdp_check_fds() failed - 0",
+    "A thing has failed",
+    "This thing is an indication of a failed system because of the error",
+    "This thing is an indication of a failure because of an error",
+    "Setting glfw error callback"
 ]
 new_data_features = vectorizer.transform(new_data)
 predictions = loaded_model.predict(new_data_features)

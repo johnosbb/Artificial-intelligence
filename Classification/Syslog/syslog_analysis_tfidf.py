@@ -43,7 +43,7 @@ clf = RandomForestClassifier(
     # min_samples_split=2,  # Reduce the minimum samples required to split
     # min_samples_leaf=1,   # Allow smaller leaf nodes
     # max_features='sqrt',  # Consider all features for splitting
-    # class_weight='balanced',  # Adjust class weights for imbalanced data
+    class_weight='balanced',  # Adjust class weights for imbalanced data
     # bootstrap=True,   # Use bootstrapped samples
     random_state=42   # Set a specific random seed for reproducibility
 )

@@ -31,11 +31,11 @@ X_train, X_test, y_train, y_test = train_test_split(
 # Train a machine learning model (Random Forest classifier in this example)
 clf = RandomForestClassifier(
     # n_estimators=100,  # Increase the number of trees
-    # max_depth=None,    # Allow trees to grow until fully developed
+    max_depth=10,    # Allow trees to grow until fully developed
     # min_samples_split=2,  # Reduce the minimum samples required to split
     # min_samples_leaf=1,   # Allow smaller leaf nodes
     # max_features='sqrt',  # Consider all features for splitting
-    # class_weight='balanced',  # Adjust class weights for imbalanced data
+    class_weight='balanced',  # Adjust class weights for imbalanced data
     # bootstrap=True,   # Use bootstrapped samples
     random_state=42   # Set a specific random seed for reproducibility
 )
@@ -55,6 +55,8 @@ joblib.dump(vectorizer, vectorizer_filename)
 
 # In this example:
 
+# The preprocess_log_line function removes timestamps and other noise from each log line using regular expressions.
+
 # The CountVectorizer from scikit-learn is used to create a bag-of-words (BoW) representation of the preprocessed log lines.
 # Each log line is converted into a feature vector.
 
@@ -64,6 +66,9 @@ joblib.dump(vectorizer, vectorizer_filename)
 # on the log lines.
 
 # The model is evaluated using accuracy on the testing set.
+
+# This is a simplified example, and in practice, you may need to perform more sophisticated
+# feature engineering and experiment with different machine learning models to capture the patterns and relationships in your log data effectively. Additionally, you can extend this approach to handle more complex log line structures or incorporate additional features and techniques as needed.
 
 
 # In the provided example, we are predicting whether a specific event or condition occurred based on the content of the log lines.

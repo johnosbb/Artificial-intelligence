@@ -33,8 +33,25 @@ X_train_oversampled, y_train_oversampled = oversampler.fit_resample(
     X_train, y_train)
 
 # Train a machine learning model (Random Forest classifier) with modified hyperparameters
+# clf = RandomForestClassifier(
+#     class_weight='balanced_subsample',
+#     max_depth=10,
+#     max_features='sqrt',
+#     min_samples_leaf=1,
+#     min_samples_split=2,
+#     n_estimators=50,
+#     random_state=42
+# )
+
 clf = RandomForestClassifier(
-    random_state=42
+    # n_estimators=100,  # Increase the number of trees
+    max_depth=10,    # Allow trees to grow until fully developed
+    # min_samples_split=2,  # Reduce the minimum samples required to split
+    # min_samples_leaf=1,   # Allow smaller leaf nodes
+    # max_features='sqrt',  # Consider all features for splitting
+    class_weight='balanced',  # Adjust class weights for imbalanced data
+    # bootstrap=True,   # Use bootstrapped samples
+    random_state=42   # Set a specific random seed for reproducibility
 )
 clf.fit(X_train_oversampled, y_train_oversampled)
 
