@@ -267,7 +267,7 @@ print(predictions)
 In this code I introduce some previously seen log entries and some new entries with content that may indicate an error.
 
 The program makes the following predictions:
-[0 1 0 0 0 0 0 1 1 0]
+[0 1 0 0 0 0 0 1 1 0] where 1 indicates that the corresponding log entry contains error information of some form and 0 indicates that the log entry is normal and does not require further attention.
 
 We can see that for the previously unseen data:
 
@@ -773,7 +773,7 @@ This suggest a value of Max Depth=10 may be more beneficial because it is this p
 Using this value we rerun our code and get a score of:
 
 ```txt
-[0 1 0 0 0 0 0 1 1 0]
+[0 1 0 0 0 0 0 1 1 0] where 1 indicates that the corresponding log entry contains error information of some form and 0 indicates that the log entry is normal and does not require further attention.
 ```
 
 Which shows some improvement.
@@ -811,5 +811,7 @@ This gave me the following score:
 |    "This thing is an indication of a failed system because of this error" | 0.29 | 0.71 |  1 |
 |    "This thing is an indication of failure" | 0.34 | 0.66 |  1 |
 |    "Setting glfw error callback" | 0 | 1 |  1 |
+
+__Note__: A classification of 1 indicates that the corresponding log entry contains error information of some form and 0 indicates that the log entry is normal and does not require further attention.
 
 As can be seen in the table, the model now accurately classifies the data. The unseen hand generated data is also correctly classified. One can also see that the models probability scores have shifted and it is now more confident in its classification even on ambiguous log entries.
