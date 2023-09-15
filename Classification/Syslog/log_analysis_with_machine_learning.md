@@ -5,7 +5,13 @@
 
 Many embedded systems product logs. These logs can provide valuable insights into the functioning of the system. They can provide information on patterns of behaviour and critically, information on errors and potential points of failure in the system.
 
-This project is an attempt to explore how machine learning can be used to analyse system log files. I will be analysing a syslog file from an embedded system. The first task will be to try to predict indicators of failure or error. I have traditionally done this type of analysis using regular expressions and other pattern matching techniques. This approach requires constant update and tweaking. I hope, by using a machine learning approach, to develop a model that can accurately predict errors and system failures using a learned context. This would eliminate or greatly reduce the need for iterative tweaking of the analysis tool.
+This project is an attempt to explore how machine learning can be used to analyse system log files. In this exercise I will be analysing a syslog file from an embedded system. The first task will be to try to identify indicators of failure or error. I have traditionally done this type of analysis using regular expressions and other pattern matching techniques. This approach has a number of challenges:
+- It requires that developers consistenly apply the correct tagging or log level to a log entry. This is not always the case; a developer may use a DEBUG tag, or an INFO tag in the log rather than an ERROR tag.
+- The approach relies on the presence of certain keywords like "Error", "Failed", "Fatal" etc. There are often considerable variations on these, for example ERR_SEG_FAULT, ERR_CONNECT_FAULT, ERRCONNECT.
+- The presence of these key words does not necessarily indicate an error, for example the trace of a message may have an entry: "Status": "Normal, "Error": "". This indicates that no error was found, but the presence of the "error" keyword could cause this entry to be incorrectly classified.
+- This approach requires constant update and tweaking for it to remain effective.
+  
+  I hope, by using a machine learning approach, to develop a model that can accurately predict errors and system failures using a learned context. This would eliminate or greatly reduce the need for iterative tweaking of the analysis tool. This approach could then be extended into a broader classification system where log entries could be classified with greater refinement associating then with certain subsystems or certain patterns of behaviour.
 
 
 ## Preparing the data
@@ -787,3 +793,23 @@ Then this change causes the sentence to be correctly classified. If we examine t
 
 The amount of data I have used so far fall well short of what a model like this would require. As a next step I will significantly increase the amount of training data that the model will train on. I will then re-run the experiments using unseen data that comes directly from the appliances.
 
+Using 60,000 log entries to train the system I reran the classification on unseen data.
+
+This gave me the following score:
+
+| Log Entry | Probability of Class 0 | Probability of Class 1 | Actual Classification |
+| --------- | ---------------------- | ---------------------- | ---------------------- |
+|    "Internal build version date stamp (yyyy.mm.dd.vv) = 2023.06.21.01.device" |  1.  |  0.  | 0 |
+|    "application_abort_connect_context:application_set_last_error_ex ERRCONNECT_CONNECT_CANCELLED [0x0002000B]" |  0.04 | 0.96 | 1 |
+|    "publish_status: system/device/product_name/status/osd_device/connection/51/active" | 0.98 | 0.02 | 0 |
+|    "mqtt: send_message: topic system/device/product_name/status/osd_device/connection/51/active" |  1 | 0 |  0 |
+|    "publish_status: system/device/product_name/status/osd_device/connection/51/active" | 0.98 | 0.02 |  0 |
+|    "mqtt: send_message: topic system/device/product_name/status/osd_device/connection/51/active" | 1 | 0.0 |  0 |
+|    'mqtt: send_message: topic system/device/product_name/status/osd_device/connection/51/active this is not an "error" or a failure' |  1 | 0 |  0 |
+|    "application_check_fds() failed - 0" | 0 |  1 |  1 |
+|    "Something has failed" |  0.28 | 0.72 |  1 |
+|    "This thing is an indication of a failed system because of this error" | 0.29 | 0.71 |  1 |
+|    "This thing is an indication of failure" | 0.34 | 0.66 |  1 |
+|    "Setting glfw error callback" | 0 | 1 |  1 |
+
+As can be seen in the table, the model now accurately classifies the data. The unseen hand generated data is also correctly classified. One can also see that the models probability scores have shifted and it is now more confident in its classification even on ambiguous log entries.
