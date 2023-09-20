@@ -3,9 +3,9 @@ import pandas as pd
 from sklearn.feature_extraction.text import TfidfVectorizer  # Import TfidfVectorizer
 import joblib  # Import joblib
 
-model_filename = './data/Syslog/random_forest_model_tfid.joblib'
-# Load the vectorizer from a separate file (if you saved it separately)
-vectorizer_filename = './data/vectorizer_tfid.joblib'
+
+model_filename = './data/random_forest_model_tfid_with_oversampling.joblib'
+vectorizer_filename = './data/vectorizer_tfid_with_oversampling.joblib'
 
 # Load the model from the file
 loaded_model = joblib.load(model_filename)

@@ -8,8 +8,8 @@ from sklearn.model_selection import train_test_split
 
 # Load your data and preprocess it as you did before
 # ...
-filtered_syslog_file_path = './data/Syslog/syslog.cvs'
-model_filename = './data/Syslog/random_forest_model.joblib'
+filtered_syslog_file_path = './data/syslog.cvs'
+model_filename = './data/random_forest_model.joblib'
 vectorizer_filename = './data/vectorizer.joblib'  # Choose a filename
 
 

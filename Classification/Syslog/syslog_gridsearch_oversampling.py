@@ -10,8 +10,8 @@ from sklearn.model_selection import GridSearchCV
 from imblearn.over_sampling import RandomOverSampler
 import joblib
 
-filtered_syslog_file_path = './data/Syslog/syslog.cvs'
-model_filename = './data/Syslog/random_forest_model_tfid.joblib'
+filtered_syslog_file_path = './data/syslog.cvs'
+model_filename = './data/random_forest_model_tfid.joblib'
 vectorizer_filename = './data/vectorizer_tfid.joblib'
 
 # Preprocess log lines (remove timestamps and other noise)

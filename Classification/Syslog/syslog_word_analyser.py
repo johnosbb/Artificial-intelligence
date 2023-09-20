@@ -3,7 +3,7 @@ import pandas as pd
 from sklearn.feature_extraction.text import TfidfVectorizer
 import joblib
 
-model_filename = './data/Syslog/random_forest_model_tfid.joblib'
+model_filename = './data/random_forest_model_tfid.joblib'
 vectorizer_filename = './data/vectorizer_tfid.joblib'
 
 # Load the model from the file

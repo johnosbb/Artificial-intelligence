@@ -1,4 +1,4 @@
-file_path = './data/Syslog/syslog'
+file_path = './data/syslog'
 
 # Initialize a line count variable
 line_count = 0

@@ -8,8 +8,8 @@ from sklearn.metrics import accuracy_score
 from imblearn.over_sampling import RandomOverSampler
 import joblib
 
-filtered_syslog_file_path = './data/Syslog/syslog.cvs'
-model_filename = './data/Syslog/random_forest_model_tfid_with_oversampling.joblib'
+filtered_syslog_file_path = './data/syslog.cvs'
+model_filename = './data/random_forest_model_tfid_with_oversampling.joblib'
 vectorizer_filename = './data/vectorizer_tfid_with_oversampling.joblib'
 
 # Preprocess log lines (remove timestamps and other noise)

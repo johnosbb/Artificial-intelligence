@@ -3,8 +3,8 @@ import pandas as pd
 
 
 # Specify the path to your syslog file
-syslog_file_path = './data/Syslog/syslog'
-filtered_syslog_file_path = './data/Syslog/syslog.cvs'
+syslog_file_path = './data/syslog'
+filtered_syslog_file_path = './data/syslog.cvs'
 
 
 def check_for_exclusion_pattern(line):

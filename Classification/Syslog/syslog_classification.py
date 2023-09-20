@@ -1,4 +1,3 @@
-import re
 import pandas as pd
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.ensemble import RandomForestClassifier
@@ -6,7 +5,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score
 import joblib  # Import joblib
 
-model_filename = './data/Syslog/random_forest_model.joblib'
+model_filename = './data/random_forest_model.joblib'
 # Load the vectorizer from a separate file (if you saved it separately)
 vectorizer_filename = './data/vectorizer.joblib'
 

@@ -1,4 +1,4 @@
-import re
+
 import pandas as pd
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.ensemble import RandomForestClassifier
@@ -6,8 +6,8 @@ from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score
 import joblib  # Import joblib
 
-filtered_syslog_file_path = './data/Syslog/syslog.cvs'
-model_filename = './data/Syslog/random_forest_model.joblib'
+filtered_syslog_file_path = './data/syslog.cvs'
+model_filename = './data/random_forest_model.joblib'
 vectorizer_filename = './data/vectorizer.joblib'  # Choose a filename
 
 
@@ -31,7 +31,7 @@ X_train, X_test, y_train, y_test = train_test_split(
 # Train a machine learning model (Random Forest classifier in this example)
 clf = RandomForestClassifier(
     # n_estimators=100,  # Increase the number of trees
-    max_depth=10,    # Allow trees to grow until fully developed
+    max_depth=None,    # Allow trees to grow until fully developed
     # min_samples_split=2,  # Reduce the minimum samples required to split
     # min_samples_leaf=1,   # Allow smaller leaf nodes
     # max_features='sqrt',  # Consider all features for splitting

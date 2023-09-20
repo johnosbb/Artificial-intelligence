@@ -1,18 +1,17 @@
 # Log Analysis with Machine Learning
 
-
 ## Introduction
 
 Many embedded systems product logs. These logs can provide valuable insights into the functioning of the system. They can provide information on patterns of behaviour and critically, information on errors and potential points of failure in the system.
 
 This project is an attempt to explore how machine learning can be used to analyse system log files. In this exercise I will be analysing a syslog file from an embedded system. The first task will be to try to identify indicators of failure or error. I have traditionally done this type of analysis using regular expressions and other pattern matching techniques. This approach has a number of challenges:
+
 - It requires that developers consistenly apply the correct tagging or log level to a log entry. This is not always the case; a developer may use a DEBUG tag, or an INFO tag in the log rather than an ERROR tag.
 - The approach relies on the presence of certain keywords like "Error", "Failed", "Fatal" etc. There are often considerable variations on these, for example ERR_SEG_FAULT, ERR_CONNECT_FAULT, ERRCONNECT.
 - The presence of these key words does not necessarily indicate an error, for example the trace of a message may have an entry: "Status": "Normal, "Error": "". This indicates that no error was found, but the presence of the "error" keyword could cause this entry to be incorrectly classified.
 - This approach requires constant update and tweaking for it to remain effective.
-  
-  I hope, by using a machine learning approach, to develop a model that can accurately predict errors and system failures using a learned context. This would eliminate or greatly reduce the need for iterative tweaking of the analysis tool. This approach could then be extended into a broader classification system where log entries could be classified with greater refinement associating them with certain subsystems or certain patterns of behaviour rather than a simple indication of failure.
 
+  I hope, by using a machine learning approach, to develop a model that can accurately predict errors and system failures using a learned context. This would eliminate or greatly reduce the need for iterative tweaking of the analysis tool. This approach could then be extended into a broader classification system where log entries could be classified with greater refinement associating them with certain subsystems or certain patterns of behaviour rather than a simple indication of failure.
 
 ## Preparing the data
 
@@ -21,8 +20,8 @@ The first stage of this process involves transforming the log data into a format
 The syslog data takes the following form:
 
 ```txt
-Jul 11 16:38:47 product_name client_name[153484]: Client terminated by remote command 
-Jul 11 16:38:47 product_name client_name[153482]: Client terminated by remote command 
+Jul 11 16:38:47 product_name client_name[153484]: Client terminated by remote command
+Jul 11 16:38:47 product_name client_name[153482]: Client terminated by remote command
 Jul 11 16:38:47 product_name client_name[153490]: Stopping client stats thread
 Jul 11 16:38:47 product_name client_name[153484]: Stopping client stats thread
 Jul 11 16:38:47 product_name client_name[153484]: Client stats thread cancelled
@@ -43,15 +42,14 @@ To process this data I reformat the data into a pandas data frame with the follo
 The "Detail" field will hold the main body of the log message and it is this field we will focus on when generating the target features.
 There is some additional processing on some other lines to further target the main detail of the log entry.
 
-
 ```python
 import re
 import pandas as pd
 
 
 # Specify the path to the input and output files
-syslog_file_path = './data/Syslog/syslog'
-filtered_syslog_file_path = './data/Syslog/syslog.cvs'
+syslog_file_path = './data/syslog'
+filtered_syslog_file_path = './data/syslog.cvs'
 
 
 def check_for_exclusion_pattern(line):
@@ -147,7 +145,6 @@ df.to_csv(filtered_syslog_file_path, index=False)
 
 The output of this process is a file syslog.cvs which stores the pandas data frame as a cvs file.
 
-
 ## Creating the Model
 
 For the analysis of the data I initially tried a bag-of-words (BoW) vectorizer. This is a simple and fundamental technique used for text analysis and feature extraction. It's a way to represent text data, such as sentences or documents, as numerical vectors that can be used in machine learning algorithms.
@@ -161,8 +158,8 @@ from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score
 import joblib  # Import joblib
 
-filtered_syslog_file_path = './data/Syslog/syslog.cvs'
-model_filename = './data/Syslog/random_forest_model.joblib'
+filtered_syslog_file_path = './data/syslog.cvs'
+model_filename = './data/random_forest_model.joblib'
 vectorizer_filename = './data/vectorizer.joblib'  # Choose a filename
 
 
@@ -216,7 +213,6 @@ The model and vectorizer are stored for later use using joblib.
 
 For this particular approach we get an accuracy of 0.99 based on the test and training data.
 
-
 ## Testing the Model with Unseen Data
 
 We now create a simple test program to see how likely the model is at predicting unseen errors (log entries it has not previously seen)
@@ -231,7 +227,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score
 import joblib  # Import joblib
 
-model_filename = './data/Syslog/random_forest_model.joblib'
+model_filename = './data/random_forest_model.joblib'
 # Load the vectorizer from a separate file (if you saved it separately)
 vectorizer_filename = './data/vectorizer.joblib'
 
@@ -299,7 +295,6 @@ The misclassification of certain log lines in our test data can be attributed to
 - Exclusion Patterns: We should pay attention to exclusion patterns and how they are affecting the labels. Make sure that the exclusion patterns are correctly identifying cases where log lines should be labeled as 0 (non-occurrence).
 - Ensemble Methods: We might consider using ensemble methods like stacking or boosting to combine the predictions of multiple models. This can often lead to improved performance.
 
-
 ### Hyperparameter Tuning
 
 I used a Random Forest Classifier algorithm with default parameters. We could consider tuning some of these parameters. We have already noted that the data is likely imbalanced so a good candidate for tuning is the class_weight. We can set class_weight to 'balanced' to automatically adjust the weights of classes inversely proportional to their frequencies.
@@ -342,9 +337,9 @@ When we rerun our classification code we get the same result as before:
 
 The RandomForestClassifier is a meta estimator that fits a number of decision tree classifiers on various sub-samples of the dataset and uses averaging to improve the predictive accuracy and control over-fitting. There are a number of parameters that we can vary while attempting to tune the model. [For more details on this see https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.RandomForestClassifier.html](https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.RandomForestClassifier.html).
 
-We can automate the hypertuning  by using grid search. Grid search is a technique used for hyperparameter tuning in machine learning. Hyperparameters are settings for a machine learning algorithm that are not learned from the data but are set prior to training. They can significantly affect the performance of a model, and finding the best combination of hyperparameters is essential for building an effective model.
+We can automate the hypertuning by using grid search. Grid search is a technique used for hyperparameter tuning in machine learning. Hyperparameters are settings for a machine learning algorithm that are not learned from the data but are set prior to training. They can significantly affect the performance of a model, and finding the best combination of hyperparameters is essential for building an effective model.
 
-Grid search works by exhaustively searching through a predefined set of hyperparameters to find the combination that produces the best model performance. 
+Grid search works by exhaustively searching through a predefined set of hyperparameters to find the combination that produces the best model performance.
 
 We can recode our solution to use gridsearch.
 
@@ -358,8 +353,8 @@ from sklearn.metrics import accuracy_score
 import joblib
 from sklearn.model_selection import GridSearchCV
 
-filtered_syslog_file_path = './data/Syslog/syslog.cvs'
-model_filename = './data/Syslog/random_forest_model_tfid.joblib'
+filtered_syslog_file_path = './data/syslog.cvs'
+model_filename = './data/random_forest_model_tfid.joblib'
 vectorizer_filename = './data/vectorizer_tfid.joblib'
 
 # Preprocess log lines (remove timestamps and other noise)
@@ -440,8 +435,8 @@ from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score
 import joblib
 
-filtered_syslog_file_path = './data/Syslog/syslog.cvs'
-model_filename = './data/Syslog/random_forest_model_tfid.joblib'
+filtered_syslog_file_path = './data/syslog.cvs'
+model_filename = './data/random_forest_model_tfid.joblib'
 vectorizer_filename = './data/vectorizer_tfid.joblib'
 
 # Preprocess log lines (remove timestamps and other noise)
@@ -497,7 +492,6 @@ joblib.dump(vectorizer, vectorizer_filename)
 
 ```
 
-
 We now modify the classification code to use this new feature extraction approach.
 
 ```python
@@ -506,7 +500,7 @@ import pandas as pd
 from sklearn.feature_extraction.text import TfidfVectorizer  # Import TfidfVectorizer
 import joblib  # Import joblib
 
-model_filename = './data/Syslog/random_forest_model_tfid.joblib'
+model_filename = './data/random_forest_model_tfid.joblib'
 # Load the vectorizer from a separate file (if you saved it separately)
 vectorizer_filename = './data/vectorizer_tfid.joblib'
 
@@ -541,18 +535,17 @@ print(predictions)
 
 With this approach we get the following results:
 
-
 ```txt
     "mqtt: send_message: topic system/device/product_name/status/osd_device/connection/51/active this is not an error or a failure", - 1
     "application_check_fds() failed - 0",                                                                                   - 0
-    "Something has failed",                                                                                             - 0    
+    "Something has failed",                                                                                             - 0
 ```
 
 We saw no significant improvement with this approach. So we will now look at something to more specifically address the lack of balance in the data.
 
 ### Addressing Class Imbalance
 
-We now introduce some oversampling to try to address the data imbalance.  If we have a class imbalance issue (i.e., class 0 has significantly more instances than class 1), we can try oversampling the minority class (class 1) or undersampling the majority class (class 0). This can balance the dataset and potentially make the model more sensitive to class 1 instances.
+We now introduce some oversampling to try to address the data imbalance. If we have a class imbalance issue (i.e., class 0 has significantly more instances than class 1), we can try oversampling the minority class (class 1) or undersampling the majority class (class 0). This can balance the dataset and potentially make the model more sensitive to class 1 instances.
 
 #### Random Oversampling with Custom Ratios
 
@@ -569,8 +562,8 @@ from sklearn.metrics import accuracy_score
 from imblearn.over_sampling import RandomOverSampler
 import joblib
 
-filtered_syslog_file_path = './data/Syslog/syslog.cvs'
-model_filename = './data/Syslog/random_forest_model_tfid_with_oversampling.joblib'
+filtered_syslog_file_path = './data/syslog.cvs'
+model_filename = './data/random_forest_model_tfid_with_oversampling.joblib'
 vectorizer_filename = './data/vectorizer_tfid_with_oversampling.joblib'
 
 # Preprocess log lines (remove timestamps and other noise)
@@ -614,15 +607,13 @@ joblib.dump(vectorizer, vectorizer_filename)
 
 Following this change we get the these results:
 
-
 ```txt
     "mqtt: send_message: topic system/device/product_name/status/osd_device/connection/51/active this is not an error or a failure", - 1
     "application_check_fds() failed - 0",                                                                                   - 0
-    "Something has failed",                                                                                             - 0    
+    "Something has failed",                                                                                             - 0
 ```
 
 ### Examining the Features
-
 
 We saw no improvement so we need to understand which features are influential in the decision making.
 We can print out the top ten most important features.
@@ -636,7 +627,6 @@ important_features = sorted(
     zip(feature_names, feature_importances), key=lambda x: x[1], reverse=True)
 print(important_features[:10])  # Print the top N important features
 ```
-
 
 ```txt
 [
@@ -663,20 +653,18 @@ predicted_probs = loaded_model.predict_proba(new_data_features)
 print(predicted_probs)
 ```
 
-
-| Log Entry | Probability of Class 0 | Probability of Class 1 | Actual Classification |
-| --------- | ---------------------- | ---------------------- | ---------------------- |
-|    "Internal build version date stamp (yyyy.mm.dd.vv) = 2023.06.21.01.device" |  1.  |  0.  | 0 |
-|    "application_abort_connect_context:application_set_last_error_ex ERRCONNECT_CONNECT_CANCELLED [0x0002000B]" |  0.41 | 0.59 | 1 |
-|    "publish_status: system/device/product_name/status/osd_device/connection/51/active" | 0.95 | 0.05 | 0 |
-|    "mqtt: send_message: topic system/device/product_name/status/osd_device/connection/51/active" |  0.96 | 0.04 |  0 |
-|    "publish_status: system/device/product_name/status/osd_device/connection/51/active" | 0.95 | 0.05 |  0 |
-|    "mqtt: send_message: topic system/device/product_name/status/osd_device/connection/51/active" | 0.96 | 0.04 |  0 |
-|    "mqtt: send_message: topic system/device/product_name/status/osd_device/connection/51/active this is not an error or a failure" |  0.87 | 0.13 |  0 |
-|    "application_check_fds() failed - 0" | 0.3 |  0.7 |  1 |
-|    " Something has failed" |  0.54 | 0.46 |  0 |
-|    "This thing is an indication of failure" | 0.87 | 0.13 |  0 |
-
+| Log Entry                                                                                                                       | Probability of Class 0 | Probability of Class 1 | Actual Classification |
+| ------------------------------------------------------------------------------------------------------------------------------- | ---------------------- | ---------------------- | --------------------- |
+| "Internal build version date stamp (yyyy.mm.dd.vv) = 2023.06.21.01.device"                                                      | 1.                     | 0.                     | 0                     |
+| "application_abort_connect_context:application_set_last_error_ex ERRCONNECT_CONNECT_CANCELLED [0x0002000B]"                     | 0.41                   | 0.59                   | 1                     |
+| "publish_status: system/device/product_name/status/osd_device/connection/51/active"                                             | 0.95                   | 0.05                   | 0                     |
+| "mqtt: send_message: topic system/device/product_name/status/osd_device/connection/51/active"                                   | 0.96                   | 0.04                   | 0                     |
+| "publish_status: system/device/product_name/status/osd_device/connection/51/active"                                             | 0.95                   | 0.05                   | 0                     |
+| "mqtt: send_message: topic system/device/product_name/status/osd_device/connection/51/active"                                   | 0.96                   | 0.04                   | 0                     |
+| "mqtt: send_message: topic system/device/product_name/status/osd_device/connection/51/active this is not an error or a failure" | 0.87                   | 0.13                   | 0                     |
+| "application_check_fds() failed - 0"                                                                                            | 0.3                    | 0.7                    | 1                     |
+| " Something has failed"                                                                                                         | 0.54                   | 0.46                   | 0                     |
+| "This thing is an indication of failure"                                                                                        | 0.87                   | 0.13                   | 0                     |
 
 ### Checking for Over-fitting
 
@@ -686,7 +674,8 @@ Over-fitting occurs when your model learns too much from training data and isnâ€
 
 In machine learning, simplicity is the key. We want to generalize the information obtained from the training dataset, so we run the risk of Over-fitting if we use overly-complex models. A model that is overly-complex models will over-learn from training data and will think that the random error that follows the training data is actually worth learning from. That is the point at which the model stops generalizing and starts Over-fitting. Complexity is often measured with the number of parameters used by your model during itâ€™s learning procedure. For example, the number of parameters in linear regression, the number of neurons in a neural network, and so on. So, the lower the number of the parameters, the higher the simplicity and, reasonably, the lower the risk of Over-fitting.
 
-We can examine our model for over-fitting by plotting 
+We can examine our model for over-fitting by plotting
+
 ```python
 import numpy as np
 import matplotlib.pyplot as plt
@@ -698,8 +687,8 @@ from sklearn.model_selection import train_test_split
 
 # Load your data and preprocess it as you did before
 # ...
-filtered_syslog_file_path = './data/Syslog/syslog.cvs'
-model_filename = './data/Syslog/random_forest_model.joblib'
+filtered_syslog_file_path = './data/syslog.cvs'
+model_filename = './data/random_forest_model.joblib'
 vectorizer_filename = './data/vectorizer.joblib'  # Choose a filename
 
 
@@ -783,6 +772,7 @@ If I rewrite the line:
 ```txt
 "This thing is an indication of failure"
 ```
+
 to
 
 ```txt
@@ -797,21 +787,21 @@ Using 60,000 log entries to train the system I reran the classification on unsee
 
 This gave me the following score:
 
-| Log Entry | Probability of Class 0 | Probability of Class 1 | Actual Classification |
-| --------- | ---------------------- | ---------------------- | ---------------------- |
-|    "Internal build version date stamp (yyyy.mm.dd.vv) = 2023.06.21.01.device" |  1.  |  0.  | 0 |
-|    "application_abort_connect_context:application_set_last_error_ex ERRCONNECT_CONNECT_CANCELLED [0x0002000B]" |  0.04 | 0.96 | 1 |
-|    "publish_status: system/device/product_name/status/osd_device/connection/51/active" | 0.98 | 0.02 | 0 |
-|    "mqtt: send_message: topic system/device/product_name/status/osd_device/connection/51/active" |  1 | 0 |  0 |
-|    "publish_status: system/device/product_name/status/osd_device/connection/51/active" | 0.98 | 0.02 |  0 |
-|    "mqtt: send_message: topic system/device/product_name/status/osd_device/connection/51/active" | 1 | 0.0 |  0 |
-|    'mqtt: send_message: topic system/device/product_name/status/osd_device/connection/51/active this is not an "error" or a failure' |  1 | 0 |  0 |
-|    "application_check_fds() failed - 0" | 0 |  1 |  1 |
-|    "Something has failed" |  0.28 | 0.72 |  1 |
-|    "This thing is an indication of a failed system because of this error" | 0.29 | 0.71 |  1 |
-|    "This thing is an indication of failure" | 0.34 | 0.66 |  1 |
-|    "Setting glfw error callback" | 0 | 1 |  1 |
+| Log Entry                                                                                                                         | Probability of Class 0 | Probability of Class 1 | Actual Classification |
+| --------------------------------------------------------------------------------------------------------------------------------- | ---------------------- | ---------------------- | --------------------- |
+| "Internal build version date stamp (yyyy.mm.dd.vv) = 2023.06.21.01.device"                                                        | 1.                     | 0.                     | 0                     |
+| "application_abort_connect_context:application_set_last_error_ex ERRCONNECT_CONNECT_CANCELLED [0x0002000B]"                       | 0.04                   | 0.96                   | 1                     |
+| "publish_status: system/device/product_name/status/osd_device/connection/51/active"                                               | 0.98                   | 0.02                   | 0                     |
+| "mqtt: send_message: topic system/device/product_name/status/osd_device/connection/51/active"                                     | 1                      | 0                      | 0                     |
+| "publish_status: system/device/product_name/status/osd_device/connection/51/active"                                               | 0.98                   | 0.02                   | 0                     |
+| "mqtt: send_message: topic system/device/product_name/status/osd_device/connection/51/active"                                     | 1                      | 0.0                    | 0                     |
+| 'mqtt: send_message: topic system/device/product_name/status/osd_device/connection/51/active this is not an "error" or a failure' | 1                      | 0                      | 0                     |
+| "application_check_fds() failed - 0"                                                                                              | 0                      | 1                      | 1                     |
+| "Something has failed"                                                                                                            | 0.28                   | 0.72                   | 1                     |
+| "This thing is an indication of a failed system because of this error"                                                            | 0.29                   | 0.71                   | 1                     |
+| "This thing is an indication of failure"                                                                                          | 0.34                   | 0.66                   | 1                     |
+| "Setting glfw error callback"                                                                                                     | 0                      | 1                      | 1                     |
 
-__Note__: A classification of 1 indicates that the corresponding log entry contains error information of some form and 0 indicates that the log entry is normal and does not require further attention.
+**Note**: A classification of 1 indicates that the corresponding log entry contains error information of some form and 0 indicates that the log entry is normal and does not require further attention.
 
 As can be seen in the table, the model now accurately classifies the data. The unseen hand generated data is also correctly classified. One can also see that the models probability scores have shifted and it is now more confident in its classification even on ambiguous log entries.
