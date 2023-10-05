@@ -1,99 +1,77 @@
-
-import pandas as pd
 import torch
 import torch.nn as nn
 import torch.optim as optim
-from torch.utils.data import DataLoader, TensorDataset
-from sklearn.model_selection import train_test_split
-from sklearn.metrics import accuracy_score
+from torchtext.data import Field, TabularDataset, BucketIterator
+from torchtext.vocab import Vectors
+
+# Set random seed for reproducibility
+SEED = 1234
+torch.manual_seed(SEED)
+torch.backends.cudnn.deterministic = True
+
+# Define fields for text and labels
+TEXT = Field(tokenize='spacy', lower=True)
+LABEL = Field(sequential=False, dtype=torch.float)
+
+# Define fields mapping to your CSV columns (adjust these according to your dataset)
+fields = [("text", TEXT), ("label", LABEL)]
+
+# Load the IMDb dataset
+train_data, test_data = TabularDataset.splits(
+    path='./data/Syslog', train='train.csv', test='test.csv', format='csv', fields=fields)
+
+# Build the vocabulary based on the train dataset
+TEXT.build_vocab(train_data, max_size=25000, vectors="glove.6B.100d")
+LABEL.build_vocab(train_data)
+
+# Create iterators for the train, validation, and test datasets
+BATCH_SIZE = 64
+device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+
+train_iterator, test_iterator = BucketIterator.splits(
+    (train_data, test_data),
+    batch_size=BATCH_SIZE,
+    device=device,
+    sort=False)
+
+# Define a simple text classification model
 
 
-# Define a simple feedforward neural network model
-class SimpleClassifier(nn.Module):
-    def __init__(self, input_size, hidden_size, output_size):
-        super(SimpleClassifier, self).__init__()
-        self.fc1 = nn.Linear(input_size, hidden_size)
-        self.relu = nn.ReLU()
-        self.fc2 = nn.Linear(hidden_size, output_size)
-        self.softmax = nn.Softmax(dim=1)
+class SimpleTextClassifier(nn.Module):
+    def __init__(self, vocab_size, embedding_dim, hidden_dim, output_dim, dropout):
+        super(SimpleTextClassifier, self).__init__()
+        self.embedding = nn.Embedding(vocab_size, embedding_dim)
+        self.fc = nn.Linear(embedding_dim, hidden_dim)
+        self.dropout = nn.Dropout(dropout)
+        self.out = nn.Linear(hidden_dim, output_dim)
 
-    def forward(self, x):
-        x = self.fc1(x)
-        x = self.relu(x)
-        x = self.fc2(x)
-        x = self.softmax(x)
-        return x
-
-
-# Your file paths and preprocessing here...
-filtered_syslog_file_path = './data/syslog.cvs'
-model_filename = './data/pytorch_model.pth'
-vectorizer_filename = './data/vectorizer.joblib'
-
-# Preprocess log lines (remove timestamps and other noise)
-df = pd.read_csv(filtered_syslog_file_path)
-details = df["Detail"]
-labels = df["Label"]
-
-# Create a bag-of-words (BoW) vectorizer
-vectorizer = CountVectorizer()
-feature_vectors = vectorizer.fit_transform(details)
-
-# Convert data to PyTorch tensors
-X = torch.Tensor(feature_vectors.toarray())
-y = torch.Tensor(labels.values).unsqueeze(1)
-
-# Split data into training and testing sets
-X_train, X_test, y_train, y_test = train_test_split(
-    X, y, test_size=0.2, random_state=42)
+    def forward(self, text):
+        embedded = self.embedding(text)
+        pooled = torch.mean(embedded, dim=0)
+        hidden = self.fc(pooled)
+        hidden = self.dropout(hidden)
+        output = self.out(hidden)
+        return output
 
 
-# Convert data to PyTorch tensors
-X_train_tensor = torch.Tensor(X_train.toarray())
-y_train_tensor = torch.Tensor(y_train.values).unsqueeze(1)
-X_test_tensor = torch.Tensor(X_test.toarray())
-y_test_tensor = torch.Tensor(y_test.values).unsqueeze(1)
-
-# Create DataLoader for training and testing data
-train_dataset = TensorDataset(X_train_tensor, y_train_tensor)
-train_loader = DataLoader(train_dataset, batch_size=64, shuffle=True)
-test_dataset = TensorDataset(X_test_tensor, y_test_tensor)
-test_loader = DataLoader(test_dataset, batch_size=64)
-
-# Define hyperparameters
-input_size = X_train.shape[1]
-hidden_size = 128
-output_size = 1  # Binary classification
+# Hyperparameters
+INPUT_DIM = len(TEXT.vocab)
+EMBEDDING_DIM = 100
+HIDDEN_DIM = 256
+OUTPUT_DIM = 1
+DROPOUT = 0.5
 
 # Initialize the model and optimizer
-model = SimpleClassifier(input_size, hidden_size, output_size)
-criterion = nn.BCELoss()
-optimizer = optim.Adam(model.parameters(), lr=0.001)
+model = SimpleTextClassifier(
+    INPUT_DIM, EMBEDDING_DIM, HIDDEN_DIM, OUTPUT_DIM, DROPOUT)
+pretrained_embeddings = TEXT.vocab.vectors
+model.embedding.weight.data.copy_(pretrained_embeddings)
+optimizer = optim.Adam(model.parameters())
+criterion = nn.BCEWithLogitsLoss()
+
+# Move the model to the GPU if available
+model = model.to(device)
+criterion = criterion.to(device)
 
 # Training loop
-epochs = 10
-for epoch in range(epochs):
-    model.train()
-    for inputs, labels in train_loader:
-        optimizer.zero_grad()
-        outputs = model(inputs)
-        loss = criterion(outputs, labels)
-        loss.backward()
-        optimizer.step()
-
-# Evaluation
-model.eval()
-y_pred_prob = []
-with torch.no_grad():
-    for inputs, _ in test_loader:
-        outputs = model(inputs)
-        y_pred_prob.extend(outputs.numpy())
-
-y_pred = [1 if prob[0] >= 0.5 else 0 for prob in y_pred_prob]
-
-# Calculate accuracy
-accuracy = accuracy_score(y_test, y_pred)
-print(f"Accuracy: {accuracy:.2f}")
-
-# Save the PyTorch model
-torch.save(model.state_dict(), model_filename)
+# ... (rest of the training and evaluation code remains the same)

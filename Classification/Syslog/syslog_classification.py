@@ -26,7 +26,7 @@ new_data = [
     "mqtt: send_message: topic blackbox/sdkvm/deskvue/status/osd_sdkvm/connection/51/active",
     "publish_status: blackbox/sdkvm/deskvue/status/osd_sdkvm/connection/51/active",
     "mqtt: send_message: topic blackbox/sdkvm/deskvue/status/osd_sdkvm/connection/51/active",
-    "mqtt: send_message: topic blackbox/sdkvm/deskvue/status/osd_sdkvm/connection/51/active this is not an error or a failure",
+    'mqtt: send_message: topic blackbox/sdkvm/deskvue/status/osd_sdkvm/connection/51/active this is not a "error" or a failure',
     "freerdp_check_fds() failed - 0",
     "A thing has failed",
     "This thing is an indication of a failed system because of the error",

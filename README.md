@@ -40,6 +40,8 @@ Value is not singular, when it comes to value there is no universal truth. A lot
 
 ### Types of Machine Learning
 
+![Text Classification Process](./Resources/machine_learning.png)
+
 #### Supervised Learning
 
 Supervised and unsupervised learning are two main categories of machine learning. The main difference between the two is the presence or absence of labeled data during the training process.
