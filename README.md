@@ -75,7 +75,7 @@ Traditional machine learning algorithms such as decision trees, random forests, 
 
 
 - [Stable Diffusion](stablediffusion.md)
-- [DreamBooth](dreambooth.md) 0 |
+- [DreamBooth](dreambooth.md)
 - [Textural Inversion](https://huggingface.co/docs/diffusers/training/text_inversion)
 - [Image CReation with Bing](https://www.bing.com/create)
 
@@ -84,6 +84,7 @@ Traditional machine learning algorithms such as decision trees, random forests, 
 
 ### GPT-3 OpenAI
 
+- [Understanding Self Attention and GPT models](https://medium.com/@sntaus/understanding-self-attention-gpt-models-80ec894eebf0)
 - [OpenAI Home Page](https://openai.com/api/)
 - [GPT-3 Tutorial](https://www.youtube.com/watch?v=Zb5Nylziu6E)
 - [Open AI Python Library](https://github.com/openai/openai-python)
