@@ -77,6 +77,7 @@ Traditional machine learning algorithms such as decision trees, random forests, 
 - [Stable Diffusion](stablediffusion.md)
 - [DreamBooth](dreambooth.md) 0 |
 - [Textural Inversion](https://huggingface.co/docs/diffusers/training/text_inversion)
+- [Image CReation with Bing](https://www.bing.com/create)
 
 
 ## Text Generation
