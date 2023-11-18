@@ -133,8 +133,9 @@ for e in range(NUM_EPOCHS):
     train_losses.append(curr_loss)
     print(f"Epoch {e}, Loss: {curr_loss}")
 
-sns.lineplot(x=list(range(len(train_losses))), y= train_losses)
-plt.show()
+loss_plot =  sns.lineplot(x=list(range(len(train_losses))), y= train_losses)
+loss_plot.figure.savefig('loss_plot.svg')
+#plt.show()
 
 
 with torch.no_grad(): # This context manager is used to turn off gradient computation within its scope. It means any operations inside this block won't track gradients for subsequent backward passes.
@@ -150,7 +151,7 @@ f"The accuracy of the model is {np.round(acc, 3)*100}%."
 most_common_cnt = Counter(y_test).most_common()[0][1]
 print(f"Naive Classifier: {np.round(most_common_cnt / len(y_test) * 100, 1)} %")
 heatmap_plot = sns.heatmap(confusion_matrix(y_test_pred_np, y_test), annot=True, fmt=".0f")
-plt.show()
+#plt.show()
 heatmap_plot.figure.savefig('heatmap.svg')
 #sns.heatmap_plot.figure.savefig('heatmap.svg')
 # Save the trained model
