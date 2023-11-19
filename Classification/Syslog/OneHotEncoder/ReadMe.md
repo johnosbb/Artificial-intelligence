@@ -156,3 +156,36 @@ Naive Classifier - Accuracy: 97.3 %
 ![Confusion Matrix](./confusion_matrix.png)
 
 The above confusion matrix indicates 0 type 1 erros (False Positives) and 14 type 2 errors (False Negatives)
+
+## Receiver Operating Characteristic (ROC) curves
+
+The Receiver Operating Characteristic (ROC) curve is a graphical representation of the performance of a binary classification model at various classification thresholds. It is a widely used tool for evaluating the trade-off between the True Positive Rate (Sensitivity) and the False Positive Rate at different decision thresholds.
+
+True Positive Rate:
+
+```txt
+TPR = True Positives/ (False Negatives + True Positives)
+``` 
+
+The True Positive Rate measures the proportion of actual positive instances that are correctly predicted as positive. It is also known as Sensitivity or Recall.  A high TPR indicates that the model is effective at capturing positive instances.
+
+
+False Positive Rate: 
+
+```txt
+FPR = False Positives/ (False Positives + True Negatives)
+``` 
+
+The False Positive Rate measures the proportion of actual negative instances that are incorrectly predicted as positive. A low FPR indicates that the model is not producing many false positives.
+
+ROC curves are particularly useful for comparing and selecting models. A model with a curve that is closer to the upper-left corner (higher TPR and lower FPR) generally performs better.
+
+The ROC curve helps in selecting an appropriate classification threshold based on the specific requirements of the application. Depending on the use case, you may prioritize sensitivity (minimizing false negatives) or specificity (minimizing false positives).
+
+![ROC Plot](./roc_plot.svg)
+
+Area Under the Curve (AUC):
+
+The AUC-ROC metric quantifies the overall performance of the model. A higher AUC value (closer to 1) indicates better discrimination between positive and negative instances across various thresholds. However, area under the curve as a means of comparison should be evaluated with caution depending on the relative importance of a false positive versus a false negative.
+
+
