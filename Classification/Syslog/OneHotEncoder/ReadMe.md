@@ -11,6 +11,8 @@ Some machine learning algorithms can work directly with categorical data dependi
 One hot encoding is one method of converting data to prepare it for an algorithm and get a better prediction. With one-hot, we convert each categorical value into a new categorical column and assign a binary value of 1 or 0 to those columns. Each integer value is represented as a binary vector. All the values are zero, and the index is marked with a 1.
 
 
+![Flow Diagram](./one_hot_flow.svg)
+
 A line in the log indicating an error would be  labelled 1, while a normal entry would be 0.
 
 | Classification | Normal_Onehot | Error_Onehot |
@@ -140,7 +142,7 @@ Epoch 98, Loss: 0.005001553756301291
 Epoch 99, Loss: 0.004858361200604122
 ------------------------------------
 
-Naive Classifier: 97.3 %
+Naive Classifier - Accuracy: 97.3 %
 ```
 
 ## Loss Curve
@@ -152,3 +154,5 @@ Naive Classifier: 97.3 %
 ## Confusion Matrix
 
 ![Confusion Matrix](./confusion_matrix.png)
+
+The above confusion matrix indicates 0 type 1 erros (False Positives) and 14 type 2 errors (False Negatives)

@@ -3,7 +3,7 @@ import numpy as np
 from collections import Counter
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.model_selection import train_test_split
-from sklearn.metrics import accuracy_score, confusion_matrix
+from sklearn.metrics import accuracy_score, confusion_matrix, roc_curve,auc
 import joblib
 import torch
 import torch.nn as nn
@@ -96,6 +96,39 @@ class SyslogModel(nn.Module):
         else:
             raise ValueError("Optimizer not provided during initialization.")
 
+
+# Assuming y_true and y_score are your PyTorch tensors
+# y_true contains true labels (0 or 1)
+# y_score contains predicted scores or probabilities
+# True Positive Rate: TPR= True Positives/ (False Negatives + True Positives)
+# The True Positive Rate measures the proportion of actual positive instances that are correctly predicted as positive.
+# It is also known as Sensitivity or Recall.
+# False Positive Rate: # FPR = False Positives/ (False Positives + True Negatives)
+# The False Positive Rate measures the proportion of actual negative instances that are incorrectly predicted as positive.
+
+def plot_roc(y_true,y_score):
+    # Convert PyTorch tensors to NumPy arrays if required
+    # y_true_np = y_true.cpu().numpy()
+    # y_score_np = y_score.cpu().numpy()
+
+    # Compute ROC curve and ROC area for each class
+    fpr, tpr, _ = roc_curve(y_true, y_score)
+    roc_auc = auc(fpr, tpr)
+
+    # Plot the ROC curve
+    plt.figure()
+    plt.plot(fpr, tpr, color='darkorange', lw=2, label='ROC curve (area = {:.2f})'.format(roc_auc))
+    plt.plot([0, 1], [0, 1], color='navy', lw=2, linestyle='--')
+    plt.xlim([0.0, 1.0])
+    plt.ylim([0.0, 1.05])
+    plt.xlabel('False Positive Rate')
+    plt.ylabel('True Positive Rate')
+    plt.title('Receiver Operating Characteristic (ROC) Curve')
+    plt.legend(loc='lower right')
+    #plt.show()
+    plt.savefig('roc_plot.svg', format='svg')
+
+
 model = SyslogModel(NUM_FEATURES = number_of_features, NUM_CLASSES = 2,loss_function=nn.CrossEntropyLoss,optimizer=torch.optim.AdamW)
 model.initialize_optimizer()
 model.initialize_loss()
@@ -153,6 +186,8 @@ print(f"Naive Classifier: {np.round(most_common_cnt / len(y_test) * 100, 1)} %")
 heatmap_plot = sns.heatmap(confusion_matrix(y_test_pred_np, y_test), annot=True, fmt=".0f")
 #plt.show()
 heatmap_plot.figure.savefig('heatmap.svg')
+
+plot_roc(y_test_pred_np,y_test)
 #sns.heatmap_plot.figure.savefig('heatmap.svg')
 # Save the trained model
 torch.save(model.state_dict(), f"../models/syslog_model_{number_of_features}.pth") # if we save the complete model we are dependent on directory structures. We just save the state dictionary. This has learnable parameters and registered buffers 
