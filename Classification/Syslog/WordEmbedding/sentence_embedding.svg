@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg width="100%" height="100%" viewBox="0 0 2481 3508" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" xmlns:serif="http://www.serif.com/" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:1.5;">
+    <g id="Algorithm" transform="matrix(1,0,0,1,-3.09336,361.924)">
+        <g transform="matrix(1,0,0,1.07222,0,-200.622)">
+            <rect x="502.39" y="1107.42" width="1416.76" height="1670.42" style="fill:rgb(192,196,40);"/>
+        </g>
+        <g transform="matrix(1,0,0,0.789474,-21.2669,1470.49)">
+            <rect x="663.245" y="460.911" width="1110.52" height="235.096" style="fill:rgb(211,233,237);"/>
+        </g>
+        <g transform="matrix(1,0,0,1,130.501,1051.74)">
+            <g transform="matrix(50,0,0,50,1241.98,877.21)">
+            </g>
+            <text x="861.22px" y="877.21px" style="font-family:'ArialMT', 'Arial', sans-serif;font-size:50px;">Calculate Losses</text>
+        </g>
+        <g transform="matrix(1,0,0,0.789474,-21.2669,2126.28)">
+            <rect x="663.245" y="460.911" width="1110.52" height="235.096" style="fill:rgb(211,233,237);"/>
+        </g>
+        <g transform="matrix(1,0,0,1,130.501,1707.54)">
+            <g transform="matrix(50,0,0,50,1289.27,877.21)">
+            </g>
+            <text x="861.22px" y="877.21px" style="font-family:'ArialMT', 'Arial', sans-serif;font-size:50px;">Update the weights</text>
+        </g>
+        <g transform="matrix(1,0,0,0.789474,-21.2669,1782.92)">
+            <rect x="663.245" y="460.911" width="1110.52" height="235.096" style="fill:rgb(211,233,237);"/>
+        </g>
+        <g transform="matrix(1,0,0,1,-112.811,1330.15)">
+            <text x="941.75px" y="877.21px" style="font-family:'ArialMT', 'Arial', sans-serif;font-size:50px;">Propagate the gradient backward</text>
+            <text x="1089.08px" y="928.846px" style="font-family:'ArialMT', 'Arial', sans-serif;font-size:50px;">through the network</text>
+        </g>
+        <g transform="matrix(1,0,0,1,-9.08675,-600.112)">
+            <g transform="matrix(41.6667,0,0,41.6667,1587.31,2912.86)">
+            </g>
+            <text x="825.342px" y="2912.86px" style="font-family:'ArialMT', 'Arial', sans-serif;font-size:41.667px;">This automatically calculates the gradient</text>
+        </g>
+        <g transform="matrix(1,0,0,0.789474,-21.2669,1133.31)">
+            <rect x="663.245" y="460.911" width="1110.52" height="235.096" style="fill:rgb(211,233,237);"/>
+        </g>
+        <g transform="matrix(1,0,0,1,130.501,714.567)">
+            <g transform="matrix(50,0,0,50,1219.72,877.21)">
+            </g>
+            <text x="861.22px" y="877.21px" style="font-family:'ArialMT', 'Arial', sans-serif;font-size:50px;">Make Prediction</text>
+        </g>
+        <g transform="matrix(1,0,0,0.789474,0,780.667)">
+            <rect x="663.245" y="460.911" width="1110.52" height="235.096" style="fill:rgb(211,233,237);"/>
+        </g>
+        <g transform="matrix(1,0,0,1,167.815,361.924)">
+            <g transform="matrix(50,0,0,50,1158.61,877.21)">
+            </g>
+            <text x="861.22px" y="877.21px" style="font-family:'ArialMT', 'Arial', sans-serif;font-size:50px;">Zero gradient</text>
+        </g>
+        <g transform="matrix(1,0,0,1,-280.529,188.695)">
+            <g transform="matrix(50,0,0,50,1165.13,877.21)">
+            </g>
+            <text x="861.22px" y="877.21px" style="font-family:'ArialMT', 'Arial', sans-serif;font-size:50px;fill:white;">T<tspan x="889.907px 906.557px " y="877.21px 877.21px ">ra</tspan>ining Loop</text>
+        </g>
+        <g transform="matrix(1,0,0,1.6075,0,298.796)">
+            <g transform="matrix(1,-0,-0,0.622084,3.09336,-411.023)">
+                <path d="M1209.13,1829.14L1194.14,1859.11L1179.16,1829.14L1209.13,1829.14Z"/>
+                <path d="M1194.14,1699.99L1194.14,1835.13" style="fill:none;stroke:black;stroke-width:9.99px;"/>
+            </g>
+        </g>
+        <g transform="matrix(1,0,0,1.545,0,691.846)">
+            <g transform="matrix(1,-0,-0,0.647249,3.09336,-682.052)">
+                <path d="M1209.13,2175.6L1194.14,2205.57L1179.16,2175.6L1209.13,2175.6Z"/>
+                <path d="M1194.14,2052.63L1194.14,2181.59" style="fill:none;stroke:black;stroke-width:9.99px;"/>
+            </g>
+        </g>
+        <g transform="matrix(1,0,0,1.13875,0,1291.67)">
+            <g transform="matrix(1,-0,-0,0.878156,3.09336,-1452.11)">
+                <path d="M1209.13,2472.56L1194.14,2502.53L1179.16,2472.56L1209.13,2472.56Z"/>
+                <path d="M1194.14,2389.81L1194.14,2478.55" style="fill:none;stroke:black;stroke-width:9.99px;"/>
+            </g>
+        </g>
+        <g transform="matrix(1,0,0,1.51375,0,1361.66)">
+            <g transform="matrix(1,-0,-0,0.660611,3.09336,-1138.62)">
+                <path d="M1209.13,2822.11L1194.14,2852.08L1179.16,2822.11L1209.13,2822.11Z"/>
+                <path d="M1194.14,2702.24L1194.14,2828.11" style="fill:none;stroke:black;stroke-width:9.99px;"/>
+            </g>
+        </g>
+        <g transform="matrix(1,0,0,2.41219,0,1116.34)">
+            <g transform="matrix(1,-0,-0,0.414561,3.09336,-612.832)">
+                <path d="M630.182,1584.28L660.152,1599.27L630.182,1614.25L630.182,1584.28Z" style="fill:rgb(40,188,196);"/>
+                <path d="M1194.14,3037.78L1194.14,3245.27L425.83,3236.99L412.996,1599.27L636.176,1599.27" style="fill:none;stroke:rgb(40,188,196);stroke-width:9.99px;"/>
+            </g>
+        </g>
+    </g>
+    <g id="Model" transform="matrix(1,0,0,1.3523,0,-153.117)">
+        <g transform="matrix(1,0,0,0.466283,0,-184.691)">
+            <rect x="502.39" y="1107.42" width="1416.76" height="1670.42" style="fill:rgb(40,188,196);"/>
+        </g>
+        <g transform="matrix(1.00439,0,0,0.754949,8.83724,103.895)">
+            <rect x="493.11" y="603.206" width="1410.57" height="739.314" style="fill:rgb(116,98,75);"/>
+        </g>
+        <g transform="matrix(1,0,0,0.739479,6.18673,632.484)">
+            <g transform="matrix(1,-0,-0,1,-6.18673,-702.193)">
+                <path d="M1218.41,1417.72L1203.42,1447.69L1188.44,1417.72L1218.41,1417.72Z"/>
+                <path d="M1203.42,1348.71L1203.42,1423.72" style="fill:none;stroke:black;stroke-width:9.99px;"/>
+            </g>
+        </g>
+        <g transform="matrix(1,0,0,0.392848,-12.3735,282.429)">
+            <g transform="matrix(1,-0,-0,1.88235,12.3735,-430.705)">
+                <path d="M1199.85,594.89L1184.86,624.859L1169.88,594.89L1199.85,594.89Z"/>
+                <path d="M1184.86,572.272L1184.86,600.883" style="fill:none;stroke:black;stroke-width:9.99px;"/>
+            </g>
+        </g>
+        <g id="Context-Embeddings" serif:id="Context Embeddings" transform="matrix(1,0,0,1,-18.5602,139.536)">
+            <g transform="matrix(1,0,0,0.351624,-1.54668,599.445)">
+                <rect x="663.245" y="460.911" width="1110.52" height="235.096" style="fill:rgb(211,233,237);"/>
+            </g>
+            <g transform="matrix(1,0,0,0.739479,50.2672,157.848)">
+                <g transform="matrix(50,0,0,50,1483.83,877.21)">
+                </g>
+                <text x="861.22px" y="877.21px" style="font-family:'ArialMT', 'Arial', sans-serif;font-size:50px;">Contextualized Embeddings</text>
+            </g>
+        </g>
+        <g id="Pooling" transform="matrix(1,0,0,1,-15.4668,240.185)">
+            <g transform="matrix(1,0,0,0.351624,-1.54668,599.445)">
+                <rect x="663.245" y="460.911" width="1110.52" height="235.096" style="fill:rgb(211,233,237);"/>
+            </g>
+            <g transform="matrix(1,0,0,0.739479,50.2672,157.848)">
+                <g transform="matrix(50,0,0,50,1367.15,877.21)">
+                </g>
+                <text x="861.22px" y="877.21px" style="font-family:'ArialMT', 'Arial', sans-serif;font-size:50px;">Pooling or <tspan x="1097.5px 1130.85px " y="877.21px 877.21px ">Ag</tspan>gregation</text>
+            </g>
+        </g>
+        <g id="Transformer-Blocks" serif:id="Transformer Blocks" transform="matrix(1,0,0,1,-15.4668,32.0247)">
+            <g transform="matrix(1,0,0,0.351624,-1.54668,599.445)">
+                <rect x="663.245" y="460.911" width="1110.52" height="235.096" style="fill:rgb(211,233,237);"/>
+            </g>
+            <g transform="matrix(1,0,0,0.739479,127.601,162.423)">
+                <g transform="matrix(50,0,0,50,1292.79,877.21)">
+                </g>
+                <text x="861.22px" y="877.21px" style="font-family:'ArialMT', 'Arial', sans-serif;font-size:50px;">T<tspan x="889.907px 906.557px " y="877.21px 877.21px ">ra</tspan>nsformer Blocks</text>
+            </g>
+        </g>
+        <g id="Embedding-Layer" serif:id="Embedding Layer" transform="matrix(1,0,0,1,-12.3735,-70.9118)">
+            <g transform="matrix(1,0,0,0.351624,-1.54668,599.445)">
+                <rect x="663.245" y="460.911" width="1110.52" height="235.096" style="fill:rgb(211,233,237);"/>
+            </g>
+            <g transform="matrix(1,0,0,0.739479,127.601,162.423)">
+                <g transform="matrix(50,0,0,50,1253.14,877.21)">
+                </g>
+                <text x="861.22px" y="877.21px" style="font-family:'ArialMT', 'Arial', sans-serif;font-size:50px;">Embedding Layer</text>
+            </g>
+        </g>
+        <g id="Tokenization" transform="matrix(1,0,0,1,-12.3735,-141.824)">
+            <g transform="matrix(1,0,0,0.351624,-4.64004,569.708)">
+                <rect x="663.245" y="460.911" width="1110.52" height="235.096" style="fill:rgb(211,233,237);"/>
+            </g>
+            <g transform="matrix(1,0,0,0.739479,198.749,132.686)">
+                <g transform="matrix(50,0,0,50,1139.17,877.21)">
+                </g>
+                <text x="861.22px" y="877.21px" style="font-family:'ArialMT', 'Arial', sans-serif;font-size:50px;">T<tspan x="886.22px 914.028px " y="877.21px 877.21px ">ok</tspan>enization</text>
+            </g>
+        </g>
+        <g id="Initialise-Optimiser" serif:id="Initialise Optimiser" transform="matrix(1,0,0,0.695628,-3.09336,25.4088)">
+            <g transform="matrix(1,0,0,0.575414,-4.64004,329.312)">
+                <rect x="663.245" y="460.911" width="1110.52" height="235.096" style="fill:rgb(211,233,237);"/>
+            </g>
+            <g transform="matrix(1,0,0,1.06304,-76.9474,-261.721)">
+                <g transform="matrix(50,0,0,50,1689.39,877.21)">
+                </g>
+                <text x="861.22px" y="877.21px" style="font-family:'ArialMT', 'Arial', sans-serif;font-size:50px;">Initialse Optimiser and Loss functions</text>
+            </g>
+        </g>
+        <g id="Create-Model" serif:id="Create Model" transform="matrix(1,0,0,0.750861,-6.18673,5.03211)">
+            <g transform="matrix(1,0,0,0.390544,0,280.905)">
+                <rect x="663.245" y="460.911" width="1110.52" height="235.096" style="fill:rgb(211,233,237);"/>
+            </g>
+            <g transform="matrix(1,0,0,0.984842,167.815,-345.971)">
+                <g transform="matrix(50,0,0,50,1161.37,877.21)">
+                </g>
+                <text x="861.22px" y="877.21px" style="font-family:'ArialMT', 'Arial', sans-serif;font-size:50px;">Create Model</text>
+            </g>
+        </g>
+    </g>
+</svg>
