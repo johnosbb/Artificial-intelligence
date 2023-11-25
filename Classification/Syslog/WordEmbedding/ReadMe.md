@@ -185,7 +185,7 @@ Naive Classifier: 97.3 %
 
 ![Confusion Matrix](./confusion_matrix_embeddings.svg)
 
-The above confusion matrix indicates 0 type 1 errors (False Positives) and 14 type 2 errors (False Negatives)
+The above confusion matrix indicates 3 type 1 errors (False Positives) and 6 type 2 errors (False Negatives)
 
 ## Receiver Operating Characteristic (ROC) curves
 
@@ -197,7 +197,7 @@ True Positive Rate:
 TPR = True Positives/ (False Negatives + True Positives)
 ``` 
 
-The True Positive Rate measures the proportion of actual positive instances that are correctly predicted as positive. It is also known as Sensitivity or Recall.  A high TPR indicates that the model is effective at capturing positive instances.
+The True Positive Rate measures the proportion of actual positive instances that are correctly predicted as positive. It is also known as Sensitivity or Recall. A high TPR indicates that the model is effective at capturing positive instances.
 
 
 False Positive Rate: 
