@@ -12,13 +12,13 @@
 
 - The Neural Network is really just trying to predict the next word in a sequence.
 - To understand this take the input of the sentence "The cat sat on the ...". The NN would predict "mat" with a certain probability (97%).
-- 
+  
   ![Scaling](./Resources/ScalingLaws.png)
 
 - It can be shown mathematically that there is a very close correlation between compression and prediction. The more accurately we can predict the next word, the more efficiently we can compress the dataset.
-- 
+  
  ![How To Train ChatGPT](./Resources/HowToTrainChatGPT.png)
-- 
+  
 - When we are training the model, we are taking a lot of information and compressing it into the model weights (parameters).
 - When we infer with the model we take a word and then get the next word and continually feed these words back into the model.
   
@@ -60,12 +60,15 @@
 
  ![Comparisons](./Resources/Comparisons.png)
 
-- In the comparison stage we can use the assistant model from stage two to generate candidate answers and we then select the one that we feel is best. This is often easier than generating an answer. This is often called Reinforcement Learning fromHuman Feedback (RHF).
+- In the comparison stage we can use the assistant model from stage two to generate candidate answers and we then select the one that we feel is best. This is often easier than generating an answer. This is often called Reinforcement Learning from Human Feedback (RHF).
 
  ![Collaboration](./Resources/Collaboration.png)
 
 
 - Increasingly human machine collaboration is being used in labelling.
+
+![Collaboration](./Resources/Collaboration.png)
+
 - The current LLMs are rated in the Chatbot arenas.
 - Scaling Laws: With just two variables __N__ the number of parameters in the network and __D__ the amount of text we train on we can predict the predictive accuracy of the model. So to improve performance we can simply increase these variables with no fear of a plateau.
 - While we are not solely focused on word prediction accuracy we know there is a direct correlation between word prediction accuracy and a range of other bench mark tests.
@@ -84,9 +87,15 @@
 - There are a number of security challenges facing LLMs. We can Jailbreak the model by carefully selecting our prompts. There are a large selection of Jailbreaks available.
 - In this example with claude we simply use base64 encoded data of the same question. Claude has learned to refuse harmful queries in English.
 - In this example a single universal transferable suffix appended to any prompt can jailbreak the model.
+
+![Collaboration](./Resources/ImageNoisePattern.png)
+
 - In this example the Panda Model with carefully embedded noise pattern with structured data can break the model.
 - Prompt injections can be embedded in an image. It could be invisible to the human eye.
 - In this example one of the web pages that bing had referenced included a prompt injection attack. The text on this new page instructs the LLM to forget the previous prompt and replace it with the new nefarious one.
 - In this instance the google doc contains a prompt injection attack, bard is hijacked and encodes personal information into an image URL. If the attacker controls the server then they can retrieve the personal data.
+
+![Collaboration](./Resources/DataPoisoninghAttack.png)
+
 - In a data poising attack the attacker tries to hide a carefully crafted text with a custom trigger phrase. This text attempts to poison the model.
 
