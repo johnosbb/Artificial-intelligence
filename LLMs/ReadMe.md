@@ -80,10 +80,26 @@
 - We can also ask it to Generate an Image based on the previous context (Dali is used in this example).
 - In this instance ChatGPT can generate a html based website based on a sketch. This means we can, in the future, we can input both images and text in our interaction.
 - ChatGPT can also take audio as an input.
+
+![Collaboration](./Resources/LLMsOnlyHaveSystem1.png)
+
 - At the moment LLMs only have system 1 thinking. The challenge is to get LLMs to use system 2 thinking. We would like to be able to allow ChatGPT the time to prioritize accuracy over time. This would require the LLM to create a tree of thoughts and reflect, evaluate different options and reframe the solutions.
+
+![Collaboration](./Resources/SelfImprovement.png)
+
 - Ideally we would like the development of LLMs to emulate that of AlphaGo. AlphasGo first learned by imitating humans and then in the second stage it learned by self-improvement using a rewards system. What is the equivalent for LLMs of AlphaGo's stage 2.
-- How do we customise LLMs so that users can tailor them to specific domains.
+
+![Collaboration](./Resources/CustomeLLMs.png)
+
+- How do we customize LLMs so that users can tailor them to specific domains.
+
+![Collaboration](./Resources/LLMOs.png)
+
+
 - We should think of LLMs as a kernel or OS which uses existing tools and services.
+
+![Collaboration](./Resources/JailBreak.png)
+
 - There are a number of security challenges facing LLMs. We can Jailbreak the model by carefully selecting our prompts. There are a large selection of Jailbreaks available.
 - In this example with claude we simply use base64 encoded data of the same question. Claude has learned to refuse harmful queries in English.
 - In this example a single universal transferable suffix appended to any prompt can jailbreak the model.
