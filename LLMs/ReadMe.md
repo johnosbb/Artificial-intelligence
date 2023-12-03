@@ -163,4 +163,4 @@ In this instance the google doc contains a prompt injection attack, bard is hija
 
 In a data poising attack the attacker tries to hide a carefully crafted text with a custom trigger phrase. This text attempts to poison the model.
 
-J![Collaboration](./Resources/ailBreakAttacks.png)
+J![Collaboration](./Resources/JailBreakAttacks.png)
