@@ -61,6 +61,18 @@ Deep learning is a subset of machine learning that uses artificial neural networ
 
 Traditional machine learning algorithms such as decision trees, random forests, support vector machines, and k-nearest neighbors do not involve neural networks, but increasingly machine learning is beginning to use neual networks.
 
+## Large Language Models
+
+A large language model typically refers to a sophisticated and powerful natural language processing (NLP) model that has been trained on a vast amount of diverse textual data. These models are designed to understand and generate human-like text. The term "large" usually indicates that the model has a substantial number of parameters, enabling it to capture complex patterns and relationships in language.
+
+One of the notable examples of large language models is OpenAI's GPT (Generative Pre-trained Transformer) series, where "large" refers to the number of parameters in the model. For instance, GPT-3, the third iteration in the series, had 175 billion parameters.
+
+- [Introduction to Large Language Models - Andrej Karpathy](https://www.youtube.com/watch?v=zjkBMFhNj_g)
+
+
+
+
+
 ## Natural Language Processing
 
 - [Spacy](https://github.com/johnosbb/ProgrammingInPyQT/tree/main/Spacy)
