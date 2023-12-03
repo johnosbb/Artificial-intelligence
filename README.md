@@ -1,6 +1,13 @@
 # Artificial-intelligence
 All Things Artificial intelligence - John O'Sullivan
 
+
+## Great Resources for up to the Minute AI Reporting
+
+- [AI Snake Oil](https://www.aisnakeoil.com/)
+- [The Pragmatic Engineer]((https://blog.pragmaticengineer.com/)
+- [Import AI](https://jack-clark.net/)
+  
 ## Remaining AI challenges in 2023
 
 
