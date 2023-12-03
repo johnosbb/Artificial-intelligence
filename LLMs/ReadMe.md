@@ -109,11 +109,11 @@ At the moment LLMs only have [system 1 thinking](https://www.scientificamerican.
 
 ![Chess Example](./Resources/ChessExample.png)
 
-System 2 thinking is analogous to how we might consider a chess move when we had unlimited time.
+System 2 thinking is analogous to how we might consider a chess move when we have unlimited time to consider the move.
 
 ![Accuracy](./Resources/ConvertTimeIntoAccuracy.png)
 
-The challenge is to get LLMs to use system 2 thinking. We would like to be able to allow LLms the time to prioritize accuracy. This would require the LLM to create a tree of thoughts and reflect, evaluate different options and reframe the solutions.
+The challenge is to get LLMs to use system 2 thinking. We would like to be able to allow LLMs the time to prioritize accuracy. This would require the LLM to create a tree of thoughts and reflect, evaluate different options and reframe the solutions.
 
 ![Self Improvement](./Resources/SelfImprovement.png)
 
@@ -151,7 +151,7 @@ In this example the Panda Model with carefully embedded noise pattern with struc
 
 Prompt injections can be embedded in an image. It could be invisible to the human eye.
 
-![Collaboration](./Resources/romptInjection2.png)
+![Collaboration](./Resources/PromptInjection2.png)
 
 In this example one of the web pages that the bing search engine had referenced included a prompt injection attack. The text on this new page instructs the LLM to forget the previous prompt and replace it with the new nefarious one.
 
