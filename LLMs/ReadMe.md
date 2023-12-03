@@ -101,7 +101,7 @@ We can also ask it to Generate an Image based on the previous context (Dali is u
 
 ![Generation of HTML](./Resources/GeneratingWebsiteBasedOnSketch.png)
 
-In this instance ChatGPT can generate a html based website based on a sketch. This means we can, in the future, we can input both images and text in our interaction. ChatGPT can also take audio as an input so the medium of input continues to grow.
+In this [video](https://www.youtube.com/watch?v=outcGtbnMuQ&t=4243s) we can see ChatGPT generate a html based website based on a hand drawn sketch. This means we can, in the future, input both images and text in our interaction with models. ChatGPT can also take audio as an input so the medium of input continues to grow.
 
 ![System1 Thinking](./Resources/LLMsOnlyHaveSystem1.png)
 
