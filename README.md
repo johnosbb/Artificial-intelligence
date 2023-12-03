@@ -68,7 +68,7 @@ A large language model typically refers to a sophisticated and powerful natural 
 One of the notable examples of large language models is OpenAI's GPT (Generative Pre-trained Transformer) series, where "large" refers to the number of parameters in the model. For instance, GPT-3, the third iteration in the series, had 175 billion parameters.
 
 - [Introduction to Large Language Models - Andrej Karpathy](https://www.youtube.com/watch?v=zjkBMFhNj_g)
-- [My Notes on LLMs](./LLMs/ReadMe.md)
+- [Notes on LLMs](./LLMs/ReadMe.md)
 
 
 ## Natural Language Processing
