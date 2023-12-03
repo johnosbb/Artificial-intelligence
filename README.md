@@ -5,7 +5,7 @@ All Things Artificial intelligence - John O'Sullivan
 ## Great Resources for up to the Minute AI Reporting
 
 - [AI Snake Oil](https://www.aisnakeoil.com/)
-- [The Pragmatic Engineer]((https://blog.pragmaticengineer.com/)
+- [The Pragmatic Engineer](https://blog.pragmaticengineer.com/)
 - [Import AI](https://jack-clark.net/)
   
 ## Remaining AI challenges in 2023
@@ -89,12 +89,10 @@ One of the notable examples of large language models is OpenAI's GPT (Generative
 
 ## Image Generation
 
-
-
 - [Stable Diffusion](stablediffusion.md)
 - [DreamBooth](dreambooth.md)
 - [Textural Inversion](https://huggingface.co/docs/diffusers/training/text_inversion)
-- [Image CReation with Bing](https://www.bing.com/create)
+- [Image Creation with Bing](https://www.bing.com/create)
 
 
 ## Text Generation
@@ -107,6 +105,8 @@ Position encoding transforms these embeddings using mathematical functions/model
 For each position encoded vector for a word we create a query vector for that word in that position — this just means the input position encoded vector goes through a mathematical function (whose parameters are trained during training) to produce a new vector that is referred to as the query vector. We then use the vector to create a key vector for that word in that position —i.e. the input position encoded vector goes through another (different) mathematical function to produce another new vector that is referred to as the key vector. Then we create a value vector for that word in that position — i.e. the vector goes through yet another mathematical function to produce yet another new vector that is referred to as the value vector.
 
 The dot product of a query vector (of any word) and a key vector (of any word) is a single number that represents the “similarity” or attention the network needs to provide to one word in context of the other. So we end up with an attention score for each word of our input. The attention score denotes how important one word is in context of another. Each word can therefore have a varying number of attention scores. Once we have the attention vectors for each word, we will then apply the softmax function to each attention vector to ensure all of its attention scores (i.e. with respect to itself and its preceding words) add up to 1.0. Now that we have attention scores, we have to calculate the output of the self-attention layer. The final output of the self attention layer for a specific word is a weighted sum of value vectors of the word itself and all preceding words where the value vector of a word is weighed by its attention score with respect to the current word.
+
+[See also](./LLMs/ReadMe.md)
 
 - [Understanding Self Attention and GPT models](https://medium.com/@sntaus/understanding-self-attention-gpt-models-80ec894eebf0)
 - [OpenAI Home Page](https://openai.com/api/)
