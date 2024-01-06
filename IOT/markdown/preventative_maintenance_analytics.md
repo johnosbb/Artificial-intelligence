@@ -117,7 +117,7 @@ In this example we are adapting it to predict the need for preventative maintena
 #### Mean Percentage Error (MPE)
 
 ```math
-MPE = (1/n) Σ ( (y_true - y_pred) / y_true ) * 100
+ MPE = \frac{1}{n} \sum_{i=1}^{n} \left( \frac{y_{\text{true}, i} - y_{\text{pred}, i}}{y_{\text{true}, i}} \right) \times 100 
 ```
 
 In this formula:
