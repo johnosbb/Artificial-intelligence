@@ -8,20 +8,24 @@
 The variance is a squared measure of how much each individual process temperature value deviates from the mean.The larger the variance, the more spread out the data points are from the mean. The unit of variance is squared, so it doesn't have the same unit as the original data. If you want a measure in the same unit as your original data, you can take the square root of the variance to get the standard deviation.
 
 ```math
-\[ \text{variance} = \frac{\sum_{i=1}^{n} (x_i - \bar{x})^2}{n-1} \]
+\text{variance} = \frac{\sum_{i=1}^{n} (x_i - \bar{x})^2}{n-1}
 ```
 
 ### Standard Deviation
 
 The standard deviation is a statistical measure of the amount of variation or dispersion in a set of values. It quantifies how much individual data points differ from the mean (average) of the data set. A low standard deviation indicates that the data points tend to be close to the mean, while a high standard deviation indicates that the data points are spread out over a wider range.
 
-\[ \sigma = \sqrt{\frac{\sum_{i=1}^{n} (x_i - \bar{x})^2}{n-1}} \]
+```math
+\sigma = \sqrt{\frac{\sum_{i=1}^{n} (x_i - \bar{x})^2}{n-1}} 
+```
 
 ### Z-Score
 
 A Z-score is a statistical measure that describes a value's relationship to the mean of a group of values. It is measured in terms of standard deviations from the mean. A Z-score of 0 indicates that the data point's score is identical to the mean score, a Z-score of 1.0 indicates a value that is one standard deviation from the mean, and so on. The Z-Score can be useful in determining data spikes.
 
-\[ Z = \frac{(X - \mu)}{\sigma} \]
+```math
+Z = \frac{(X - \mu)}{\sigma} 
+```
 
 ### Min/Max
 
@@ -110,7 +114,9 @@ In this example we are adapting it to predict the need for preventative maintena
 
 #### Mean Percentage Error (MPE)
 
+```math
 MPE = (1/n) Σ ( (y_true - y_pred) / y_true ) * 100
+```
 
 In this formula:
 
