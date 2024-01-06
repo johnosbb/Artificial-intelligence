@@ -7,16 +7,15 @@
 
 The variance is a squared measure of how much each individual process temperature value deviates from the mean.The larger the variance, the more spread out the data points are from the mean. The unit of variance is squared, so it doesn't have the same unit as the original data. If you want a measure in the same unit as your original data, you can take the square root of the variance to get the standard deviation.
 
+```math
 \[ \text{variance} = \frac{\sum_{i=1}^{n} (x_i - \bar{x})^2}{n-1} \]
+```
 
 ### Standard Deviation
 
 The standard deviation is a statistical measure of the amount of variation or dispersion in a set of values. It quantifies how much individual data points differ from the mean (average) of the data set. A low standard deviation indicates that the data points tend to be close to the mean, while a high standard deviation indicates that the data points are spread out over a wider range.
 
-
 \[ \sigma = \sqrt{\frac{\sum_{i=1}^{n} (x_i - \bar{x})^2}{n-1}} \]
-
-
 
 ### Z-Score
 
