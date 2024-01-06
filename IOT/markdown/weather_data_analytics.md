@@ -97,3 +97,28 @@ K-means is a popular and widely used clustering algorithm in machine learning an
 ### Looking for Outliers in Data
 
 Identifying outliers in our data is very important as they represent bad sensor placement, or a number of other issues. We can view outliers by looking at values that fall more than three standard deviations from the mean of our data.
+
+
+
+## Strategies for Predictive Maintenance
+
+### Using XGBoost for Prediction
+
+
+XGBoost (eXtreme Gradient Boosting) is a powerful and popular machine learning algorithm that falls under the category of ensemble learning. It is particularly well-suited for regression and classification problems.
+
+In this example we are adpating it to predict the need for preventative maintenance.
+
+#### Mean Percentage Error (MPE)
+
+MPE = (1/n) Σ ( (y_true - y_pred) / y_true ) * 100
+
+In this formula:
+
+- n is the number of samples.
+- y_true s the true value.
+- y_pred   is the predicted value.
+
+#### Mean Squared Error (MSE)
+
+MSE = (1/n) Σ (y_true - y_pred)^2

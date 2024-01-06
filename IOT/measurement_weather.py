@@ -15,7 +15,7 @@ from sklearn.metrics import accuracy_score, confusion_matrix, classification_rep
 missing_values = ["", "NA", "N/A", "NaN"]
 
 
-file_path = 'dataset.csv'
+file_path = './data/weather_data.csv'
 
 # Read the CSV file into a Pandas DataFrame
 df = pd.read_csv(file_path, na_values=missing_values)
