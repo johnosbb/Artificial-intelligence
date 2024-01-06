@@ -65,7 +65,9 @@ Covariance measures how much two variables change together. If the covariance is
 
 Covariance is sensitive to the scale of the variables, and its interpretation can be challenging when dealing with variables on different scales. To overcome this, the correlation coefficient is often used, as it standardizes the measure to be between -1 and 1, providing a normalized measure of the strength and direction of the linear relationship between two variables. The correlation coefficient is calculated as the covariance divided by the product of the standard deviations of the variables.
 
-\[ \text{cov}(X, Y) = \frac{\sum_{i=1}^{n} (X_i - \bar{X})(Y_i - \bar{Y})}{n-1} \]
+```math
+\text{cov}(X, Y) = \frac{\sum_{i=1}^{n} (X_i - \bar{X})(Y_i - \bar{Y})}{n-1} 
+```
 
 A negative covariance indicates an inverse relationship: when one variable increases, the other tends to decrease, and vice versa. A negative covariance between temperature and rainfall suggests that, on average, when the air temperature is higher than its mean, there is a tendency for process temperature to be higher than its mean, and when the air temperature is lower than its mean, there is a tendency for process temperature  to be lower.
 
