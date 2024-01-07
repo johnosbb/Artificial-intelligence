@@ -55,6 +55,49 @@ Bar charts are commonly used in various circumstances to visually represent and 
 
 A scatter plot is a type of data visualization that displays individual data points on a two-dimensional graph. Each point on the plot represents the values of two variables, with one variable plotted on the x-axis and the other on the y-axis. Scatter plots are useful for visualizing the relationship between two continuous variables, identifying patterns, and detecting outliers.
 
+### Bubble chart
+
+
+The relationship between torque and speed in a system is often described by the power equation:
+
+```math
+P = \text{Torque} \times \text{Angular Speed}
+```
+
+- P is the power,
+- Torque is the applied force that can cause an object to rotate,
+- Angular Speed is the rate at which the object rotates.
+
+The relationship can be rearranged to show the inverse relationship between torque and speed for a constant power:
+
+```math
+\text{Torque} = \frac{P}{\text{Angular Speed}}
+```
+
+```math
+\text{Angular Speed} = \frac{P}{\text{Torque}}
+```
+
+This indicates that as torque increases, angular speed decreases, and vice versa, to maintain constant power. This relationship is commonly observed in rotational systems and machinery.
+
+
+### Q Plot
+
+A Q-Q (Quantile-Quantile) plot is a graphical tool used to assess whether a dataset follows a particular theoretical distribution. Checking for a normal distribution is a common case. In a Q-Q plot, the x-axis represents the theoretical quantiles from a specified distribution, and the y-axis represents the observed quantiles from the dataset.
+
+In this case, we observe an S-shaped curve at the start and finish of the Q-Q plot, it suggests that the tool wear data may deviate from a perfectly normal distribution at the tails. Specifically:
+
+__S-Curve at the Start__: If the left tail (start) of the curve deviates downward, it suggests that the tool wear values are lower than expected under a normal distribution.
+
+__S-Curve at the Finish__: If the right tail (finish) of the curve deviates upward, it suggests that the tool wear values are higher than expected under a normal distribution.
+
+Interactions between multiple variables in a mechanical process can contribute to complex data distributions. Some mechanical processes may have threshold effects or limits that can introduce non-normal behavior in the data.
+
+
+### Frequency Distribution with Normal Distribution Curve Superimposed
+
+
+
 ### Heatmap
 
 A heatmap is a graphical representation of data where values in a matrix are represented as colors. It's a way of visualizing complex data in a two-dimensional space, and it is particularly useful for revealing patterns and trends.
