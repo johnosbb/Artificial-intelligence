@@ -325,8 +325,6 @@ print("R-squared:", r2)
 # Clean the data, replace non mumber values with the mean
 df = df.fillna(df.mean())
 
-
-# Assuming 'df' is your DataFrame with weather data
 # Create a binary target variable 'rainy' based on a threshold for 'rain'
 df['rainy'] = (df['rain'] > 50).astype(int)
 
