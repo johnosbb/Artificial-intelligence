@@ -187,15 +187,56 @@ weighted avg       0.98      0.98      0.98      2000
 
 ##### Classification Report explained
 
-- Precision: Precision is the ratio of true positives to the sum of true positives and false positives. In our case, the precision for class 0 (non-failure) is 0.99, meaning that when the model predicts non-failure, it is correct about 99% of the time.
+__Precision__
+
+Precision is the ratio of true positives to the sum of true positives and false positives. In our case, the precision for class 0 (non-failure) is 0.99, meaning that when the model predicts non-failure, it is correct about 99% of the time.
+
+```math
+Precision =  \text{Precision} = \frac{TP}{TP + FP} 
+```
+
 The precision for class 1 (failure) is 0.64, meaning that when the model predicts failure, it is correct about 64% of the time.
-- Recall (Sensitivity): Recall is the ratio of true positives to the sum of true positives and false negatives.
+
+__Recall__
+
+Recall (Sensitivity): Recall is the ratio of true positives to the sum of true positives and false negatives.
+  
+```math
+Recall (Sensitivity or True Positive Rate) =  \text{Recall} = \frac{TP}{TP + FN} 
+```
+
 The recall for class 1 is 0.74, indicating that the model captures 74% of the actual failures.
-- F1-score: The F1-score is the harmonic mean (see below) of precision and recall.
-It provides a balance between precision and recall. The F1-score for class 1 is 0.69.
-- Support: The number of actual occurrences of the class in the specified dataset.
-- Macro Avg: The average of precision, recall, and F1-score for both classes, without considering class imbalance. In our case, the macro average F1-score is 0.84.
-- Weighted Avg: The average of precision, recall, and F1-score, weighted by the number of samples in each class. This is useful when there is an imbalance in the number of samples between classes. In your case, the weighted average F1-score is 0.98.
+
+__F1-score__
+
+The F1-score is the harmonic mean (see below) of precision and recall. It provides a balance between precision and recall.
+
+```math
+F1 Score =  \text{F1-score} = 2 \times \frac{\text{Precision} \times \text{Recall}}{\text{Precision} + \text{Recall}} 
+```
+
+The F1-score for class 1 is 0.69.
+
+__Support__
+
+The number of actual occurrences of the class in the specified dataset.
+
+__Macro Avg__
+
+The average of precision, recall, and F1-score for both classes, without considering class imbalance. In our case, the macro average F1-score is 0.84.
+
+__Accuracy__
+
+This is a performance metric that measures the overall correctness of predictions made by a classification model. It is calculated as the ratio of the number of correct predictions (both true positives and true negatives) to the total number of predictions. The accuracy is often expressed as a percentage.
+
+
+```math
+Accuracy =  \text{Accuracy} = \frac{TP + TN}{TP + FP + FN + TN} 
+```
+
+__Weighted Avg__
+
+The average of precision, recall, and F1-score, weighted by the number of samples in each class. This is useful when there is an imbalance in the number of samples between classes. In your case, the weighted average F1-score is 0.98.
 
 In summary, this model has a high overall accuracy, but it's essential to consider precision, recall, and F1-score, especially for the class representing failure, to understand the performance of the model in predicting failures accurately and avoiding false positives/negatives.
 
@@ -214,33 +255,25 @@ False Positives (FP): Also known as Type I error, this is the number of instance
 False Negatives (FN): Also known as Type II error, this is the number of instances where the model incorrectly predicts the negative class (e.g., the model predicts a patient with the disease as healthy).
 
 ```math
-\[
+
 \begin{array}{cc}
 & \text{Actual Positive} & \text{Actual Negative} \\
 \text{Predicted Positive} & \text{True Positives (TP)} & \text{False Positives (FP)} \\
 \text{Predicted Negative} & \text{False Negatives (FN)} & \text{True Negatives (TN)} \\
 \end{array}
-\]
+
 ```
 
-```math
-Accuracy = \[ \text{Accuracy} = \frac{TP + TN}{TP + FP + FN + TN} \]
-```
+__True Negative Rate__
 
 ```math
-Precision = \[ \text{Precision} = \frac{TP}{TP + FP} \]
+Specificity (True Negative Rate) =  \text{Specificity} = \frac{TN}{TN + FP} 
 ```
 
-```math
-Recall (Sensitivity or True Positive Rate) = \[ \text{Recall} = \frac{TP}{TP + FN} \]
-```
+__True Positive  Rate__
 
 ```math
-Specificity (True Negative Rate) = \[ \text{Specificity} = \frac{TN}{TN + FP} \]
-```
-
-```math
-F1 Score = \[ \text{F1-score} = 2 \times \frac{\text{Precision} \times \text{Recall}}{\text{Precision} + \text{Recall}} \]
+ TPR = \frac{TP}{TP + FN} 
 ```
 
 #### Note on the Harmonic Mean
@@ -250,7 +283,7 @@ The harmonic mean is calculated by dividing the number of observations by the su
 The harmonic mean is particularly useful in situations where rates are involved, such as speed, because it provides a way to average rates of movement or rates of occurrence. It tends to be less influenced by extremely large values compared to the arithmetic mean.
 
 ```math
-\[ H = \frac{n}{\frac{1}{x_1} + \frac{1}{x_2} + \ldots + \frac{1}{x_n}} \]
+ H = \frac{n}{\frac{1}{x_1} + \frac{1}{x_2} + \ldots + \frac{1}{x_n}} 
 ```
 
 ### Using XGBoost for Prediction

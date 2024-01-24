@@ -8,6 +8,7 @@ from sklearn.cluster import KMeans
 from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LinearRegression
 from sklearn.tree import DecisionTreeClassifier
+from xgboost import XGBClassifier
 from sklearn.metrics import accuracy_score, confusion_matrix, classification_report,mean_squared_error, r2_score
 
 SHOW_ROLLING_MEAN=False
@@ -20,7 +21,10 @@ SHOW_HEATMAP=False
 SHOW_COVARIANCE=False
 SHOW_CLUSTER=False
 SHOW_CORRELATION_WITH_LINEAR_REGRESSION=False
-SHOW_PREDICTION_ACCURACY=True
+SHOW_PREDICTION_ACCURACY=False
+SHOW_XGBOOST_CLASSIFICATION_ACCURACY=True
+
+
 # Specify the values to be treated as missing
 missing_values = ["", "NA", "N/A", "NaN"]
 
@@ -411,4 +415,42 @@ if SHOW_PREDICTION_ACCURACY:
 #   Weighted Avg: The average of precision, recall, and F1-score, weighted by the number of samples in each class.
 #   This is useful when there is an imbalance in the number of samples between classes. In your case, the weighted average F1-score is 0.98.
 
-# In summary, your model has a high overall accuracy, but it's essential to consider precision, recall, and F1-score, especially for the class representing failure, to understand the performance of the model in predicting failures accurately and avoiding false positives/negatives.
+# In summary, our model has a high overall accuracy, but it's essential to consider precision, recall, and F1-score, especially for the class representing failure, to understand the performance of the model in predicting failures accurately and avoiding false positives/negatives.
+
+if SHOW_XGBOOST_CLASSIFICATION_ACCURACY:    
+    # Specify the values to be treated as missing
+    missing_values = ["", "NA", "N/A", "NaN"]
+
+
+    file_path = './data/predictive_maintenance.csv'
+
+    # Read the CSV file into a Pandas DataFrame
+    df = pd.read_csv(file_path, na_values=missing_values)
+
+
+    features = ['air_temperature_k', 'process_temperature_k', 'rotational_speed_rpm', 'torque_Nm','tool_wear_min']
+    X = df[features]
+    y = df['target']
+        
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+        
+    # Create an XGBoost model
+    model = XGBClassifier()
+
+    # Fit the model to the training data
+    model.fit(X_train, y_train)
+
+    # Make predictions on the test set
+    y_pred = model.predict(X_test)
+
+    # Evaluate the classifier
+    accuracy = accuracy_score(y_test, y_pred)
+    conf_matrix = confusion_matrix(y_test, y_pred)
+    classification_report_str = classification_report(y_test, y_pred)
+
+    print(f'Accuracy: {accuracy:.4f}')
+    print('Confusion Matrix:')
+    print(conf_matrix)
+    print('Classification Report:')
+    print(classification_report_str)
