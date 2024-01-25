@@ -106,6 +106,31 @@ A heatmap is a graphical representation of data where values in a matrix are rep
 
 Covariance measures how much two variables change together. If the covariance is positive, it indicates that when one variable is above its mean, the other variable tends to be above its mean as well. If the covariance is negative, it indicates an inverse relationship, meaning that when one variable is above its mean, the other tends to be below its mean.
 
+Consider the example:
+
+
+| A   | B  |  C |
+| ---- | ----- | ----|
+| 1.0  | 4.0 | 0.5 |
+| 2.0  | 5.0 | 0.8 |
+| 3.0  | 6.0 | 1.0 |
+
+```math
+\text{cov}(A, B) = \frac{\sum_{i=1}^{3} (A_i - \bar{A})(B_i - \bar{B})}{3-1}
+```
+
+```math
+= \frac{(1-2) \cdot (4-5) + (2-2) \cdot (5-5) + (3-2) \cdot (6-5)}{2}
+```
+
+```math
+= \frac{(-1) \cdot (-1) + (0) \cdot (0) + (1) \cdot (1)}{2}
+```
+
+```math
+= \frac{1 + 0 + 1}{2} = 1
+```
+
 Covariance is sensitive to the scale of the variables, and its interpretation can be challenging when dealing with variables on different scales. To overcome this, the correlation coefficient is often used, as it standardizes the measure to be between -1 and 1, providing a normalized measure of the strength and direction of the linear relationship between two variables. The correlation coefficient is calculated as the covariance divided by the product of the standard deviations of the variables.
 
 ```math

@@ -22,7 +22,7 @@ SHOW_COVARIANCE=False
 SHOW_CLUSTER=False
 SHOW_CORRELATION_WITH_LINEAR_REGRESSION=False
 SHOW_PREDICTION_ACCURACY=False
-SHOW_XGBOOST_CLASSIFICATION_ACCURACY=True
+SHOW_XGBOOST_CLASSIFICATION_ACCURACY=False
 
 
 # Specify the values to be treated as missing
@@ -347,7 +347,7 @@ if SHOW_CORRELATION_WITH_LINEAR_REGRESSION:
 
 
 
-if SHOW_PREDICTION_ACCURACY:
+if SHOW_PREDICTION_ACCURACY: # uses a DecisionTreeClassifier
 
     # Select features and target variable
     # udi,product_id,product_type,air_temperature_k,process_temperature_k,rotational_speed_rpm,torque_Nm,tool_wear_min,target,failure_product_type
@@ -417,7 +417,7 @@ if SHOW_PREDICTION_ACCURACY:
 
 # In summary, our model has a high overall accuracy, but it's essential to consider precision, recall, and F1-score, especially for the class representing failure, to understand the performance of the model in predicting failures accurately and avoiding false positives/negatives.
 
-if SHOW_XGBOOST_CLASSIFICATION_ACCURACY:    
+if SHOW_XGBOOST_CLASSIFICATION_ACCURACY:    # uses an XBGClassifier
     # Specify the values to be treated as missing
     missing_values = ["", "NA", "N/A", "NaN"]
 
@@ -454,3 +454,24 @@ if SHOW_XGBOOST_CLASSIFICATION_ACCURACY:
     print(conf_matrix)
     print('Classification Report:')
     print(classification_report_str)
+    
+    
+print(df.describe().transpose())
+columns_to_drop = ['product_id', 'udi', 'product_type', 'failure_product_type']
+df = df.drop(columns = columns_to_drop)
+print(df)
+corr = df.corr().round(1) # corr() is a Pandas DataFrame method used to compute the pairwise correlation of columns, excluding NA/null values. The .round(1) method is then used to round the correlation values to one decimal place.
+print(f"corr: {corr}")
+mask = np.zeros_like(corr, dtype=np.bool_)
+mask[np.triu_indices_from(mask)] = True # The term "triu" stands for "upper triangle," 
+# In the heatmap, only the lower triangle (excluding the main diagonal) is usually shown, as the upper triangle is symmetrically the same.
+f, ax = plt.subplots(figsize=(20, 20))
+cmap = sns.diverging_palette(220, 10, as_cmap=True)
+correlation_heatmap = sns.heatmap(corr, mask=mask, cmap=cmap, vmin=-1, vmax=1, center=0,square=True, linewidths=.5, cbar_kws={"shrink": .5},
+ annot=True)
+plt.title('Correlation Matrix Heatmap')
+# Rotate x-axis labels
+correlation_heatmap.set_xticklabels(correlation_heatmap.get_xticklabels(), rotation=45, horizontalalignment='right')
+# Adjust layout to prevent label cropping
+plt.tight_layout()
+plt.show()
