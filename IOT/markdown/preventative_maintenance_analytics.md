@@ -106,6 +106,12 @@ A heatmap is a graphical representation of data where values in a matrix are rep
 
 Covariance measures how much two variables change together. If the covariance is positive, it indicates that when one variable is above its mean, the other variable tends to be above its mean as well. If the covariance is negative, it indicates an inverse relationship, meaning that when one variable is above its mean, the other tends to be below its mean.
 
+```math
+\text{cov}(X, Y) = \frac{\sum_{i=1}^{n} (X_i - \bar{X})(Y_i - \bar{Y})}{n-1} 
+```
+
+
+
 Consider the example:
 
 
@@ -115,27 +121,79 @@ Consider the example:
 | 2.0  | 5.0 | 0.8 |
 | 3.0  | 6.0 | 1.0 |
 
+So, n = 3 because we have tree rows of data. We calculate the means of the columns A,B and C as 2,5 and 0.77. We can know calculate the co-variance for each row.
+
+We first calculate the co-variance between A and B:
+
+
 ```math
 \text{cov}(A, B) = \frac{\sum_{i=1}^{3} (A_i - \bar{A})(B_i - \bar{B})}{3-1}
 ```
+
+This becomes:
 
 ```math
 = \frac{(1-2) \cdot (4-5) + (2-2) \cdot (5-5) + (3-2) \cdot (6-5)}{2}
 ```
 
+And simplifies to this:
+
 ```math
 = \frac{(-1) \cdot (-1) + (0) \cdot (0) + (1) \cdot (1)}{2}
 ```
+
+Giving us a value for the co-variance between A and B.
 
 ```math
 = \frac{1 + 0 + 1}{2} = 1
 ```
 
+
+Similarly, for A to C
+
+```math
+\text{cov}(A, C) = \frac{\sum_{i=1}^{3} (A_i - \bar{A})(C_i - \bar{C})}{3-1}
+```
+
+```math
+= \frac{(1-2) \cdot (0.5-0.77) + (2-2) \cdot (0.8-0.77) + (3-2) \cdot (1.0-0.77)}{2}
+```
+
+```math
+= \frac{(-1) \cdot (-0.27) + (0) \cdot (0.03) + (1) \cdot (0.23)}{2}
+```
+
+```math
+= \frac{0.27 + 0.23}{2} = 0.25
+```
+
+And finally, B to C
+
+```math
+\text{cov}(B, C) = \frac{\sum_{i=1}^{3} (B_i - \bar{B})(C_i - \bar{C})}{3-1}
+```
+
+```math
+= \frac{(4-5) \cdot (0.5-0.77) + (5-5) \cdot (0.8-0.77) + (6-5) \cdot (1.0-0.77)}{2}
+```
+
+```math
+= \frac{(-1) \cdot (-0.27) + (0) \cdot (0.03) + (1) \cdot (0.23)}{2}
+```
+
+```math
+= \frac{0.27 + 0.23}{2} = 0.25
+```
+
+
 Covariance is sensitive to the scale of the variables, and its interpretation can be challenging when dealing with variables on different scales. To overcome this, the correlation coefficient is often used, as it standardizes the measure to be between -1 and 1, providing a normalized measure of the strength and direction of the linear relationship between two variables. The correlation coefficient is calculated as the covariance divided by the product of the standard deviations of the variables.
 
 ```math
-\text{cov}(X, Y) = \frac{\sum_{i=1}^{n} (X_i - \bar{X})(Y_i - \bar{Y})}{n-1} 
+r = \frac{\text{cov}(X, Y)}{s_X \cdot s_Y}
 ```
+
+- where cov(X,Y) is the covariance between variables X and Y.
+- where sx and sy are standard deviations of X and Y respectively.
 
 A negative covariance indicates an inverse relationship: when one variable increases, the other tends to decrease, and vice versa. A negative covariance between rotational speed and tool wear suggests that, on average, when the rotational speed is higher than its mean, there is a tendency for process rotational speed to be higher than its mean, and when the rotational speed is lower than its mean, there is a tendency for process rotational speed  to be lower.
 
