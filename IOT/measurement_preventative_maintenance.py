@@ -472,6 +472,7 @@ correlation_heatmap = sns.heatmap(corr, mask=mask, cmap=cmap, vmin=-1, vmax=1, c
 plt.title('Correlation Matrix Heatmap')
 # Rotate x-axis labels
 correlation_heatmap.set_xticklabels(correlation_heatmap.get_xticklabels(), rotation=45, horizontalalignment='right')
+correlation_heatmap.set_yticklabels(correlation_heatmap.get_yticklabels(), rotation=45, horizontalalignment='right')
 # Adjust layout to prevent label cropping
-plt.tight_layout()
+plt.tight_layout(rect=(0, 0, 1, 1))
 plt.show()

@@ -155,13 +155,19 @@ Similarly, for A to C
 \text{cov}(A, C) = \frac{\sum_{i=1}^{3} (A_i - \bar{A})(C_i - \bar{C})}{3-1}
 ```
 
+This becomes:
+
 ```math
 = \frac{(1-2) \cdot (0.5-0.77) + (2-2) \cdot (0.8-0.77) + (3-2) \cdot (1.0-0.77)}{2}
 ```
 
+And simplifies to this:
+
 ```math
 = \frac{(-1) \cdot (-0.27) + (0) \cdot (0.03) + (1) \cdot (0.23)}{2}
 ```
+
+Giving us a value for the co-variance between A and C.
 
 ```math
 = \frac{0.27 + 0.23}{2} = 0.25
@@ -173,18 +179,23 @@ And finally, B to C
 \text{cov}(B, C) = \frac{\sum_{i=1}^{3} (B_i - \bar{B})(C_i - \bar{C})}{3-1}
 ```
 
+This becomes:
+
 ```math
 = \frac{(4-5) \cdot (0.5-0.77) + (5-5) \cdot (0.8-0.77) + (6-5) \cdot (1.0-0.77)}{2}
 ```
+
+And simplifies to this:
 
 ```math
 = \frac{(-1) \cdot (-0.27) + (0) \cdot (0.03) + (1) \cdot (0.23)}{2}
 ```
 
+Giving us a value for the co-variance between B and C.
+
 ```math
 = \frac{0.27 + 0.23}{2} = 0.25
 ```
-
 
 Covariance is sensitive to the scale of the variables, and its interpretation can be challenging when dealing with variables on different scales. To overcome this, the correlation coefficient is often used, as it standardizes the measure to be between -1 and 1, providing a normalized measure of the strength and direction of the linear relationship between two variables. The correlation coefficient is calculated as the covariance divided by the product of the standard deviations of the variables.
 
@@ -204,7 +215,6 @@ Anomaly detection is a technique used in data analysis and machine learning to i
 Anomaly detection in machine learning can be unsupervised, supervised, or semi-supervised. We can start by using an unsupervised machine learning algorithm (like K-means) to identify data clusters or patterns.
 
 The data may represent various states of the system under examination. These states may be resting states, in-use states, cold states, or one of a number of failed states.
-
 
 ### Looking for evidence of clustering in the data
 
