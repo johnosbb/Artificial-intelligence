@@ -102,6 +102,10 @@ Interactions between multiple variables in a mechanical process can contribute t
 
 A heatmap is a graphical representation of data where values in a matrix are represented as colors. It's a way of visualizing complex data in a two-dimensional space, and it is particularly useful for revealing patterns and trends.
 
+
+![image](./images/heatmap_preventative_maintenence.png)
+
+
 ### Co-variance
 
 Covariance measures how much two variables change together. If the covariance is positive, it indicates that when one variable is above its mean, the other variable tends to be above its mean as well. If the covariance is negative, it indicates an inverse relationship, meaning that when one variable is above its mean, the other tends to be below its mean.
