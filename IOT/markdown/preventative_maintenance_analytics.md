@@ -208,6 +208,12 @@ r = \frac{\text{cov}(X, Y)}{s_X \cdot s_Y}
 
 A negative covariance indicates an inverse relationship: when one variable increases, the other tends to decrease, and vice versa. A negative covariance between rotational speed and tool wear suggests that, on average, when the rotational speed is higher than its mean, there is a tendency for process rotational speed to be higher than its mean, and when the rotational speed is lower than its mean, there is a tendency for process rotational speed  to be lower.
 
+
+We can use a heatmap to plot the correlation co-efficient for the principle features of our data. 
+
+
+
+
 ### Anomaly detection
 
 Anomaly detection is a technique used in data analysis and machine learning to identify patterns, events, or observations that deviate significantly from the expected behavior in a dataset. These deviations are often referred to as "anomalies" or "outliers." Anomalies can represent unusual or suspicious activities, errors, or events that are different from the norm.
