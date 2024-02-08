@@ -23,7 +23,10 @@ SHOW_CLUSTER=False
 SHOW_CORRELATION_WITH_LINEAR_REGRESSION=False
 SHOW_PREDICTION_ACCURACY=False
 SHOW_XGBOOST_CLASSIFICATION_ACCURACY=False
-
+SHOW_MAIN_STATISTICS_FOR_DATASET=False       
+SHOW_CORRELATION_HEATMAP=False
+SHOW_FEATURE_HISTOGRAMS=False
+SHOW_NOISE_ANALYSIS = True
 
 # Specify the values to be treated as missing
 missing_values = ["", "NA", "N/A", "NaN"]
@@ -455,24 +458,56 @@ if SHOW_XGBOOST_CLASSIFICATION_ACCURACY:    # uses an XBGClassifier
     print('Classification Report:')
     print(classification_report_str)
     
-    
-print(df.describe().transpose())
-columns_to_drop = ['product_id', 'udi', 'product_type', 'failure_product_type']
-df = df.drop(columns = columns_to_drop)
+if SHOW_MAIN_STATISTICS_FOR_DATASET:       
+    print(df.describe().transpose())
+
+
+if SHOW_CORRELATION_HEATMAP: 
+    columns_to_drop = ['product_id', 'udi', 'product_type', 'failure_product_type']
+    df = df.drop(columns = columns_to_drop)
+    print(df)
+    corr = df.corr().round(1) # corr() is a Pandas DataFrame method used to compute the pairwise correlation of columns, excluding NA/null values. The .round(1) method is then used to round the correlation values to one decimal place.
+    print(f"corr: {corr}")
+    mask = np.zeros_like(corr, dtype=np.bool_)
+    mask[np.triu_indices_from(mask)] = True # The term "triu" stands for "upper triangle," 
+    # In the heatmap, only the lower triangle (excluding the main diagonal) is usually shown, as the upper triangle is symmetrically the same.
+    f, ax = plt.subplots(figsize=(20, 20))
+    cmap = sns.diverging_palette(220, 10, as_cmap=True)
+    correlation_heatmap = sns.heatmap(corr, mask=mask, cmap=cmap, vmin=-1, vmax=1, center=0,square=True, linewidths=.5, cbar_kws={"shrink": .5},
+    annot=True)
+    plt.title('Correlation Matrix Heatmap')
+    # Rotate x-axis labels
+    correlation_heatmap.set_xticklabels(correlation_heatmap.get_xticklabels(), rotation=45, horizontalalignment='right')
+    correlation_heatmap.set_yticklabels(correlation_heatmap.get_yticklabels(), rotation=45, horizontalalignment='right')
+    # Adjust layout to prevent label cropping
+    plt.tight_layout(rect=(0, 0, 1, 1))
+    plt.show()
+
+if SHOW_FEATURE_HISTOGRAMS:
+    # Plot a histogram for each feature in the dataset
+    #plt.figure(figsize=(16, 8))
+    columns_to_drop = ['product_id', 'udi', 'product_type', 'failure_product_type', "target"]
+    df = df.drop(columns = columns_to_drop)
+    df.hist(bins=50, figsize=(18,16))
+    plt.show()
+
+
+if SHOW_NOISE_ANALYSIS:
+    values = df[df.tool_wear_min>10].values # This filters the DataFrame  to include only the rows where the 'engine_id' column is equal to 1.
+    groups = [3,4,5,6]
+    i = 1
+    plt.figure(figsize=(10,20))
+    for group in groups:
+        plt.subplot(len(groups), 1, i)
+        plt.plot(values[:, group]) #  values[:, group] is selecting all rows (:) from the NumPy array values but only the column(s) specified by the group variable.
+        plt.title(df.columns[group], y=0.5, loc='right')
+        i += 1
+    plt.show()
+# udi,product_id,product_type,air_temperature_k,process_temperature_k,rotational_speed_rpm,torque_Nm,tool_wear_min,target,failure_product_type
+df['rolling_mean'] = df.groupby('product_type')['product_id'].rolling(window=8, min_periods=1).mean().reset_index(level=0, drop=True)
+df['rolling_average_air_temperature_k'] = df.groupby('product_type')['air_temperature_k'].rolling(window=8, min_periods=1).mean().reset_index(level=0, drop=True)
+df['rolling_average_process_temperature_k'] = df.groupby('product_type')['process_temperature_k'].rolling(window=8, min_periods=1).mean().reset_index(level=0, drop=True)
+df['rolling_average_rotational_speed_rpm'] = df.groupby('product_type')['rotational_speed_rpm'].rolling(window=8, min_periods=1).mean().reset_index(level=0, drop=True)
+df['rolling_average_torque_Nm'] = df.groupby('product_type')['torque_Nm'].rolling(window=8, min_periods=1).mean().reset_index(level=0, drop=True)
+df['rolling_average_tool_wear_min'] = df.groupby('product_type')['tool_wear_min'].rolling(window=8, min_periods=1).mean().reset_index(level=0, drop=True)
 print(df)
-corr = df.corr().round(1) # corr() is a Pandas DataFrame method used to compute the pairwise correlation of columns, excluding NA/null values. The .round(1) method is then used to round the correlation values to one decimal place.
-print(f"corr: {corr}")
-mask = np.zeros_like(corr, dtype=np.bool_)
-mask[np.triu_indices_from(mask)] = True # The term "triu" stands for "upper triangle," 
-# In the heatmap, only the lower triangle (excluding the main diagonal) is usually shown, as the upper triangle is symmetrically the same.
-f, ax = plt.subplots(figsize=(20, 20))
-cmap = sns.diverging_palette(220, 10, as_cmap=True)
-correlation_heatmap = sns.heatmap(corr, mask=mask, cmap=cmap, vmin=-1, vmax=1, center=0,square=True, linewidths=.5, cbar_kws={"shrink": .5},
- annot=True)
-plt.title('Correlation Matrix Heatmap')
-# Rotate x-axis labels
-correlation_heatmap.set_xticklabels(correlation_heatmap.get_xticklabels(), rotation=45, horizontalalignment='right')
-correlation_heatmap.set_yticklabels(correlation_heatmap.get_yticklabels(), rotation=45, horizontalalignment='right')
-# Adjust layout to prevent label cropping
-plt.tight_layout(rect=(0, 0, 1, 1))
-plt.show()
