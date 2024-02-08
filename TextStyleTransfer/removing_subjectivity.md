@@ -38,4 +38,6 @@ The typical transfer learning process involves the following steps:
 - Pre-training: A model is initially trained on a large dataset for a source task. This pre-training phase enables the model to learn generic features and representations that can capture underlying patterns in the data.
 - Transfer: The pre-trained model is then fine-tuned or adapted for a target task using a smaller dataset specific to the target task. The knowledge gained during pre-training is transferred to enhance the model's performance on the new task.
 
+
+
 Using this approach we can leverage the power of existing models. There are many state-of-the-art pre-trained models that are published openly and can be used in the pre-training process.
