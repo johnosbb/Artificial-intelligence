@@ -142,3 +142,9 @@ The rolling average also enhances visualization. The smoothed data can be easier
 It becomes clearer to distinguish between actual signal variations (meaningful changes) and random noise. The noise tends to get averaged out, while the signal persists in the smoothed data.
 
 Through experimentation, we can optimize the rolling window size to balance noise reduction with responsiveness to changes in the sensor readings.
+
+ Now we scale the data. Each sensor of the dataset has a different scale. For
+example, the maximum value of S1 is 518 while the maximum value of S16 is
+0.03. For that reason, we convert all of the values to a range between 0 and 1.
+Allowing each metric affect the model in a similar way. We will make use of the
+MinMaxScaler function from the sklearn library to adjust the scale:
