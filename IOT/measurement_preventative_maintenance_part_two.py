@@ -14,13 +14,18 @@ import keras
 from sklearn.preprocessing import MinMaxScaler
 from keras.models import Sequential
 from keras.layers import Dense, Activation, LeakyReLU, Dropout
+from scipy.stats import shapiro, jarque_bera
 
 # Data Source: https://github.com/mapr-demos/predictive-maintenance/tree/master/notebooks/jupyter/Dataset/CMAPSSData
 
 SHOW_NOISE_ANALYSIS=False
 SHOW_NOISE_ANALYSIS_WITH_ROLLING_AVERAGE=False
 SHOW_NOISE_ANALYSIS_COMPARATIVE=False
-
+SHOW_MAIN_STATISTICS_FOR_DATASET=True
+SHOW_MAIN_STATISTICS_FOR_S2=False
+SHOW_S2_NOISE_ANALYSIS=True
+TEST_FOR_NORMALITY=False
+SHOW_NOISE_ANALYSIS_S2_WITH_ROLLING_AVERAGE=True
 
 # Compute linear declining RUL is computed 
 def add_remaining_useful_life(df):
@@ -62,9 +67,24 @@ train = pd.read_csv((dir_path+'train_FD001.txt'), sep='\s+', header=None, names=
 test = pd.read_csv((dir_path+'test_FD001.txt'), sep='\s+', header=None, names=col_names)
 y_test = pd.read_csv((dir_path+'RUL_FD001.txt'), sep='\s+', header=None, names=['RUL'])
 test["RUL"] = y_test # This line adds a new column named 'RUL' to the test DataFrame and assigns the values from the y_test DataFrame. It essentially adds the RUL information to the test data, allowing you to have a complete DataFrame with both sensor readings and the corresponding RUL values.
+
 #Inspect the data for sensor number two
 print(train["s_2"])
 
+if SHOW_MAIN_STATISTICS_FOR_S2:       
+    print(train["s_2"].describe().transpose())
+
+if SHOW_MAIN_STATISTICS_FOR_DATASET:       
+    print(train.describe().transpose())
+    
+if TEST_FOR_NORMALITY:
+    test_statistic, p_value = shapiro(train["s_2"]) 
+    print("Shapiro-Wilk Test Statistic:", test_statistic)
+    print("Shapiro-Wilk P-value:", p_value)  
+    
+    _, p_value = jarque_bera(train["s_2"]) 
+    print("Jarque-Bera P-value:", p_value)
+    
 # We drop any columns that are of no use to us such as columns where the data does not change.
 columns_to_drop = ['s_1', 's_5', 's_10', 's_16', 's_18', 's_19', 'setting_3']
 train = train.drop(columns=columns_to_drop)
@@ -78,7 +98,15 @@ test['needs_maintenance'] = (test['RUL'] <= 10).astype(int)
 
 print(train[index_names+['RUL']+['needs_maintenance']].head())
 
-
+if SHOW_S2_NOISE_ANALYSIS:
+    values = train['s_2'] 
+    i = 1
+    plt.figure(figsize=(10, 20))
+    plt.plot(values) # plot the actual data
+    plt.title("S2", y=0.5, loc='right')
+    i += 1
+    plt.show()
+    
 
 if SHOW_NOISE_ANALYSIS:
     values = train[train.time_cycles > 1] 
@@ -113,7 +141,16 @@ if SHOW_NOISE_ANALYSIS_WITH_ROLLING_AVERAGE:
         i += 1
     plt.show()
 
-
+if SHOW_NOISE_ANALYSIS_S2_WITH_ROLLING_AVERAGE:
+    values = train['rolling_average_s_2'] 
+    i = 1
+    plt.figure(figsize=(10, 20))
+    plt.plot(values) # plot the actual data
+    plt.title("S2 Rolling Average", y=0.5, loc='right')
+    i += 1
+    plt.show()
+    
+    
 if SHOW_NOISE_ANALYSIS_COMPARATIVE:
     values = train[train.time_cycles > 1] 
     groups = ['s_2','rolling_average_s_2']
