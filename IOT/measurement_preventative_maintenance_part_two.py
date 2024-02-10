@@ -14,7 +14,7 @@ import keras
 from sklearn.preprocessing import MinMaxScaler
 from keras.models import Sequential
 from keras.layers import Dense, Activation, LeakyReLU, Dropout
-from scipy.stats import shapiro, jarque_bera
+from scipy.stats import shapiro, jarque_bera,anderson,kstest
 
 # Data Source: https://github.com/mapr-demos/predictive-maintenance/tree/master/notebooks/jupyter/Dataset/CMAPSSData
 
@@ -23,9 +23,10 @@ SHOW_NOISE_ANALYSIS_WITH_ROLLING_AVERAGE=False
 SHOW_NOISE_ANALYSIS_COMPARATIVE=False
 SHOW_MAIN_STATISTICS_FOR_DATASET=True
 SHOW_MAIN_STATISTICS_FOR_S2=False
-SHOW_S2_NOISE_ANALYSIS=True
-TEST_FOR_NORMALITY=False
-SHOW_NOISE_ANALYSIS_S2_WITH_ROLLING_AVERAGE=True
+SHOW_S2_NOISE_ANALYSIS=False
+TEST_FOR_NORMALITY=True
+SHOW_NOISE_ANALYSIS_S2_WITH_ROLLING_AVERAGE=False
+SHOW_FREQUENCY_DISTRIBUTION_CHART=True
 
 # Compute linear declining RUL is computed 
 def add_remaining_useful_life(df):
@@ -85,6 +86,11 @@ if TEST_FOR_NORMALITY:
     _, p_value = jarque_bera(train["s_2"]) 
     print("Jarque-Bera P-value:", p_value)
     
+    result = anderson(train["s_2"])
+    print(f"Anderson Test for Normality: {result}")
+    
+    _, p_value = kstest(train["s_2"], 'norm')
+    print(f"Kolmogorov-Smirnov Test for Normality: {p_value}")   
 # We drop any columns that are of no use to us such as columns where the data does not change.
 columns_to_drop = ['s_1', 's_5', 's_10', 's_16', 's_18', 's_19', 'setting_3']
 train = train.drop(columns=columns_to_drop)
@@ -171,4 +177,51 @@ y_test = test[['RUL']]
 
 maintenance_instances_train = train.loc[train['needs_maintenance'] == 1]
 columns_to_print = ['unit_nr', 'time_cycles', 'RUL', 'needs_maintenance']
-print(maintenance_instances_train[columns_to_print])
+#print(maintenance_instances_train[columns_to_print])
+
+if SHOW_FREQUENCY_DISTRIBUTION_CHART:    
+    # Extract the 's_2_data' column
+    s_2_data = train['s_2']
+    # Plot a histogram
+    plt.figure(figsize=(10, 6))
+    sns.histplot(s_2_data, bins=20, kde=False, color='blue', stat='density', element='step')
+
+    # Fit a normal distribution to the data
+    mu, std = norm.fit(s_2_data)
+    xmin, xmax = plt.xlim()
+    x = np.linspace(xmin, xmax, 100)
+    p = norm.pdf(x, mu, std)
+    plt.plot(x, p, 'k', linewidth=2) # x: This is the array of x-values (independent variable) where the line will be plotted. p: This is the array of y-values (dependent variable) specifying the height of the line at each x-value. 'k': This is a format string specifying the color and line style of the plot. In this case, 'k' stands for black. Matplotlib uses a variety of format strings to control the appearance of the plot, and 'k' is a shorthand for a solid black line.
+
+    # Draw a vertical line at the mean
+    plt.axvline(mu, color='red', linestyle='dashed', linewidth=2, label='Mean') # draw a vertical dashed line at the mean of the distribution (mu). 
+
+    # Calculate points at ±3 standard deviations
+    number_of_std_devs = 3
+    lower_limit = mu - number_of_std_devs * std
+    upper_limit = mu + number_of_std_devs * std
+
+    # Draw vertical lines at ±3 standard deviations
+    plt.axvline(lower_limit, color='green', linestyle='dashed', linewidth=2, label='-3 Std Dev')
+    plt.axvline(upper_limit, color='green', linestyle='dashed', linewidth=2, label='+3 Std Dev')
+
+    # Calculate points at ±1 standard deviations
+    number_of_std_devs = 1
+    lower_limit = mu - number_of_std_devs * std
+    upper_limit = mu + number_of_std_devs * std
+
+    # Draw vertical lines at ±3 standard deviations
+    plt.axvline(lower_limit, color='blue', linestyle='dashed', linewidth=2, label='-3 Std Dev')
+    plt.axvline(upper_limit, color='blue', linestyle='dashed', linewidth=2, label='+3 Std Dev')
+
+
+    # Customize the plot
+    title = "Fit results: mu = %.2f,  std = %.2f" % (mu, std)
+    plt.title(title)
+    plt.xlabel('S2 Sensor Data')
+    plt.ylabel('Frequency,Density')
+
+    # Save the plot as a PNG file
+    plt.savefig('./markdown/images/FD001_normal_distribution_plot.png')
+    # Show the plot
+    plt.show()
