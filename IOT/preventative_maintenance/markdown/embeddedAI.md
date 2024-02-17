@@ -2,7 +2,9 @@
 
 ## Abstract
 
-Embedded artificial intelligence (AI) stands at the forefront of technological innovation, presenting novel opportunities for cost-effective and energy-efficient AI solutions that extend beyond the capabilities of cloud-based AI technologies. This article explores the rapidly growing field of embedded AI, particularly its exponential growth within the chip market dedicated to edge AI. By 2024, an estimated 1.5 billion edge AI chips are anticipated to be sold, indicating a substantial surge in demand and deployment.
+Embedded artificial intelligence (AI) stands at the forefront of technological innovation, presenting novel opportunities for cost-effective and energy-efficient AI solutions that extend beyond the capabilities of cloud-based AI technologies. This article is part of a series that explores the rapidly growing field of embedded AI.
+
+Devices targeting Edge AI are set to experience exponential growth within the chip market. By 2024, an estimated 1.5 billion edge AI chips are anticipated to be sold, indicating a substantial surge in demand and deployment.
 
 ## Introduction
 
@@ -109,7 +111,7 @@ For our sensor data we get the following values:
 The extremely small p-value suggests that the data significantly deviates from a normal distribution. In other words, we have enough evidence to reject the hypothesis that the data is normally distributed.
 
 One of the issues we often need to manage when dealing with sensor data is understanding the noise profile of the data. The first step in this analysis is to try and plot the data to see the visual profile of the data.
-If we examine our data from sensor 2 we can see there is a lot of variations and short term fluctuations. Looking at the data in this form it is difficult to see the underlying shape of the data.
+If we examine our data from sensor 2 we can see there is a lot of variation and short term fluctuation. Looking at the data in this form it is difficult to see the underlying shape of the data.
 
 ```python
     values = train['s_2'] 

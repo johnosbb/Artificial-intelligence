@@ -7,7 +7,7 @@ The goal of subjectivity removal in text  is to generate a modified version of a
 
 Language Models are based on a learned probability distribution over a sequence of words. We can use this probability distribution to estimate the conditional probability of the next word in a sequence, given the prior words as context.
 
-Autoregression lies at the heart of language modelling. It allows us predict future values from past values (i.e. guess the next token having seen all the previous ones).  This approach is fine for the more general case of text generation, but for the task of removing subjectivity from text input we need to generate text that is based on our input and a conditioning context.
+Auto-regression lies at the heart of language modelling. It allows us predict future values from past values (i.e. guess the next token having seen all the previous ones).  This approach is fine for the more general case of text generation, but for the task of removing subjectivity from text input we need to generate text that is based on our input and a conditioning context.
 
 A Seq2Seq (sequence-to-sequence) model is a type of neural network architecture designed for tasks involving sequential data, where the input and output are both sequences of data. This architecture is particularly popular in natural language processing (NLP) and machine translation tasks.
 
@@ -24,9 +24,10 @@ The typical use case for Seq2Seq models is in tasks where the length of the inpu
 - Speech Recognition: Converting spoken language into written text.
 - Conversational Agents: Generating responses in a conversation.
 
-In the context of machine translation, for example, the input sequence might be a sentence in one language, and the output sequence would be the translation of that sentence in another language.
+In the context of machine translation, for example, the input sequence might be a sentence in one language, and the output sequence would be the translation of that sentence in another language. Given these use cases then one might assume that 'Text Style Transfer' and 'Subjectivity Removal' may stand to benefit from the conditional language model approach.
 
-Text Style Transfer and  subjectivity removal may benefit from the conditional language model.
+
+## Self Supervised Learning
 
 Self-supervised learning is a machine learning paradigm where models are trained to learn from unlabeled data without explicit supervision. This is very important for tasks like subjectivity removal where the availability of labeled datasets featuring text with and without subjectivity is limited.
 
@@ -61,6 +62,10 @@ While the initial token embedding stage focuses on learning the meanings of indi
 Previously, researchers expressed concerns about the feasibility of transferring knowledge at the contextualization level. This skepticism stemmed from the need for embeddings to be highly generalizable and abstract enough to facilitate effective transfer learning. However, recent advancements, particularly in models predicting missing words, have paved the way for successful contextualization-level transfer learning. These predictor models demand a profound understanding of language, allowing them to leverage pre-trained data effectively. Modern language models, trained on extensive datasets, produce contextualizers capable of encoding diverse and general language features, proving valuable across a spectrum of related tasks. The pretrained contextualizers learn a broad set of language skills, understanding both short- and long-range relationships within language; the downstream tasks which require one or more of these skills benefit from these features. 
 
 
+
+## Target Datasets for Subjectivity Removal
+
+Because Wikipedia enforces this neutrality policy and maintains a complete revision history, the encyclopedia edits associated with an NPOV justification can be parsed out to form a dataset of aligned (subjective vs. neutral) sentence pairs. [See here for more detail](https://arxiv.org/pdf/1911.09709.pdf)
 
 
 
