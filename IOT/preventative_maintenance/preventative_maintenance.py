@@ -20,8 +20,8 @@ from scipy.stats import shapiro, jarque_bera,anderson,kstest
 
 SHOW_NOISE_ANALYSIS=False
 SHOW_NOISE_ANALYSIS_WITH_ROLLING_AVERAGE=False
-SHOW_NOISE_ANALYSIS_COMPARATIVE=False
-SHOW_MAIN_STATISTICS_FOR_DATASET=True
+SHOW_NOISE_ANALYSIS_COMPARATIVE=True
+SHOW_MAIN_STATISTICS_FOR_DATASET=False
 SHOW_MAIN_STATISTICS_FOR_S2=False
 SHOW_S2_NOISE_ANALYSIS=False
 TEST_FOR_NORMALITY=True
@@ -126,14 +126,14 @@ if SHOW_NOISE_ANALYSIS:
         i += 1
     plt.show()
     
-    
-train['rolling_mean'] = train.groupby('unit_nr')['time_cycles'].rolling(window=8, min_periods=1).mean().reset_index(level=0, drop=True)
-train['rolling_average_s_2'] = train.groupby('unit_nr')['s_2'].rolling(window=8, min_periods=1).mean().reset_index(level=0, drop=True)
-train['rolling_average_s_3'] = train.groupby('unit_nr')['s_3'].rolling(window=8, min_periods=1).mean().reset_index(level=0, drop=True)
-train['rolling_average_s_4'] = train.groupby('unit_nr')['s_4'].rolling(window=8, min_periods=1).mean().reset_index(level=0, drop=True)
-train['rolling_average_s_6'] = train.groupby('unit_nr')['s_6'].rolling(window=8, min_periods=1).mean().reset_index(level=0, drop=True)
-train['rolling_average_s_7'] = train.groupby('unit_nr')['s_7'].rolling(window=8, min_periods=1).mean().reset_index(level=0, drop=True)
-train['rolling_average_s_8'] = train.groupby('unit_nr')['s_8'].rolling(window=8, min_periods=1).mean().reset_index(level=0, drop=True)                
+window_size=8    
+train['rolling_mean'] = train.groupby('unit_nr')['time_cycles'].rolling(window=window_size, min_periods=1).mean().reset_index(level=0, drop=True)
+train['rolling_average_s_2'] = train.groupby('unit_nr')['s_2'].rolling(window=window_size, min_periods=1).mean().reset_index(level=0, drop=True)
+train['rolling_average_s_3'] = train.groupby('unit_nr')['s_3'].rolling(window=window_size, min_periods=1).mean().reset_index(level=0, drop=True)
+train['rolling_average_s_4'] = train.groupby('unit_nr')['s_4'].rolling(window=window_size, min_periods=1).mean().reset_index(level=0, drop=True)
+train['rolling_average_s_6'] = train.groupby('unit_nr')['s_6'].rolling(window=window_size, min_periods=1).mean().reset_index(level=0, drop=True)
+train['rolling_average_s_7'] = train.groupby('unit_nr')['s_7'].rolling(window=window_size, min_periods=1).mean().reset_index(level=0, drop=True)
+train['rolling_average_s_8'] = train.groupby('unit_nr')['s_8'].rolling(window=window_size, min_periods=1).mean().reset_index(level=0, drop=True)                
 
 if SHOW_NOISE_ANALYSIS_WITH_ROLLING_AVERAGE:
     values = train[train.time_cycles > 1] 
@@ -222,6 +222,6 @@ if SHOW_FREQUENCY_DISTRIBUTION_CHART:
     plt.ylabel('Frequency,Density')
 
     # Save the plot as a PNG file
-    plt.savefig('./markdown/images/FD001_normal_distribution_plot.png')
+    plt.savefig('./preventative_maintenance/markdown/images/FD001_normal_distribution_plot.png')
     # Show the plot
     plt.show()

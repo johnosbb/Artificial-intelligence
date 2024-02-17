@@ -32,7 +32,7 @@ SHOW_NOISE_ANALYSIS = True
 missing_values = ["", "NA", "N/A", "NaN"]
 
 
-file_path = './data/predictive_maintenance.csv'
+file_path = './data/tool_wear.csv'
 
 # Read the CSV file into a Pandas DataFrame
 df = pd.read_csv(file_path, na_values=missing_values)
