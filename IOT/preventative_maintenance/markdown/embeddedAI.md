@@ -88,7 +88,7 @@ min        641.210000
 max        644.530000
 ```
 
-we can see that the data has a mean value of __642.680934__ and a standard deviation of __0.500053__. We can also see the data for the first, second and third quartiles. The 25% value (__642.325000__) is the first quartile. This is the value below which 25% of the data falls. This offers us our first insight into the data our sensor is collecting.
+We can see that the data has a mean value of __642.680934__ and a standard deviation of __0.500053__. We can also see the data for the first, second and third quartiles. The 25% value (__642.325000__) is the first quartile. This is the value below which 25% of the data falls. This offers us our first insight into the data our sensor is collecting.
 
 We can also test the data to see how closely it follows a normal distribution. 
 
@@ -145,8 +145,8 @@ It becomes clearer to distinguish between actual signal variations (meaningful c
 
 Through experimentation, we can optimize the rolling window size to balance noise reduction with responsiveness to changes in the sensor readings.
 
- Now we scale the data. Each sensor of the dataset has a different scale. For
-example, the maximum value of S1 is 518 while the maximum value of S16 is
-0.03. For that reason, we convert all of the values to a range between 0 and 1.
-Allowing each metric affect the model in a similar way. We will make use of the
-MinMaxScaler function from the sklearn library to adjust the scale:
+![image](./preventative_maintenence/makrdown/images/s2_impact_of_rolling_average.png)
+
+ Now we scale the data. Each sensor of the dataset has a different scale. For example, the maximum value of S1 is 518 while the maximum value of S16 is 0.03. For that reason, we convert all of the values to a range between 0 and 1. Allowing each metric affect the model in a similar way. We will make use of the MinMaxScaler function from the sklearn library to adjust the scale.
+
+ 
