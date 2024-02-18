@@ -116,7 +116,7 @@ For our sensor data we get the following values:
 
 The extremely small p-value suggests that the data significantly deviates from a normal distribution. In other words, we have enough evidence to reject the hypothesis that the data is normally distributed.
 
-One of the issues we often need to manage when dealing with sensor data is understanding the noise profile of the data. The first step in this analysis is to try and plot the data to see the visual profile of the data.
+One of the issues we often need to manage when dealing with sensor data is understanding the noise profile of the data. The first step in this analysis is to try and plot the data to see the visual profile of the data (see the top diagram below).
 If we examine our data from sensor 2 we can see there is a lot of variation and short term fluctuation. Looking at the data in this form it is difficult to see the underlying shape of the data.
 
 ```python
@@ -151,7 +151,11 @@ It becomes clearer to distinguish between actual signal variations (meaningful c
 
 Through experimentation, we can optimize the rolling window size to balance noise reduction with responsiveness to changes in the sensor readings.
 
-![image](./images/s2_impact_of_rolling_average.png)
+<figure>
+  <img src="./images/s2_impact_of_rolling_average.png" alt="Rolling average">
+  <figcaption>Using Rolling Average to Remove Noise</figcaption>
+</figure>
+<!-- ![image](./images/s2_impact_of_rolling_average.png) -->
 
  Now we scale the data. Each sensor of the dataset has a different scale. For example, the maximum value of S1 is 518 while the maximum value of S16 is 0.03. For that reason, we convert all of the values to a range between 0 and 1. Allowing each metric affect the model in a similar way. We will make use of the MinMaxScaler function from the sklearn library to adjust the scale.
 
