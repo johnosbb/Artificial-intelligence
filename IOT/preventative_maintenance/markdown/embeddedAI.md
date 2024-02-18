@@ -34,6 +34,7 @@ The data set has a number of operational settings and data from 26 sensors. We s
 *Table 1: Extract from NASA Turbofan Jet Engine Data Set.*
 
 
+## Preparing the Data
 
 Out first task is to read in the dataset into a format we can work with. The original data exists as a sequence of space-separated columns. We will create a Pandas frame to hold the data. A Pandas DataFrame is a two-dimensional, tabular data structure with labeled axes (rows and columns). It is a primary data structure in the Pandas library, a popular Python library for data manipulation and analysis. The DataFrame can be thought of as a spreadsheet or SQL table, where data is organized in rows and columns.
 
@@ -70,6 +71,8 @@ Having imported the data we can then examine the data for sensor number two (s_2
 20629    643.23
 ```
 
+## Basic Statistics
+
 Pandas has a describe method which can give us very useful data about the sensor measurements.
 
 ```python
@@ -92,10 +95,10 @@ We can see that the data has a mean value of __642.680934__ and a standard devia
 
 ## Visualizing and Testing Assumptions
 
-Visualising the data can tell us something about its shape and distrubtion.
+Visualizing the data can tell us something about its shape and distrubtion.
 
 ![image](./images/s2_normal_distribution_plot.png)
-
+*Figure 1: Visualizing Data*
 
 However, we may often need to test assumptions about the data to determine if these assumptions are correct. We can, for example, test the data to see how closely it follows a normal distribution. 
 
@@ -117,8 +120,9 @@ For our sensor data we get the following values:
 
 The extremely small p-value suggests that the data significantly deviates from a normal distribution. In other words, we have enough evidence to reject the hypothesis that the data is normally distributed.
 
-One of the issues we often need to manage when dealing with sensor data is understanding the noise profile of the data. The first step in this analysis is to try and plot the data to see the visual profile of the data (see the top diagram below).
-If we examine our data from sensor 2 we can see there is a lot of variation and short term fluctuation. Looking at the data in this form it is difficult to see the underlying shape of the data.
+One of the issues we often need to manage when dealing with sensor data is understanding the noise profile of the data. The first step in this analysis is to try and plot the data to see the visual profile of the data (see the top diagram in fiure 1 below).
+
+If we examine our data from sensor 2 we can see there is a lot of variation and short term fluctuations. Looking at the data in this form it is difficult to see the underlying shape of the data.
 
 ```python
     values = train['s_2'] 
