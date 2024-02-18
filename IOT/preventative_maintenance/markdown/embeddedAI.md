@@ -90,7 +90,13 @@ max        644.530000
 
 We can see that the data has a mean value of __642.680934__ and a standard deviation of __0.500053__. We can also see the data for the first, second and third quartiles. The 25% value (__642.325000__) is the first quartile. This is the value below which 25% of the data falls. This offers us our first insight into the data our sensor is collecting.
 
-We can also test the data to see how closely it follows a normal distribution. 
+
+Visualising the data can tell us something about its shape and distrubtion.
+
+![image](./images/s2_normal_distribution_plot.png)
+
+
+However, we may often need to test assumptions about the data to determine if these assumptions are correct. We can, for example, test the data to see how closely it follows a normal distribution. 
 
 ```python
     test_statistic, p_value = shapiro(train["s_2"]) 
@@ -141,12 +147,11 @@ The rolling average can apply a smoothing effect, effectively smoothening the da
 
 The rolling average also enhances visualization. The smoothed data can be easier to visualize and interpret, especially when there are sudden spikes or drops in the original data that might be attributed to noise.
 
-It becomes clearer to distinguish between actual signal variations (meaningful changes) and random noise. The noise tends to get averaged out, while the signal persists in the smoothed data.
+It becomes clearer to distinguish between actual signal variations (meaningful changes) and random noise. The noise tends to get averaged out, while the overall trajectory of the signal is more evident in the smoothed data.
 
 Through experimentation, we can optimize the rolling window size to balance noise reduction with responsiveness to changes in the sensor readings.
 
-![image](./preventative_maintenence/makrdown/images/s2_impact_of_rolling_average.png)
+![image](./images/s2_impact_of_rolling_average.png)
 
  Now we scale the data. Each sensor of the dataset has a different scale. For example, the maximum value of S1 is 518 while the maximum value of S16 is 0.03. For that reason, we convert all of the values to a range between 0 and 1. Allowing each metric affect the model in a similar way. We will make use of the MinMaxScaler function from the sklearn library to adjust the scale.
 
- 
