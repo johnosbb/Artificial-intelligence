@@ -153,8 +153,9 @@ Through experimentation, we can optimize the rolling window size to balance nois
 
 <figure>
   <img src="./images/s2_impact_of_rolling_average.png" alt="Rolling average">
-  <figcaption>Using Rolling Average to Remove Noise</figcaption>
+  <figcaption><em>Figure 2: Using Rolling Average to Remove Noise<em></figcaption>
 </figure>
+<br>
 <!-- ![image](./images/s2_impact_of_rolling_average.png) -->
 
  Now we scale the data. Each sensor of the dataset has a different scale. For example, the maximum value of S1 is 518 while the maximum value of S16 is 0.03. For that reason, we convert all of the values to a range between 0 and 1. Allowing each metric affect the model in a similar way. We will make use of the MinMaxScaler function from the sklearn library to adjust the scale.
