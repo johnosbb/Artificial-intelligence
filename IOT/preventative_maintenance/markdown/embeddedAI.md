@@ -151,9 +151,9 @@ It becomes clearer to distinguish between actual signal variations (meaningful c
 
 Through experimentation, we can optimize the rolling window size to balance noise reduction with responsiveness to changes in the sensor readings.
 
-<figure>
+<figure style="text-align: center;">
   <img src="./images/s2_impact_of_rolling_average.png" alt="Rolling average">
-  <figcaption style="font-style: italic; text-align: right;" >Figure 2: Using Rolling Average to Remove Noise</figcaption>
+  <figcaption style="font-style: italic; text-align: right;" ><em>Figure 2: Using Rolling Average to Remove Noise</em></figcaption>
 </figure>
 <br>
 <!-- ![image](./images/s2_impact_of_rolling_average.png) -->
