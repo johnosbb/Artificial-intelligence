@@ -153,7 +153,7 @@ Through experimentation, we can optimize the rolling window size to balance nois
 
 <figure>
   <img src="./images/s2_impact_of_rolling_average.png" alt="Rolling average">
-  <figcaption><em>Figure 2: Using Rolling Average to Remove Noise<em></figcaption>
+  <figcaption style="font-style: italic; text-align: right;" >Figure 2: Using Rolling Average to Remove Noise</figcaption>
 </figure>
 <br>
 <!-- ![image](./images/s2_impact_of_rolling_average.png) -->
