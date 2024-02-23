@@ -15,18 +15,21 @@ from sklearn.preprocessing import MinMaxScaler
 from keras.models import Sequential
 from keras.layers import Dense, Activation, LeakyReLU, Dropout
 from scipy.stats import shapiro, jarque_bera,anderson,kstest
+import os
 
 # Data Source: https://github.com/mapr-demos/predictive-maintenance/tree/master/notebooks/jupyter/Dataset/CMAPSSData
 
 SHOW_NOISE_ANALYSIS=False
 SHOW_NOISE_ANALYSIS_WITH_ROLLING_AVERAGE=False
-SHOW_NOISE_ANALYSIS_COMPARATIVE=True
+SHOW_NOISE_ANALYSIS_COMPARATIVE=False
 SHOW_MAIN_STATISTICS_FOR_DATASET=False
 SHOW_MAIN_STATISTICS_FOR_S2=False
 SHOW_S2_NOISE_ANALYSIS=False
 TEST_FOR_NORMALITY=True
 SHOW_NOISE_ANALYSIS_S2_WITH_ROLLING_AVERAGE=False
-SHOW_FREQUENCY_DISTRIBUTION_CHART=True
+SHOW_FREQUENCY_DISTRIBUTION_CHART=False
+SCALE_SENSOR_DATA=True
+SEQUENTIAL_MODEL=True
 
 # Compute linear declining RUL is computed 
 def add_remaining_useful_life(df):
@@ -52,8 +55,10 @@ def add_remaining_useful_life(df):
 # Specify the values to be treated as missing
 missing_values = ["", "NA", "N/A", "NaN"]
 
+current_directory = os.getcwd()
+print("Current Directory:", current_directory)
 
-dir_path = './data/' # identify the directory path that holds the data
+dir_path = './preventative_maintenance/data/' # identify the directory path that holds the data
 
 
                  
@@ -135,6 +140,16 @@ train['rolling_average_s_6'] = train.groupby('unit_nr')['s_6'].rolling(window=wi
 train['rolling_average_s_7'] = train.groupby('unit_nr')['s_7'].rolling(window=window_size, min_periods=1).mean().reset_index(level=0, drop=True)
 train['rolling_average_s_8'] = train.groupby('unit_nr')['s_8'].rolling(window=window_size, min_periods=1).mean().reset_index(level=0, drop=True)                
 
+
+test['rolling_mean'] = test.groupby('unit_nr')['time_cycles'].rolling(window=window_size, min_periods=1).mean().reset_index(level=0, drop=True)
+test['rolling_average_s_2'] = test.groupby('unit_nr')['s_2'].rolling(window=window_size, min_periods=1).mean().reset_index(level=0, drop=True)
+test['rolling_average_s_3'] = test.groupby('unit_nr')['s_3'].rolling(window=window_size, min_periods=1).mean().reset_index(level=0, drop=True)
+test['rolling_average_s_4'] = test.groupby('unit_nr')['s_4'].rolling(window=window_size, min_periods=1).mean().reset_index(level=0, drop=True)
+test['rolling_average_s_6'] = test.groupby('unit_nr')['s_6'].rolling(window=window_size, min_periods=1).mean().reset_index(level=0, drop=True)
+test['rolling_average_s_7'] = test.groupby('unit_nr')['s_7'].rolling(window=window_size, min_periods=1).mean().reset_index(level=0, drop=True)
+test['rolling_average_s_8'] = test.groupby('unit_nr')['s_8'].rolling(window=window_size, min_periods=1).mean().reset_index(level=0, drop=True)                
+
+
 if SHOW_NOISE_ANALYSIS_WITH_ROLLING_AVERAGE:
     values = train[train.time_cycles > 1] 
     groups = ['rolling_average_s_1','rolling_average_s_2','rolling_average_s_3','rolling_average_s_4','rolling_average_s_5','rolling_average_s_6']
@@ -171,9 +186,9 @@ if SHOW_NOISE_ANALYSIS_COMPARATIVE:
     
     
 X_train = train[['rolling_average_s_2','rolling_average_s_3','rolling_average_s_4','rolling_average_s_7','rolling_average_s_8']]
-y_train = train[['RUL']]
-X_test = [['rolling_average_s_2','rolling_average_s_3','rolling_average_s_4','rolling_average_s_7','rolling_average_s_8']]
-y_test = test[['RUL']]
+y_train = train['needs_maintenance']
+X_test = test[['rolling_average_s_2','rolling_average_s_3','rolling_average_s_4','rolling_average_s_7','rolling_average_s_8']]
+y_test = test['needs_maintenance']
 
 maintenance_instances_train = train.loc[train['needs_maintenance'] == 1]
 columns_to_print = ['unit_nr', 'time_cycles', 'RUL', 'needs_maintenance']
@@ -225,3 +240,76 @@ if SHOW_FREQUENCY_DISTRIBUTION_CHART:
     plt.savefig('./preventative_maintenance/markdown/images/FD001_normal_distribution_plot.png')
     # Show the plot
     plt.show()
+    
+if SCALE_SENSOR_DATA:
+    print(X_train)
+    print("Selection:\n")
+    print(X_train.iloc[:, 0:5])
+    scaler = MinMaxScaler(feature_range=(0, 1)) # The MinMaxScaler is a class from the sklearn.preprocessing module in scikit-learn. It is used to scale numerical features between a specified range. In this case, the range is set to (0, 1).
+    # Fit the scaler on the training data and transform both training and testing data
+    X_train.iloc[:, 0:5] = scaler.fit_transform(X_train.iloc[:, 0:5]) # selects all rows and columns from index 1 to 5 (inclusive) in the'
+    X_test.iloc[:, 0:5] = scaler.transform(X_test.iloc[:, 0:5])
+    dim = X_train.shape[1]
+    print(X_train)
+    
+# Sequential Model
+    
+# In the context of deep learning, a Sequential model is a linear stack of layers in which you build a neural network layer by layer, starting from the input layer and progressing through hidden layers until the output layer. Each layer in the Sequential model has weights that correspond to the layer that follows it.
+# The Sequential model is part of the Keras library, a high-level neural networks API that is integrated into TensorFlow. Keras provides a convenient way to define and build neural network models, especially for beginners and researchers.
+
+if SEQUENTIAL_MODEL:
+    dim = X_train.shape[1]
+    model = Sequential()
+    model.add(Dense(32, input_dim = dim))  # Input layer with 32 nodes
+    model.add(LeakyReLU()) # Activation function for the first layer
+    model.add(Dropout(0.25))
+
+    # The LeakyReLU activation introduces a small negative slope to the standard ReLU activation, and Dropout helps prevent overfitting by randomly setting a fraction of input units to zero during training.
+    # Add a hidden layer: In the context of a neural network architecture, the term "hidden layer" refers to any layer between the input layer and the output layer. It's called "hidden" because it is not directly observable from the network's inputs or outputs during training or prediction.
+    model.add(Dense(32)) 
+    model.add(LeakyReLU())
+    model.add(Dropout(0.25))
+    
+    # Add an output layer:
+    # A Dense layer with a single node.
+    # The activation function used here is the sigmoid activation function.
+    # In a binary classification problem, where the output should be a probability between 0 and 1,
+    # a common choice for the activation function in the output layer is the sigmoid function.
+    # The sigmoid function squashes the output values to the range [0, 1], making it suitable for binary classification.    
+    model.add(Dense(1))
+    model.add(Activation('sigmoid'))
+    # The choice of the optimizer and loss function in a neural network depends on the specific problem we are trying to solve.
+    # RMSprop (Root Mean Square Propagation) is an optimization algorithm commonly used for training neural networks.
+    # It adapts the learning rates of each parameter based on the average of recent gradients.
+    # RMSprop helps address some issues with other optimizers like AdaGrad, particularly in the case of deep neural networks.
+    # It adjusts the learning rates for each parameter individually, 
+    # which can be beneficial in handling different scales and sparsity in the data.
+    model.compile(optimizer ='rmsprop', loss ='binary_crossentropy', metrics = ['accuracy'])
+    model.fit(X_train, y_train, batch_size = 32, epochs = 5,
+        verbose = 1, validation_data = (X_test, y_test))
+    print(f"X_test = {X_test} ")
+    y_pred_prob  = model.predict(X_test)
+    print(f"y_pred_prob = {y_pred_prob}")
+    # Convert probabilities to binary predictions using a threshold of 0.5
+    y_pred = (y_pred_prob >= 0.5).astype(int)
+    print(f"y_pred = {y_pred}")
+    pre_score = precision_score(y_test,y_pred, average='micro')
+    print("Neural Network:",pre_score)
+
+    
+# The data is fed from the input to each of the 32 input neurons. The neurons
+# are connected through channels. The channel is assigned a numerical value known as
+# weight. The inputs are multiplied by the corresponding weight and their sum is sent as
+# input to the neurons in the hidden layer. Each of these neurons is associated with a
+# numerical value called the bias, which is added to the input sum. This value is then passed
+# to a threshold function called the activation function. The activation function determines if
+# a neuron will get activated or not. In this sequential model we used Leaky ReLU as our activation function for our
+# first 2 layers. ReLU or Rectified Linear Unit is a popular activation function because it
+# solves the vanishing gradient problem. The vanishing gradient problem occurs when these gradients become extremely 
+# small as they are propagated backward through the layers of the network.
+# In this recipe, we used the Leaky ReLU. Leaky ReLU solves a problem that ReLU has where big gradients can
+# cause the neuron to never fire.
+# The activated neuron passes its data to the next layer over the channels.
+# This method allows the data to be propagated through the network. This is called forward
+# propagation. In the output layer, the neuron with the highest layer fires and determines the
+# output.
