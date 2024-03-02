@@ -95,7 +95,7 @@ We can see that the data has a mean value of __642.680934__ and a standard devia
 
 ## Visualizing and Testing Assumptions
 
-Visualizing the data can tell us something about its shape and distrubtion.
+Visualizing the data can tell us something about its shape and distribution.
 
 ![image](./images/s2_normal_distribution_plot.png)
 *Figure 1: Visualizing Data*
@@ -156,11 +156,29 @@ It becomes clearer to distinguish between actual signal variations (meaningful c
 
 Through experimentation, we can optimize the rolling window size to balance noise reduction with responsiveness to changes in the sensor readings.
 
+
+[Full code for this analysis is available here](https://github.com/johnosbb/Artificial-intelligence/blob/main/IOT/preventative_maintenance/preventative_maintenance.py)
+
 ![Rolling average](./images/s2_impact_of_rolling_average.png)
 *Figure 2: Using Rolling Average to Remove Noise*
 
 <!-- ![image](./images/s2_impact_of_rolling_average.png) -->
 
  ## Scaling Data
- Now we scale the data. Each sensor of the dataset has a different scale. For example, the maximum value of S1 is 518 while the maximum value of S16 is 0.03. For that reason, we convert all of the values to a range between 0 and 1. Allowing each metric affect the model in a similar way. We will make use of the MinMaxScaler function from the sklearn library to adjust the scale.
+
+ Now we scale the data. Each sensor of the dataset has a different scale. For example, the maximum value of S1 is 518 while the maximum value of S16 is 0.03. For that reason, we normalise the readings by converting all of the values to a range between 0 and 1. This allows each metric affect the model in a similar way. We will make use of the MinMaxScaler function from the sklearn library to adjust the scale.
+
+```python
+print(X_train)
+print("Selection:\n")
+print(X_train.iloc[:, 0:5])
+scaler = MinMaxScaler(feature_range=(0, 1)) # The MinMaxScaler is a class from the sklearn.preprocessing module in scikit-learn. It is used to scale numerical features between a specified range. In this case, the range is set to (0, 1).
+# Fit the scaler on the training data and transform both training and testing data
+X_train.iloc[:, 0:5] = scaler.fit_transform(X_train.iloc[:, 0:5]) # selects all rows and columns from index 1 to 5 (inclusive) in the dataset'
+X_test.iloc[:, 0:5] = scaler.transform(X_test.iloc[:, 0:5])
+dim = X_train.shape[1]
+print(X_train)
+```
+ 
+ 
 

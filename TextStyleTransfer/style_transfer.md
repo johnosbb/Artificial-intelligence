@@ -41,3 +41,9 @@ The use of expressions that go beyond their literal meaning, such as idioms, met
 ## Cohesion
 
 The coherence and logical connection between different parts of the text.
+
+
+## References
+
+- [Fine-Tuning Language Models from Human Preferences](https://arxiv.org/pdf/1909.08593.pdf)
+- [Transfer Learning Guide](https://www.v7labs.com/blog/transfer-learning-guide)

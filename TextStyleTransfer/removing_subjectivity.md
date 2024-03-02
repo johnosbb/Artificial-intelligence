@@ -47,6 +47,28 @@ The typical transfer learning process involves the following steps:
 
 Using this approach we can leverage the power of existing models. There are many state-of-the-art pre-trained models that are published openly and can be used in the pre-training process.
 
+Before deciding on a strategy of transfer learning, it is crucial to have an answer of the following questions:
+
+- Which part of the knowledge can be transferred from the source to the target to improve the performance of the target task?
+- When to transfer and when not to, so that one improves the target task performance/results and does not degrade them?
+- How to transfer the knowledge gained from the source model based on our current domain/task?
+
+There are different approaches one can take to Transfer learning:
+
+### Inductive Transfer Learning
+
+Inductive Transfer Learning requires the source and target domains to be the same, though the specific tasks the model is working on are different.
+
+The algorithms try to use the knowledge from the source model and apply it to improve the target task. The pre-trained model already has expertise on the features of the domain and is at a better starting point than if we were to train it from scratch.
+
+### Transductive Transfer Learning
+
+In Transductive Transfer Learning the domains of the source and target tasks are not exactly the same but do have some form of relationship. One can derive similarities between the source and target tasks. These scenarios usually have a lot of labeled data in the source domain, while the target domain has only unlabeled data.
+
+
+### Unsupervised Transfer Learning
+
+Unsupervised Transfer Learning is similar to Inductive Transfer learning. The only difference is that the algorithms focus on unsupervised tasks and involve unlabeled datasets both in the source and target tasks.
 
 ## NLP Models and Transfer Learning
 
