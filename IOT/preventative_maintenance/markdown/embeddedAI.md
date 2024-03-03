@@ -166,7 +166,7 @@ Through experimentation, we can optimize the rolling window size to balance nois
 
  ## Scaling Data
 
- Now we scale the data. Each sensor of the dataset has a different scale. For example, the maximum value of S1 is 518 while the maximum value of S16 is 0.03. For that reason, we normalise the readings by converting all of the values to a range between 0 and 1. This allows each metric affect the model in a similar way. We will make use of the MinMaxScaler function from the sklearn library to adjust the scale.
+ Now we scale the data. Each sensor of the dataset has a different scale. For example, the maximum value of S1 is 518 while the maximum value of S16 is 0.03. For that reason, we normalise the readings by converting all of the values to a range between 0 and 1. This normalisation allows each metric affect the model in a similar way. We will make use of the MinMaxScaler function from the sklearn library to adjust the scale.
 
 ```python
 print(X_train)
@@ -180,5 +180,21 @@ dim = X_train.shape[1]
 print(X_train)
 ```
  
- 
+We can now begin to evaluate models that allows us explore the correlation between the sensors value and the probability of failure.
+
+In the context of deep learning, a Sequential model is a linear stack of layers in which you build a neural network layer by layer, starting from the input layer and progressing through hidden layers until the output layer. Each layer in the Sequential model has weights that correspond to the layer that follows it.
+The Sequential model is part of the Keras library, a high-level neural networks API that is now integrated into TensorFlow.
+
+![Neural Network](./images/NeuralNetwork.drawio.png)
+*Figure 3: Sequential Model*
+
+
+in the model shown above data is fed from the input to each of the 32 input neurons. The neurons are connected through channels, with each channel assigned a numerical value known as a weight. The inputs are multiplied by the corresponding weight and their sum is sent as input to the neurons in the hidden layer.
+
+Each of the neurons in the hidden layer is associated with a numerical value called the bias, which is added to the input sum. This value is then passed to a threshold function called the activation function. The activation function determines if
+a neuron will get activated or not.
+
+In this sequential model we used Leaky ReLU as the activation function for our first 2 layers. ReLU or Rectified Linear Unit is a popular activation function because it solves the vanishing gradient problem. The vanishing gradient problem occurs when these gradients become extremely small as they are propagated backward through the layers of the network.
+
+The activated neuron passes its data to the next layer over the channels. This method allows the data to be propagated forward through the network. In the output layer, the neuron with the highest layer fires and determines the output.
 
