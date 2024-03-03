@@ -219,7 +219,8 @@ Epoch 5/5
 ```
 
 ```txt
-Sequential Neural Network Precision Score: 0.9178375076359193
+Sequential Model:
+Precision Score: 0.9178375076359193
 ```
 
 The precision score we obtained, specifically with average='micro', provides information about the precision of our predictive model in a multi-class classification setting. Precision is one of the metrics used to evaluate the performance of a classification model, and it is particularly relevant when dealing with imbalanced datasets.
@@ -229,6 +230,6 @@ Micro-average Precision calculates precision globally across all classes by cons
 
 A Precision Score (Micro-average) of  0.9178 means that, on average, our model is correctly predicting the positive class (failure) approximately 91.78% of the time across all classes. It considers all instances in the dataset collectively, without distinguishing between different classes.
 
-A high precision score indicates that our model is good at minimizing false positives — when it predicts a positive class, it is correct about 91.78% of the time. 
+A high precision score indicates that our model is good at minimizing false positives — when it predicts a positive class, it is correct about 91.78% of the time.
 
 Precision is just one piece of the overall performance evaluation puzzle. Depending on the nature of our problem, ywe might also want to look at metrics like recall, F1 score, or the confusion matrix to get a more comprehensive understanding of how well our model is performing, especially if the dataset is imbalanced.
