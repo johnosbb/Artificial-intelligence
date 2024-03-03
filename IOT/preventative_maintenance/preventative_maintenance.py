@@ -297,19 +297,3 @@ if SEQUENTIAL_MODEL:
     print("Neural Network:",pre_score)
 
     
-# The data is fed from the input to each of the 32 input neurons. The neurons
-# are connected through channels. The channel is assigned a numerical value known as
-# weight. The inputs are multiplied by the corresponding weight and their sum is sent as
-# input to the neurons in the hidden layer. Each of these neurons is associated with a
-# numerical value called the bias, which is added to the input sum. This value is then passed
-# to a threshold function called the activation function. The activation function determines if
-# a neuron will get activated or not. In this sequential model we used Leaky ReLU as our activation function for our
-# first 2 layers. ReLU or Rectified Linear Unit is a popular activation function because it
-# solves the vanishing gradient problem. The vanishing gradient problem occurs when these gradients become extremely 
-# small as they are propagated backward through the layers of the network.
-# In this recipe, we used the Leaky ReLU. Leaky ReLU solves a problem that ReLU has where big gradients can
-# cause the neuron to never fire.
-# The activated neuron passes its data to the next layer over the channels.
-# This method allows the data to be propagated through the network. This is called forward
-# propagation. In the output layer, the neuron with the highest layer fires and determines the
-# output.

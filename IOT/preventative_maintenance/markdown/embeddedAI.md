@@ -179,7 +179,9 @@ X_test.iloc[:, 0:5] = scaler.transform(X_test.iloc[:, 0:5])
 dim = X_train.shape[1]
 print(X_train)
 ```
- 
+
+## Predicting Failure using a Sequential Model
+
 We can now begin to evaluate models that allows us explore the correlation between the sensors value and the probability of failure.
 
 In the context of deep learning, a Sequential model is a linear stack of layers in which you build a neural network layer by layer, starting from the input layer and progressing through hidden layers until the output layer. Each layer in the Sequential model has weights that correspond to the layer that follows it.
@@ -198,3 +200,35 @@ In this sequential model we used Leaky ReLU as the activation function for our f
 
 The activated neuron passes its data to the next layer over the channels. This method allows the data to be propagated forward through the network. In the output layer, the neuron with the highest layer fires and determines the output.
 
+[The complete code for this analysis is available here](https://github.com/johnosbb/Artificial-intelligence/blob/main/IOT/preventative_maintenance/preventative_maintenance.py)
+
+### Results
+
+```txt
+Epoch 1/5
+645/645 [==============================] - 2s 2ms/step - loss: 0.1352 - accuracy: 0.9581 - val_loss: 0.6440 - val_accuracy: 0.9175
+Epoch 2/5
+645/645 [==============================] - 2s 3ms/step - loss: 0.0591 - accuracy: 0.9742 - val_loss: 0.7833 - val_accuracy: 0.9179
+Epoch 3/5
+645/645 [==============================] - 1s 2ms/step - loss: 0.0534 - accuracy: 0.9757 - val_loss: 0.9712 - val_accuracy: 0.9176
+Epoch 4/5
+645/645 [==============================] - 1s 2ms/step - loss: 0.0513 - accuracy: 0.9779 - val_loss: 1.0428 - val_accuracy: 0.9174
+Epoch 5/5
+645/645 [==============================] - 2s 2ms/step - loss: 0.0520 - accuracy: 0.9772 - val_loss: 1.0880 - val_accuracy: 0.9178
+           0.708399             0.673990             0.677093             0.489860             0.348101
+```
+
+```txt
+Sequential Neural Network Precision Score: 0.9178375076359193
+```
+
+The precision score we obtained, specifically with average='micro', provides information about the precision of our predictive model in a multi-class classification setting. Precision is one of the metrics used to evaluate the performance of a classification model, and it is particularly relevant when dealing with imbalanced datasets.
+
+
+Micro-average Precision calculates precision globally across all classes by considering the total number of true positives, false positives, and false negatives across all classes.
+
+A Precision Score (Micro-average) of  0.9178 means that, on average, our model is correctly predicting the positive class (failure) approximately 91.78% of the time across all classes. It considers all instances in the dataset collectively, without distinguishing between different classes.
+
+A high precision score indicates that our model is good at minimizing false positives — when it predicts a positive class, it is correct about 91.78% of the time. 
+
+Precision is just one piece of the overall performance evaluation puzzle. Depending on the nature of our problem, ywe might also want to look at metrics like recall, F1 score, or the confusion matrix to get a more comprehensive understanding of how well our model is performing, especially if the dataset is imbalanced.
