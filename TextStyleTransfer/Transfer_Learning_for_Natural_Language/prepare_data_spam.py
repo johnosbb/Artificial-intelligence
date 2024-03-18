@@ -1,26 +1,30 @@
-
-
 import numpy as np
 import pandas as pd
-import email
 import re
 import nltk
-import random
- 
+import email
+import os
+import csv
+
+
 nltk.download('stopwords')
 from nltk.corpus import stopwords
- 
+# Assuming stopwords is a WordListCorpusReader
+stopwords_list = stopwords.words('english')
 
-Nsamp = 1000
-maxtokens = 50
-maxtokenlen = 20
+
+Nsamp = 1000 # number of samples to generate in each class - 'spam', 'not spam'
+maxtokens = 200 # the maximum number of tokens per document
+maxtokenlen = 100 # the maximum length of each token
 filepath = "./data/spam_detection/emails.csv"
- 
+
+
 emails = pd.read_csv(filepath)
  
 print("Successfully loaded {} rows and {} columns!".format(emails.shape[0],  emails.shape[1]))
 print(emails.head(n=5))
 print(emails.loc[0]["message"])
+
 
 def extract_messages(df):
     messages = []
@@ -32,15 +36,8 @@ def extract_messages(df):
     return messages
 
 
-
-
-def tokenize(row):
-    if row in [None,'']:
-        tokens = ""
-    else:
-        tokens = str(row).split(" ")[:maxtokens]
-    return tokens
-
+# The `assemble_bag()` function assembles a new dataframe containing all the unique words found in the text documents.
+# It counts the word frequency and then returns the new dataframe.
 def assemble_bag(data):
     used_tokens = [] #  A list to keep track of tokens that have already been encountered and added to the DataFrame.
     all_tokens = [] # A list to store all unique tokens encountered in the input data.
@@ -67,6 +64,14 @@ def assemble_bag(data):
                 df.iloc[i][token] += 1    
     return df
 
+
+def tokenize(row):
+    if row in [None,'']:
+        tokens = ""
+    else:
+        tokens = str(row).split(" ")[:maxtokens]
+    return tokens
+
 #  normalize words by turning them into lower case and removing punctuation
 def reg_expressions(row):
     tokens = []
@@ -82,9 +87,33 @@ def reg_expressions(row):
     return tokens
 
 def stop_word_removal(row):
-    token = [token for token in row if token not in stopwords]
+
+    #print(stopwords_list)
+    token = [token for token in row if token not in stopwords_list]
     token = filter(None, token)
     return token
+
+
+def load_data(path):
+    data, sentiments = [], []
+    for folder, sentiment in (('neg', 0), ('pos', 1)):
+        folder = os.path.join(path, folder)
+        for name in os.listdir(folder):
+            with open(os.path.join(folder, name), 'r') as reader:
+                  text = reader.read()
+            text = tokenize(text)
+            text = stop_word_removal(text)
+            text = reg_expressions(text) # should this not limit the length?
+            data.append(text)
+            sentiments.append(sentiment)
+            # Find the maximum length of sublists
+    max_length = max(len(seq) for seq in data)
+    # Pad sequences with zeros to make them of equal length
+    data_padded = [seq + [0] * (max_length - len(seq)) for seq in data] 
+    data_np = np.array(data_padded)
+    data, sentiments = unison_shuffle_data(data_np, sentiments)
+    
+    return data, sentiments
 
 # Having fully vectorized the dataset, we must remember that it is not shuffled with respect to classes; 
 # that is, it contains Nsamp = 1000 spam emails followed by an equal number of nonspam emails.
@@ -102,6 +131,24 @@ def unison_shuffle_data(data, header):
     header = np.asarray(header)[p]
     return data, header
 
+ 
+train_path = os.path.join('./data/movie_database/aclImdb', 'train')
+raw_data, raw_header = load_data(train_path)
+
+print(raw_data.shape)
+print(len(raw_header))
+
+random_indices = np.random.choice(range(len(raw_header)),size=(Nsamp*2,),replace=False)
+data_train = raw_data[random_indices]
+header = raw_header[random_indices]
+
+# we need to check the balance of the resulting data with regard to class. 
+# In general, we don’t want one of the labels to represent most of the dataset, 
+# unless that is the distribution expected in practice.
+unique_elements, counts_elements = np.unique(header, return_counts=True)
+print("Sentiments and their frequencies:")
+print(unique_elements)
+print(counts_elements)
 
 
 bodies = extract_messages(emails)
@@ -137,43 +184,63 @@ raw_data = pd.concat([SpamEmails,EnronEmails], axis=0).values
 # Convert the NumPy array to a Pandas DataFrame
 raw_data_df = pd.concat([SpamEmails, EnronEmails], axis=0)
 
-print("Shape of combined data represented as NumPy array is:")
+print("Shape of combined data is:")
 print(raw_data.shape)
-print("Data represented as NumPy array is:")
+print("Data is:")
 print(raw_data)
 
+# create corresponding labels
 Categories = ['spam','notspam']
 header = ([1]*Nsamp)
 header.extend(([0]*Nsamp))
 
-
-# Add categories and header to the DataFrame
-raw_data_df['Category'] = header
-raw_data_df.columns = Categories + ['Category']
-
-# Save the DataFrame to CSV
-raw_data_df.to_csv('./data/spam_detection/rawdata.csv', index=False)
-
+# create bag-of-words model
 EnronSpamBag = assemble_bag(raw_data)
-# The column labels indicate words in the vocabulary of the bag-of-words model,
-# and the numerical entries in each row correspond to the frequency counts of 
-# each such word for each of the 2,000 emails in our dataset.
-# This is an extremely sparse DataFrame—it consists mostly of values of 0.
-print(f"EnronSpamBag = {EnronSpamBag}")
-# This next line creates a list called predictors containing the column names of the DataFrame EnronSpamBag.
-# In the context of machine learning or statistical modeling, these columns are often referred to as "predictors" or "features."
-# Each predictor corresponds to a unique token in the bag-of-words representation, 
-# and the goal may be to use these predictors to predict or classify some outcome variable.
-predictors = [column for column in EnronSpamBag.columns] 
+# this is the list of words in our bag-of-words model
+predictors = [column for column in EnronSpamBag.columns]
 
+# Define the file name
+csv_file = "./data/spam_detection/predictors.csv"
 
-# we split it into independent training and testing, or validation, sets. 
-# This will allow us to evaluate the performance of the classifier on a set
-# of data that was not used for training—an important thing to ensure in machine learning practice.
-# We elect to use 70% of the data for training and 30% for testing/validation afterward.
+# Write 'predictors' list to a CSV file
+with open(csv_file, 'w', newline='') as file:
+    writer = csv.writer(file)
+    writer.writerow(predictors)
+    
+    
+    
+EnronSpamBag # display the model for the user
 data, header = unison_shuffle_data(EnronSpamBag.values, header)
+# split into independent 70% training and 30% testing sets
 idx = int(0.7*data.shape[0])
-train_x = data[:idx]
+
+# 70% of data for training
+train_x = data[:idx,:]
 train_y = header[:idx]
-test_x = data[idx:]
-test_y = header[idx:]
+# # remaining 30% for testing
+test_x = data[idx:,:]
+test_y = header[idx:] 
+
+print("train_x/train_y list details, to make sure they are of the right form:")
+print(len(train_x))
+print(train_x)
+print(train_y[:5])
+print(len(train_y))
+
+
+
+
+
+
+
+
+
+import pickle
+
+# Save datasets
+with open('./data/spam_detection/train_data.pkl', 'wb') as f:
+    pickle.dump((train_x, train_y), f)
+
+with open('./data/spam_detection/test_data.pkl', 'wb') as f:
+    pickle.dump((test_x, test_y), f)
+
