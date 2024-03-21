@@ -94,7 +94,7 @@ if GBM:
             print("CV Score : Mean - %.7g | Std - %.7g | Min - %.7g | Max - %.7g" % 
     (np.mean(cv_score),np.std(cv_score),np.min(cv_score),np.max(cv_score)))
         print(f"predictors = {len(predictors)}")
-        print(f"Importantce Features = {len(alg.feature_importances_)}")    
+        print(f"Importance Features = {len(alg.feature_importances_)}")    
         # An important property of decision-tree-based methods is that they can provide features an importance score, 
         # which can be used to detect the most important features in a given dataset.  
         # We can plot these and identify the most prominent features  
