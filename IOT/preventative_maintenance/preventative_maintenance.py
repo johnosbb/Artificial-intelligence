@@ -1,3 +1,6 @@
+import os
+os.environ["CUDA_VISIBLE_DEVICES"] = ""
+
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
@@ -13,9 +16,10 @@ from sklearn.metrics import accuracy_score, confusion_matrix, classification_rep
 import keras
 from sklearn.preprocessing import MinMaxScaler
 from keras.models import Sequential
-from keras.layers import Dense, Activation, LeakyReLU, Dropout
+from keras.layers import Dense, Activation, LeakyReLU, Dropout, LSTM
 from scipy.stats import shapiro, jarque_bera,anderson,kstest
-import os
+from sklearn import preprocessing
+
 
 # Data Source: https://github.com/mapr-demos/predictive-maintenance/tree/master/notebooks/jupyter/Dataset/CMAPSSData
 
@@ -25,11 +29,12 @@ SHOW_NOISE_ANALYSIS_COMPARATIVE=False
 SHOW_MAIN_STATISTICS_FOR_DATASET=False
 SHOW_MAIN_STATISTICS_FOR_S2=False
 SHOW_S2_NOISE_ANALYSIS=False
-TEST_FOR_NORMALITY=True
+TEST_FOR_NORMALITY=False
 SHOW_NOISE_ANALYSIS_S2_WITH_ROLLING_AVERAGE=False
 SHOW_FREQUENCY_DISTRIBUTION_CHART=False
 SCALE_SENSOR_DATA=True
-SEQUENTIAL_MODEL=True
+SEQUENTIAL_MODEL=False
+LSTM_EXAMPLE=False
 
 # Compute linear declining RUL is computed 
 def add_remaining_useful_life(df):
@@ -51,6 +56,7 @@ def add_remaining_useful_life(df):
   
 
 
+    
 
 # Specify the values to be treated as missing
 missing_values = ["", "NA", "N/A", "NaN"]
@@ -296,4 +302,96 @@ if SEQUENTIAL_MODEL:
     pre_score = precision_score(y_test,y_pred, average='micro')
     print("Neural Network:",pre_score)
 
+
+if LSTM_EXAMPLE:
     
+    
+    def gen_sequence(id_df, seq_length, seq_cols):
+        data_array = id_df[seq_cols].values
+        num_elements = data_array.shape[0]
+        for start, stop in zip(range(0, num_elements-seq_length),range(seq_length, num_elements)):
+            yield data_array[start:stop, :]
+
+
+    week1 = 7
+    week2 = 14
+    sequence_length = 100
+    index_names = ['unit_nr', 'time_cycles']
+    sensor_cols = ['s_' + str(i) for i in range(1,22)]
+    sequence_cols = ['unit_nr', 'time_cycles','setting1', 'setting2', 'setting3', 'cycle_norm']
+    sequence_cols.extend(sensor_cols)
+
+
+
+    # reload the data
+    train = pd.read_csv((dir_path+'train_FD001.txt'), sep='\s+', header=None, names=sequence_cols)
+    test = pd.read_csv((dir_path+'test_FD001.txt'), sep='\s+', header=None, names=sequence_cols)
+    y_test = pd.read_csv((dir_path+'RUL_FD001.txt'), sep='\s+', header=None, names=['RUL'])
+    truth = y_test
+    test["RUL"] = y_test # This line adds a new column named 'RUL' (Remaining useful life) to the test DataFrame and assigns the values from the y_test DataFrame. It essentially adds the RUL information to the test data, allowing you to have a complete DataFrame with both sensor readings and the corresponding RUL values.
+    train = add_remaining_useful_life(train) # adds a train['RUL']
+    test = add_remaining_useful_life(test) # adds a test['RUL']
+
+    # Add a new column "needs_maintenance" based on the values in the "RUL" column
+    train['needs_maintenance'] = (train['RUL'] <= 10).astype(int)
+    test['needs_maintenance'] = (test['RUL'] <= 10).astype(int)
+    rul = pd.DataFrame(train.groupby('unit_nr')['time_cycles']\
+    .max()).reset_index()
+    rul.columns = ['unit_nr', 'max']
+    # train.drop('unit_nr', axis=1, inplace=True)
+    # train.drop('time_cycles', axis=1, inplace=True)
+    # test.drop('unit_nr', axis=1, inplace=True)
+    # test.drop('time_cycles', axis=1, inplace=True)
+    train['label1'] = np.where(train['RUL'] <= week2, 1, 0 ) # label1 has a 1 value if the RUL is less than the 14 cycles
+    train['label2'] = train['label1'] 
+    train.loc[train['RUL'] <= week1, 'label2'] = 2 # label2 has a 2 value if the RUL is less than the 7 cycles
+
+    truth.columns = ['more']
+    truth['unit_nr'] = truth.index + 1
+    truth['max'] = rul['max'] + truth['more']
+    truth.drop('more', axis=1, inplace=True)
+    print(truth)
+    test = test.merge(truth, on=['unit_nr'], how='left')
+    
+    test['RUL'] = test['max'] - test['time_cycles']
+    test.drop('max', axis=1, inplace=True)
+    test['label1'] = np.where(test['RUL'] <= week2, 1, 0 )
+    test['label2'] = test['label1']
+    test.loc[test['RUL'] <= week1, 'label2'] = 2
+    
+    train['cycle_norm'] = train['time_cycles']
+    cols_normalize = train.columns.difference(['unit_nr','time_cycles','RUL','label1','label2'])
+    min_max_scaler = preprocessing.MinMaxScaler()
+    norm_train = \
+    pd.DataFrame(min_max_scaler.fit_transform(train[cols_normalize]),
+    columns=cols_normalize,
+    index=train.index)
+    join = \
+    train[train.columns.difference(cols_normalize)].join(norm_train)
+    train = join.reindex(columns = train.columns)
+    test['cycle_norm'] = test['time_cycles']
+    norm_test = \
+    pd.DataFrame(min_max_scaler.transform(test[cols_normalize]), columns=cols_normalize,
+ index=test.index)
+    test_join = \
+    test[test.columns.difference(cols_normalize)].join(norm_test)
+    test = test_join.reindex(columns = test.columns)
+    test = test.reset_index(drop=True)
+
+
+    #label_cols = ['label1', 'label2']  # These could be the different conditions or time frames
+    #label_array = train[label_cols].values
+    label_array = sequence_cols
+    seq_gen = (list(gen_sequence(train[train['unit_nr']==engine_id],sequence_length, sequence_cols))for engine_id in train['unit_nr'].unique())
+    seq_array = np.concatenate(list(seq_gen)).astype(np.float32)
+    nb_features = seq_array.shape[2]
+    nb_out = label_array.shape[1]
+    model = Sequential()
+    model.add(LSTM(input_shape=(sequence_length, nb_features),units=100, return_sequences=True))
+    model.add(Dropout(0.25))
+    model.add(Dense(units=nb_out, activation='sigmoid'))
+    model.compile(loss='binary_crossentropy', optimizer='adam', metrics=['accuracy'])
+    print(model.summary())
+    model.fit(seq_array, label_array, epochs=10, batch_size=200,validation_split=0.05, verbose=1,callbacks = [keras.callbacks.EarlyStopping(monitor='val_loss',min_delta=0, patience=0,verbose=0, mode='auto')])
+    scores = model.evaluate(seq_array, label_array, verbose=1, batch_size=200)
+    print('Accuracy: {}'.format(scores[1]))    

@@ -191,7 +191,7 @@ The Sequential model is part of the Keras library, a high-level neural networks 
 *Figure 3: Sequential Model*
 
 
-in the model shown above data is fed from the input to each of the 32 input neurons. The neurons are connected through channels, with each channel assigned a numerical value known as a weight. The inputs are multiplied by the corresponding weight and their sum is sent as input to the neurons in the hidden layer.
+In the model shown above data is fed from the input to each of the 32 input neurons. The neurons are connected through channels, with each channel assigned a numerical value known as a weight. The inputs are multiplied by the corresponding weight and their sum is sent as input to the neurons in the hidden layer.
 
 Each of the neurons in the hidden layer is associated with a numerical value called the bias, which is added to the input sum. This value is then passed to a threshold function called the activation function. The activation function determines if
 a neuron will get activated or not.
@@ -232,4 +232,10 @@ A Precision Score (Micro-average) of  0.9178 means that, on average, our model i
 
 A high precision score indicates that our model is good at minimizing false positives — when it predicts a positive class, it is correct about 91.78% of the time.
 
-Precision is just one piece of the overall performance evaluation puzzle. Depending on the nature of our problem, ywe might also want to look at metrics like recall, F1 score, or the confusion matrix to get a more comprehensive understanding of how well our model is performing, especially if the dataset is imbalanced.
+Precision is just one piece of the overall performance evaluation puzzle. Depending on the nature of our problem, we might also want to look at metrics like recall, F1 score, or the confusion matrix to get a more comprehensive understanding of how well our model is performing, especially if the dataset is imbalanced.
+
+
+## Using an LSTM Model to Mitigate Variability
+
+A Long Short-Term Memory (LSTM) model is a type of recurrent neural network (RNN) architecture designed to capture and remember long-term dependencies in sequential data. LSTMs were introduced by Hochreiter and Schmidhuber in 1997 and have since become a popular choice for various tasks involving sequential or time-series data. The benefit of using this model is that unlike the previously used sequential model, the LSTM model can mitigate variability and signal oscillation by focusing on longer term dependencies in the data.
+

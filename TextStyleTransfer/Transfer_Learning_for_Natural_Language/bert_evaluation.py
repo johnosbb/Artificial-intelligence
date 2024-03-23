@@ -5,7 +5,17 @@ from tensorflow import keras
 import keras_nlp
 from sklearn.model_selection import train_test_split
 import sys
+import os
 
+# Set TensorFlow log level to only display warnings and errors
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '1'  # 0: all messages, 1: filter out INFO messages, 2: filter out INFO and WARNING messages
+
+
+CONTROL_TUNABLE_LAYERS = False
+DETERMINE_LAYER_ACTIVATION_FUNCTION =False
+REPLACE_MODEL_LAYERS = True # This is not currently working
+
+# based on
 # https://www.machinelearningnuggets.com/text-classification-with-bert-and-kerasnlp/
 
 df = pd.read_csv('./data/sentiment_analysis/sentiment.csv')
@@ -102,25 +112,60 @@ num_layers = len(backbone_model.layers)
 
 print("Number of layers in the backbone model:", num_layers)
 
-
-# We can determine how many layers to finetune. In this case we Fine-tune only the last 10 layers
-num_fine_tune_layers = 10
-for layer in backbone_model.layers[-num_fine_tune_layers:]:
-    layer.trainable = True
+if CONTROL_TUNABLE_LAYERS:
+    # We can determine how many layers to finetune. In this case we Fine-tune only the last 10 layers
+    num_fine_tune_layers = 10
+    for layer in backbone_model.layers[-num_fine_tune_layers:]:
+        layer.trainable = True
     
 
-# Determine the current pooling layer
-pooling_layer_name = "pooled_dense"  # Name of the pooling layer in BERT
-# Find the pooling layer in the backbone model
-pooling_layer = backbone_model.get_layer(pooling_layer_name)
-print(f"pooling_layer= {pooling_layer}")
+if DETERMINE_LAYER_ACTIVATION_FUNCTION:    
+    # Determine the current pooling layer
+    pooling_layer_name = "pooled_dense"  # Name of the pooling layer in BERT
+    # Find the pooling layer in the backbone model
+    pooling_layer = backbone_model.get_layer(pooling_layer_name)
+    print(f"pooling_layer= {pooling_layer}")
+    # Assuming 'pooling_layer' refers to the 'pooled_dense' layer
+    activation_function = pooling_layer.activation
+    print("Activation function of the pooling layer:", activation_function)
 
-# Assuming 'pooling_layer' refers to the 'pooled_dense' layer
-activation_function = pooling_layer.activation
 
-print("Activation function of the pooling layer:", activation_function)
+
+if REPLACE_MODEL_LAYERS: # This is not currently working
+    def build_model(max_seq_length):
+        in_id = tf.keras.layers.Input(shape=(max_seq_length,), name="input_ids")
+        in_mask = tf.keras.layers.Input(shape=(max_seq_length,), name="input_masks")
+        in_segment = tf.keras.layers.Input(shape=(max_seq_length,), name="segment_ids")
+        bert_inputs = [in_id, in_mask, in_segment]
+        print(f"bert_inputs = {bert_inputs}")
+        # Print the content of bert_output to understand its structure
+        # Extract BERT features
+        bert_output = backbone_model(bert_inputs)
+        print("Content of bert_output:")
+        print(bert_output)
+
+        # Iterate over the content of bert_output
+        for item in bert_output:
+            print(f"Type of item: {type(item)}")
+            if hasattr(item, 'shape'):
+                print(f"\ttensor.shape = {item.shape}")
+            else:
+                print(f"\tNot a tensor object: {item}")
+        # # just extract BERT features, don't fine-tune
+        # bert_output = BertLayer(n_fine_tune_layers=0)(bert_inputs)
+        # # train dense classification layer on top of extracted features
+        # dense = tf.keras.layers.Dense(256, activation="relu")(bert_output)
+        # pred = tf.keras.layers.Dense(1, activation="sigmoid")(dense)
+
+        # model = tf.keras.models.Model(inputs=bert_inputs, outputs=pred)
+        # model.compile(loss="binary_crossentropy", optimizer="adam", metrics=["accuracy"])
+        # model.summary()
+
+        #return model
     
-sys.exit()
+    build_model(256)
+
+    sys.exit()
 
 # Fit again.
 classifier.fit(x=X_train, y=y_train, validation_data=(X_test,y_test), batch_size=32)
