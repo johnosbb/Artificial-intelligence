@@ -4,26 +4,173 @@ import pandas as pd
 from tensorflow import keras
 import keras_nlp
 from sklearn.model_selection import train_test_split
+import pickle
 import sys
-import os
 
-# Set TensorFlow log level to only display warnings and errors
-os.environ['TF_CPP_MIN_LOG_LEVEL'] = '1'  # 0: all messages, 1: filter out INFO messages, 2: filter out INFO and WARNING messages
+"""
+Pretrained BERT Model Initialization: We start by loading a pretrained BERT model. This model has been trained on a large corpus of text and has learned contextual representations of words.
+
+Building a Classifier on Top of BERT: We build a classifier on top of the pretrained BERT model. This classifier will take the contextual embeddings produced by BERT and use them to perform a specific task, in this case, sentiment analysis.
+
+Compiling the Classifier: We compile the classifier by specifying the loss function, optimizer, and metrics to be used during training.
+
+Setting the Model to Trainable: By default, the BERT model loaded is frozen, meaning its weights won't be updated during training. However, we set it to trainable, allowing its weights to be fine-tuned during training on our specific dataset.
+
+Training the Classifier: We train the classifier on our dataset using the fit method. This step involves passing our training data through the model, computing the loss, and updating the weights of the model using backpropagation.
+
+Evaluating the Model: We evaluate the trained model on a separate test set to assess its performance on unseen data.
+
+Making Predictions: We use the trained model to make predictions on new examples. These predictions are based on the learned representations of the input text.
+
+Interpreting Predictions: To make the predictions more interpretable, we map the predicted scores (probabilities) back to the class names (in this case, sentiment labels) and calculate the confidence of the prediction.
+"""
+
+LOAD_SPAM_DATASETS=True
+FIT_MODEL=True
+LOAD_SENTIMENT_CSV=False
+SAVE_SPAM_CSV=True
+REPLACE_MODEL_LAYERS=False
+DETERMINE_LAYER_ACTIVATION_FUNCTION=False
+CONTROL_TUNABLE_LAYERS=False
+
+def analyze_data_object(obj,description=""):
+    print("------------------------Object Analysis Begins--------------------------")
+    # Check if it's a Series
+    if isinstance(obj, pd.Series):
+        print(f"Object {obj.name} is a pandas Series")
+        print(f"Object Description {description}")
+        print("Shape:", obj.shape)
+        print("Type of elements:", type(obj.iloc[0]))
+        print("First 3 elements:")
+        print(obj.head(3))
+    # Check if it's a DataFrame
+    elif isinstance(obj, pd.DataFrame):
+        print(f"Object {obj.name} is a pandas DataFrame")
+        print(f"Object Description {description}")
+        print("Shape:", obj.shape)
+        print("Types of elements:")
+        print(obj.dtypes)
+        for column in obj.columns:
+            print(f"Type of elements in column '{column}':", type(obj[column].iloc[0]))
+        # Check type of elements in each row
+        for index, row in obj.iterrows():
+            print(f"Type of elements in row '{index}':", type(row.iloc[0]))
+        print("First 3 elements:")
+        print(obj.head(3))
+    # Check if it's a NumPy array
+    elif isinstance(obj, np.ndarray):
+        print("Object is a NumPy array")
+        print(f"Object Description {description}")
+        print("Shape:", obj.shape)
+        print("Type of elements:", obj.dtype)
+        print("First 3 elements:")
+        print(obj[:3])
+    else:
+        print("Unknown type")
+
+    print("------------------------Object Analysis Ends--------------------------")
 
 
-CONTROL_TUNABLE_LAYERS = False
-DETERMINE_LAYER_ACTIVATION_FUNCTION =False
-REPLACE_MODEL_LAYERS = True # This is not currently working
+def drop_rows(df):
+    # Count the number of NaN values before dropping
+    num_nan_before = df.isna().sum().sum()
+    # Drop rows with NaN values
+    df = df.dropna()
+    # Count the number of NaN values after dropping
+    num_nan_after = df.isna().sum().sum()
+    # Calculate the number of rows dropped
+    num_dropped = num_nan_before - num_nan_after
+    return num_dropped
 
-# based on
-# https://www.machinelearningnuggets.com/text-classification-with-bert-and-kerasnlp/
+if LOAD_SPAM_DATASETS:
+    # Load datasets
+    with open('./data/spam_detection/train_data_bert.pkl', 'rb') as f:
+        X_train, y_train = pickle.load(f) # load a single dimension numpy data array
 
-df = pd.read_csv('./data/sentiment_analysis/sentiment.csv')
-X = df['text']
-y = df['sentiment']
-X_train, X_test , y_train, y_test = train_test_split(X, y , test_size = 0.20)
-y_train = tf.keras.utils.to_categorical(y_train, num_classes=2)
-y_test = tf.keras.utils.to_categorical(y_test, num_classes=2)
+    with open('./data/spam_detection/test_data_bert.pkl', 'rb') as f:
+        X_test, y_test = pickle.load(f)
+
+    # X_train.name="X_train"
+    # y_train.name="y_train"
+    # X_test.name="X_test"
+    # y_test.name="y_test" 
+    analyze_data_object(X_train,"X_train from pickle")
+    analyze_data_object(y_train,"y_train from pickle")
+    analyze_data_object(X_test,"X_test from pickle")
+    analyze_data_object(y_test,"y_test from pickle")
+
+
+
+    # Flatten the list of lists
+    X_train_flat = [item for sublist in X_train for item in sublist]
+    X_train_1d = np.array(X_train_flat)
+    # Create a pandas Series
+    X_train = pd.Series(X_train_1d)
+
+    X_test_flat = [item for sublist in X_test for item in sublist]
+    X_test_1d = np.array(X_test_flat)
+    # Create a pandas Series
+    X_test = pd.Series(X_test_1d)
+
+    analyze_data_object(X_train,"X_train_series after flat")
+    # Combine X_train and y_train into a single DataFrame
+    df_train = pd.concat([X_train, pd.Series(y_train)], axis=1) # pd.Series(y_train) converts y_train from a numpy array to a series
+    df_train.columns = ['text', 'classification']  # Naming the columns
+    df_test = pd.concat([X_test, pd.Series(y_test)], axis=1)
+    df_test.columns = ['text', 'classification']  # Naming the columns
+    dropped = drop_rows(df_train)
+    print(f"Dropped {dropped} train rows.")
+    dropped = drop_rows(df_test)
+    print(f"Dropped {dropped} test rows.")
+    # Generate random classification values (0 or 1)
+    if SAVE_SPAM_CSV:
+        # classification = np.random.randint(0, 2, size=len(X_train))
+        # X_train_with_classification = X_train.to_frame(name='text')
+        # X_train_with_classification['classification'] = y_train
+        df_train.to_csv('./data/spam_detection/X_train.csv', index=True)
+        df_test.to_csv('./data/spam_detection/X_test.csv', index=True)
+    y_train = tf.keras.utils.to_categorical(df_train['classification'], num_classes=2) # used to convert class labels into one-hot encoded vectors. This function is often used in classification tasks, especially when dealing with categorical data.
+    y_test = tf.keras.utils.to_categorical(df_test['classification'], num_classes=2)
+    class_names = ["spam", "not_spam"]  # Assuming it's a typo and should be "positive" instead of "postive"
+    data_sample = ["Please end funs immediately", "to whom it may concern."]
+
+if LOAD_SENTIMENT_CSV:
+    # based on
+    # https://www.machinelearningnuggets.com/text-classification-with-bert-and-kerasnlp/
+
+    #df = pd.read_csv('./data/sentiment_analysis/sentiment_13.csv')
+
+    df = pd.read_csv('./data/sentiment_analysis/X_train_with_sentiment.csv')
+    df = df.dropna()
+
+    # Verify the shape after filtering out missing values
+    print("Shape after filtering:", df.shape)
+    # print(f"df: {df} type(df) {type(df)}  df {df.shape}")
+    X = df['text'] # when you extract a single column from a DataFrame using df['column_name'], it is returned as a pandas Series.
+    y = df['sentiment'] # a DataFrame is essentially a collection of Series, where each Series represents a column. Therefore, extracting a single column results in a Series containing the values of that column.
+    print(f"Using Sentiment Analaysis")
+    X.name="X from CSV"
+    y.name="y from CSV"
+    analyze_data_object(X)
+    analyze_data_object(y)
+
+    class_names = ["negative", "positive"]  # Assuming it's a typo and should be "positive" instead of "postive"
+
+    X_train, X_test , y_train, y_test = train_test_split(X, y , test_size = 0.20)
+    y_train = tf.keras.utils.to_categorical(y_train, num_classes=2) # used to convert class labels into one-hot encoded vectors. This function is often used in classification tasks, especially when dealing with categorical data.
+    y_test = tf.keras.utils.to_categorical(y_test, num_classes=2)
+
+    print(f"Using Sentiment Analaysis - after one-hot encoding")
+    X_train.name="X_train_csv"
+
+    X_test.name="X_test_csv"
+
+    analyze_data_object(X_train)
+    analyze_data_object(y_train)
+    analyze_data_object(X_test)
+    analyze_data_object(y_test)
+    data_sample = ["What an amazing movie!", "A total waste of my time."]
+
 
 model_name = "bert_tiny_en_uncased_sst2"
 
@@ -73,7 +220,8 @@ backbone_model = classifier.backbone
 # Access backbone programatically (e.g., to change `trainable`).
 backbone_model.trainable = False
 
-
+# Determine the number of layers in the backbone model
+num_layers = len(backbone_model.layers)
 """
 
 Varying the number of layers to fine-tune in a BERT-based model can impact the model's performance,
@@ -137,20 +285,21 @@ if REPLACE_MODEL_LAYERS: # This is not currently working
         in_mask = tf.keras.layers.Input(shape=(max_seq_length,), name="input_masks")
         in_segment = tf.keras.layers.Input(shape=(max_seq_length,), name="segment_ids")
         bert_inputs = [in_id, in_mask, in_segment]
-        print(f"bert_inputs = {bert_inputs}")
+        print(f"bert_inputs = {bert_inputs}  Type of item: {type(bert_inputs)}")
         # Print the content of bert_output to understand its structure
         # Extract BERT features
         bert_output = backbone_model(bert_inputs)
         print("Content of bert_output:")
-        print(bert_output)
+        print(f"bert_output {bert_output} Type of item: {type(bert_output)}")
 
         # Iterate over the content of bert_output
-        for item in bert_output:
-            print(f"Type of item: {type(item)}")
-            if hasattr(item, 'shape'):
-                print(f"\ttensor.shape = {item.shape}")
-            else:
-                print(f"\tNot a tensor object: {item}")
+        for key, value in bert_output.items():
+            print(f"Tensor name: {key}")
+            print(f"Tensor shape: {value.name}")
+            print(f"Tensor sparse: {value.sparse}")
+            print(f"Tensor shape: {value.shape}")
+
+
         # # just extract BERT features, don't fine-tune
         # bert_output = BertLayer(n_fine_tune_layers=0)(bert_inputs)
         # # train dense classification layer on top of extracted features
@@ -165,82 +314,81 @@ if REPLACE_MODEL_LAYERS: # This is not currently working
     
     build_model(256)
 
-    sys.exit()
+if FIT_MODEL:
+    # Fit again.
+    classifier.fit(x=X_train, y=y_train, validation_data=(X_test,y_test), batch_size=32)
+    #sys.exit()
 
-# Fit again.
-classifier.fit(x=X_train, y=y_train, validation_data=(X_test,y_test), batch_size=32)
+    # Evaluating the model on the test set gives us an accuracy of 87% which is not bad 
+    # considering that you have used the tiny version of the BERT model.
 
-# Evaluating the model on the test set gives us an accuracy of 87% which is not bad 
-# considering that you have used the tiny version of the BERT model.
+    classifier.evaluate(X_test, y_test,batch_size=32)
 
-classifier.evaluate(X_test, y_test,batch_size=32)
-
-# Predict two new examples.
-classifier.predict(["What an amazing movie!", "A total waste of my time."])
-
-
-# You can also make the results more interpretable by passing the predictions through the class names 
-# of the training data. Here is an example with a sample from the test set:
-
-print(list(X_test)[10])
-class_names = ["negative","postive"]
-scores = classifier.predict([list(X_test)[10]])
-scores
-f"{class_names[np.argmax(scores)]} with a { (100 * np.max(scores)).round(2) } percent confidence."
-# https://www.machinelearningnuggets.com/text-classification-with-bert-and-kerasnlp/
-
-# In the previous example, you trained a BERT model by passing raw strings. Notice that we didn't perform the standard NLP processing, such as:
-
-# Removing punctuations
-# Removing stop words
-# Creating vocabulary
-# Converting the text to a numerical computation
-# All these were done by the model automatically. However, in some cases, you may want more control over that process. KerasNLP provides BertPreprocessor for this purpose. Every model has its preprocessor class. For this illustration, load BertPreprocessor with a sequence length of 128.
-
-preprocessor = keras_nlp.models.BertPreprocessor.from_preset(
-    model_name,
-    sequence_length=128,
-)
-
-# Manually map this preprocessor to the training and testing set.
-# Convert the data to a tf.data format to make this possible. Notice the use of:
-
-# cache to cache the dataset. Pass a file name to this function if your dataset can't fit into memory.
-# AUTOTUNE to automatically configure the batch size.
-
-training_data = tf.data.Dataset.from_tensor_slices(([X_train], [y_train]))
-validation_data = tf.data.Dataset.from_tensor_slices(([X_test], [y_test]))
-
-train_cached = (
-    training_data.map(preprocessor, tf.data.AUTOTUNE).cache().prefetch(tf.data.AUTOTUNE)
-)
-test_cached = (
-    validation_data.map(preprocessor, tf.data.AUTOTUNE).cache().prefetch(tf.data.AUTOTUNE)
-)
-
-# Pretrained classifier.
-classifier = keras_nlp.models.BertClassifier.from_preset(
-    model_name,
-    preprocessor=None,
-    num_classes=2,
-    load_weights = True,
-    activation='sigmoid'
-)
-classifier.compile(
-    loss=keras.losses.BinaryCrossentropy(),
-    optimizer=keras.optimizers.Adam(),
-    jit_compile=True,
-     metrics=["accuracy"],
-)
-classifier.fit(train_cached, validation_data=test_cached,epochs=10)
+    # Predict two new examples.
+    classifier.predict(data_sample)
 
 
-# You can run some predictions on new data by first passing it through the BERT preprocessor to ensure 
-# that it's in the format the model expects.
+    # You can also make the results more interpretable by passing the predictions through the class names 
+    # of the training data. Here is an example with a sample from the test set:
 
-test_data = preprocessor([list(X_test)[10]])
-print(list(X_test)[10])
-scores = classifier.predict(test_data)
-scores
-f"{class_names[np.argmax(scores)]} with a { (100 * np.max(scores)).round(2) } percent confidence." 
+    scores = classifier.predict([list(X_test)[10]])
+    result = f"{class_names[np.argmax(scores)]} with a {(100 * np.max(scores)).round(2)} percent confidence."
+    print(result)
 
+    # In the previous example, you trained a BERT model by passing raw strings. 
+    # Notice that we didn't perform the standard NLP processing, such as:
+
+    # Removing punctuations
+    # Removing stop words
+    # Creating vocabulary
+    # Converting the text to a numerical computation
+    # All these were done by the model automatically.
+    # However, in some cases, you may want more control over that process.
+    # KerasNLP provides BertPreprocessor for this purpose. 
+    # Every model has its preprocessor class. For this illustration, load BertPreprocessor with a sequence length of 128.
+
+    preprocessor = keras_nlp.models.BertPreprocessor.from_preset(
+        model_name,
+        sequence_length=128,
+    )
+
+    # Manually map this preprocessor to the training and testing set.
+    # Convert the data to a tf.data format to make this possible. Notice the use of:
+    # cache to cache the dataset. Pass a file name to this function if your dataset can't fit into memory.
+    # AUTOTUNE to automatically configure the batch size.
+
+    training_data = tf.data.Dataset.from_tensor_slices(([X_train], [y_train]))
+    validation_data = tf.data.Dataset.from_tensor_slices(([X_test], [y_test]))
+
+    train_cached = (
+        training_data.map(preprocessor, tf.data.AUTOTUNE).cache().prefetch(tf.data.AUTOTUNE)
+    )
+    test_cached = (
+        validation_data.map(preprocessor, tf.data.AUTOTUNE).cache().prefetch(tf.data.AUTOTUNE)
+    )
+
+    # Pretrained classifier.
+    classifier = keras_nlp.models.BertClassifier.from_preset(
+        model_name,
+        preprocessor=None,
+        num_classes=2,
+        load_weights = True,
+        activation='sigmoid'
+    )
+    classifier.compile(
+        loss=keras.losses.BinaryCrossentropy(),
+        optimizer=keras.optimizers.Adam(),
+        jit_compile=True,
+        metrics=["accuracy"],
+    )
+    classifier.fit(train_cached, validation_data=test_cached,epochs=10)
+
+
+    # You can run some predictions on new data by first passing it through the BERT preprocessor to ensure 
+    # that it's in the format the model expects.
+
+    test_data = preprocessor([list(X_test)[10]])
+
+    scores = classifier.predict(test_data)
+    result = f"{class_names[np.argmax(scores)]} with a {(100 * np.max(scores)).round(2)} percent confidence."
+    print(result)

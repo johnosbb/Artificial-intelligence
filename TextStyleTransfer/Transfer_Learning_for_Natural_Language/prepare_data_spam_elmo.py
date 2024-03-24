@@ -242,8 +242,8 @@ test_x, test_y = convert_data(raw_data[idx:],header[idx:])
 
 print("train_x/train_y list details, to make sure they are of the right form:")
 print(len(train_x))
-print(train_x)
-print(train_y[:5])
+print(f"train_x {train_x}")
+print(f"train_y[:5] = {train_y[:5]}")
 print(len(train_y))
 
 # Save datasets
