@@ -32,6 +32,7 @@ SAVE_SPAM_CSV=True
 REPLACE_MODEL_LAYERS=False
 DETERMINE_LAYER_ACTIVATION_FUNCTION=False
 CONTROL_TUNABLE_LAYERS=False
+USE_TINY_MODEL=True
 
 def analyze_data_object(obj,description=""):
     print("------------------------Object Analysis Begins--------------------------")
@@ -171,8 +172,10 @@ if LOAD_SENTIMENT_CSV:
     analyze_data_object(y_test)
     data_sample = ["What an amazing movie!", "A total waste of my time."]
 
-
-model_name = "bert_tiny_en_uncased_sst2"
+if USE_TINY_MODEL:
+    model_name = "bert_tiny_en_uncased_sst2"
+else:
+    model_name = "bert_base_en" # this requires a powerful GPU
 
 # model_name: This parameter specifies the name of the BERT model variant you want to use. 
 # In this case, it's 'bert_tiny_en_uncased_sst2', which refers to a specific variant of the 

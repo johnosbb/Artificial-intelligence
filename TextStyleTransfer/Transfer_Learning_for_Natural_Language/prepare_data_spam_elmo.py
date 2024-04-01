@@ -7,6 +7,9 @@ import os
 import csv
 import pickle
 
+
+# https://www.kaggle.com/models/google/elmo/frameworks/tensorFlow1/variations/elmo/versions/2?tfhub-redirect=true
+
 nltk.download('stopwords')
 from nltk.corpus import stopwords
 # Assuming stopwords is a WordListCorpusReader
@@ -93,6 +96,42 @@ def stop_word_removal(row):
     token = filter(None, token)
     return token
 
+def analyze_data_object(obj,description=""):
+    print("------------------------Object Analysis Begins--------------------------")
+    # Check if it's a Series
+    if isinstance(obj, pd.Series):
+        print(f"Object {obj.name} is a pandas Series")
+        print(f"Object Description {description}")
+        print("Shape:", obj.shape)
+        print("Type of elements:", type(obj.iloc[0]))
+        print("First 3 elements:")
+        print(obj.head(3))
+    # Check if it's a DataFrame
+    elif isinstance(obj, pd.DataFrame):
+        print(f"Object {obj.name} is a pandas DataFrame")
+        print(f"Object Description {description}")
+        print("Shape:", obj.shape)
+        print("Types of elements:")
+        print(obj.dtypes)
+        for column in obj.columns:
+            print(f"Type of elements in column '{column}':", type(obj[column].iloc[0]))
+        # Check type of elements in each row
+        for index, row in obj.iterrows():
+            print(f"Type of elements in row '{index}':", type(row.iloc[0]))
+        print("First 3 elements:")
+        print(obj.head(3))
+    # Check if it's a NumPy array
+    elif isinstance(obj, np.ndarray):
+        print("Object is a NumPy array")
+        print(f"Object Description {description}")
+        print("Shape:", obj.shape)
+        print("Type of elements:", obj.dtype)
+        print("First 3 elements:")
+        print(obj[:3])
+    else:
+        print("Unknown type")
+
+    print("------------------------Object Analysis Ends--------------------------")
 
 def load_data(path):
     data, sentiments = [], []
@@ -201,10 +240,7 @@ raw_data = pd.concat([SpamEmails,EnronEmails], axis=0).values
 # Convert the NumPy array to a Pandas DataFrame
 raw_data_df = pd.concat([SpamEmails, EnronEmails], axis=0)
 
-print("Shape of combined data is:")
-print(raw_data.shape)
-print("Data is:")
-print(raw_data)
+analyze_data_object(raw_data,description="raw_data")
 
 # create corresponding labels
 Categories = ['spam','notspam']
@@ -240,11 +276,8 @@ idx = int(0.7*data_train.shape[0])
 train_x, train_y = convert_data(raw_data[:idx],header[:idx])
 test_x, test_y = convert_data(raw_data[idx:],header[idx:])
 
-print("train_x/train_y list details, to make sure they are of the right form:")
-print(len(train_x))
-print(f"train_x {train_x}")
-print(f"train_y[:5] = {train_y[:5]}")
-print(len(train_y))
+analyze_data_object(train_x,description="train_x")
+analyze_data_object(train_y,description="train_y")
 
 # Save datasets
 with open('./data/spam_detection/train_data_elmo.pkl', 'wb') as f:

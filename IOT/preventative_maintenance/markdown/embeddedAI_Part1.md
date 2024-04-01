@@ -1,4 +1,4 @@
-# Embedded AI systems
+# Embedded AI systems Part 1
 
 ## Abstract
 
@@ -14,25 +14,23 @@ The evolution of embedded AI introduces a paradigm shift, necessitating expertis
 
 At its core, embedded AI is deeply intertwined with sensors and data. The transformative potential of embedded AI lies in the adept extraction of meaningful information from diverse datasets. This article delves into the pivotal role of understanding data extraction techniques and explores how the predictive prowess of machine learning algorithms can be harnessed to process this data. The focus is on addressing a spectrum of real-world challenges through the application of embedded AI methodologies.
 
-
 ## What Can We Learn From Data?
 
 For the purpose of illustration we will use the [NASA Turbofan Jet Engine Data Set](https://www.kaggle.com/datasets/behrad3d/nasa-cmaps). This data set is the Kaggle version of the very well known public data set for asset degradation modeling from NASA. It includes Run-to-Failure simulated data from turbo fan jet engines.
 
-The data set has a number of operational settings and data from 26 sensors. We show an extract of this below in table 1. 
+The data set has a number of operational settings and data from 26 sensors. We show an extract of this below in table 1.
 
-| unit number | time | in cycles | setting 1 | setting 2 | setting 3 | sensor 1 |  sensor 2 | .... | sensor 26 |
-| ----- | ----- | ----- | ----- | ----- | ----- | ----- |  ----- | ----- | ----- |
-| 1| 1| -0.0007| -0.0004| 100.0| 518.67| 641.82| 1589.70| | 23.4190| | 
-| 1| 2| 0.0019| -0.0003| 100.0| 518.67| 642.15| 1591.82| | 23.4236| | 
-| 1| 3| -0.0043| 0.0003| 100.0| 518.67| 642.35| 1587.99| | 23.3442| | 
-| 1| 4| 0.0007| 0.0000| 100.0| 518.67| 642.35| 1582.79| | 23.3739| | 
-| 1| 5| -0.0019| -0.0002| 100.0| 518.67| 642.37| 1582.85| | 23.4044| | 
-| .....| .....| .....| .....| .....| ......| ......| ......| .....| 
-| 1| 7| 0.0010| 0.0001| 100.0| 518.67| 642.48| 1592.32| | 23.3774| 
+| unit number | time  | in cycles | setting 1 | setting 2 | setting 3 | sensor 1 | sensor 2 | ....  | sensor 26 |
+| ----------- | ----- | --------- | --------- | --------- | --------- | -------- | -------- | ----- | --------- | --- |
+| 1           | 1     | -0.0007   | -0.0004   | 100.0     | 518.67    | 641.82   | 1589.70  |       | 23.4190   |     |
+| 1           | 2     | 0.0019    | -0.0003   | 100.0     | 518.67    | 642.15   | 1591.82  |       | 23.4236   |     |
+| 1           | 3     | -0.0043   | 0.0003    | 100.0     | 518.67    | 642.35   | 1587.99  |       | 23.3442   |     |
+| 1           | 4     | 0.0007    | 0.0000    | 100.0     | 518.67    | 642.35   | 1582.79  |       | 23.3739   |     |
+| 1           | 5     | -0.0019   | -0.0002   | 100.0     | 518.67    | 642.37   | 1582.85  |       | 23.4044   |     |
+| .....       | ..... | .....     | .....     | .....     | ......    | ......   | ......   | ..... |
+| 1           | 7     | 0.0010    | 0.0001    | 100.0     | 518.67    | 642.48   | 1592.32  |       | 23.3774   |
 
-*Table 1: Extract from NASA Turbofan Jet Engine Data Set.*
-
+_Table 1: Extract from NASA Turbofan Jet Engine Data Set._
 
 ## Preparing the Data
 
@@ -44,7 +42,7 @@ import pandas as pd
 
 dir_path = './data/' # identify the directory path that holds the data
 
-                 
+
 # define column names for easy indexing
 index_names = ['unit_nr', 'time_cycles']
 setting_names = ['setting_1', 'setting_2', 'setting_3']
@@ -64,7 +62,7 @@ Having imported the data we can then examine the data for sensor number two (s_2
 2        642.35
 3        642.35
 4        642.37
-          ...  
+          ...
 20626    643.49
 20627    643.54
 20628    643.42
@@ -91,32 +89,31 @@ min        641.210000
 max        644.530000
 ```
 
-We can see that the data has a mean value of __642.680934__ and a standard deviation of __0.500053__. We can also see the data for the first, second and third quartiles. The 25% value (__642.325000__) is the first quartile. This is the value below which 25% of the data falls. This offers us our first insight into the data our sensor is collecting.
+We can see that the data has a mean value of **642.680934** and a standard deviation of **0.500053**. We can also see the data for the first, second and third quartiles. The 25% value (**642.325000**) is the first quartile. This is the value below which 25% of the data falls. This offers us our first insight into the data our sensor is collecting.
 
 ## Visualizing and Testing Assumptions
 
 Visualizing the data can tell us something about its shape and distribution.
 
 ![image](./images/s2_normal_distribution_plot.png)
-*Figure 1: Visualizing Data*
+_Figure 1: Visualizing Data_
 
-However, we may often need to test assumptions about the data to determine if these assumptions are correct. We can, for example, test the data to see how closely it follows a normal distribution. 
+However, we may often need to test assumptions about the data to determine if these assumptions are correct. We can, for example, test the data to see how closely it follows a normal distribution.
 
 ```python
-    test_statistic, p_value = shapiro(train["s_2"]) 
+    test_statistic, p_value = shapiro(train["s_2"])
     print("Test Statistic:", test_statistic)
-    print("P-value:", p_value) 
+    print("P-value:", p_value)
 ```
 
-
-A Small P-value indicates strong evidence against the null hypothesis. In this case, the null hypothesis is that the sample comes from a normal distribution. 
+A Small P-value indicates strong evidence against the null hypothesis. In this case, the null hypothesis is that the sample comes from a normal distribution.
 
 For our sensor data we get the following values:
 
-| Statistic | Value |
-| ----- | ----- |
-| Test Statistic | 0.9927533864974976 |
-| P-value | 1.3491896278794517e-30 |
+| Statistic      | Value                  |
+| -------------- | ---------------------- |
+| Test Statistic | 0.9927533864974976     |
+| P-value        | 1.3491896278794517e-30 |
 
 The extremely small p-value suggests that the data significantly deviates from a normal distribution. In other words, we have enough evidence to reject the hypothesis that the data is normally distributed.
 
@@ -125,7 +122,7 @@ One of the issues we often need to manage when dealing with sensor data is under
 If we examine our data from sensor 2 we can see there is a lot of variation and short term fluctuations. Looking at the data in this form it is difficult to see the underlying shape of the data.
 
 ```python
-    values = train['s_2'] 
+    values = train['s_2']
     i = 1
     plt.figure(figsize=(10, 20))
     plt.plot(values) # plot the actual data
@@ -139,7 +136,7 @@ A rolling average, also known as a moving average, is a statistical calculation 
 We can apply this method to our sensor data to try to get a clearer image of the underlying shape and movement of the data.
 
 ```python
-    values = train['rolling_average_s_2'] 
+    values = train['rolling_average_s_2']
     i = 1
     plt.figure(figsize=(10, 20))
     plt.plot(values) # plot the actual data
@@ -156,17 +153,16 @@ It becomes clearer to distinguish between actual signal variations (meaningful c
 
 Through experimentation, we can optimize the rolling window size to balance noise reduction with responsiveness to changes in the sensor readings.
 
-
 [Full code for this analysis is available here](https://github.com/johnosbb/Artificial-intelligence/blob/main/IOT/preventative_maintenance/preventative_maintenance.py)
 
 ![Rolling average](./images/s2_impact_of_rolling_average.png)
-*Figure 2: Using Rolling Average to Remove Noise*
+_Figure 2: Using Rolling Average to Remove Noise_
 
 <!-- ![image](./images/s2_impact_of_rolling_average.png) -->
 
- ## Scaling Data
+## Scaling Data
 
- Now we scale the data. Each sensor of the dataset has a different scale. For example, the maximum value of S1 is 518 while the maximum value of S16 is 0.03. For that reason, we normalise the readings by converting all of the values to a range between 0 and 1. This normalisation allows each metric affect the model in a similar way. We will make use of the MinMaxScaler function from the sklearn library to adjust the scale.
+Now we scale the data. Each sensor of the dataset has a different scale. For example, the maximum value of S1 is 518 while the maximum value of S16 is 0.03. For that reason, we normalise the readings by converting all of the values to a range between 0 and 1. This normalisation allows each metric affect the model in a similar way. We will make use of the MinMaxScaler function from the sklearn library to adjust the scale.
 
 ```python
 print(X_train)
@@ -188,8 +184,7 @@ In the context of deep learning, a Sequential model is a linear stack of layers 
 The Sequential model is part of the Keras library, a high-level neural networks API that is now integrated into TensorFlow.
 
 ![Neural Network](./images/NeuralNetwork.drawio.png)
-*Figure 3: Sequential Model*
-
+_Figure 3: Sequential Model_
 
 In the model shown above data is fed from the input to each of the 32 input neurons. The neurons are connected through channels, with each channel assigned a numerical value known as a weight. The inputs are multiplied by the corresponding weight and their sum is sent as input to the neurons in the hidden layer.
 
@@ -225,17 +220,14 @@ Precision Score: 0.9178375076359193
 
 The precision score we obtained, specifically with average='micro', provides information about the precision of our predictive model in a multi-class classification setting. Precision is one of the metrics used to evaluate the performance of a classification model, and it is particularly relevant when dealing with imbalanced datasets.
 
-
 Micro-average Precision calculates precision globally across all classes by considering the total number of true positives, false positives, and false negatives across all classes.
 
-A Precision Score (Micro-average) of  0.9178 means that, on average, our model is correctly predicting the positive class (failure) approximately 91.78% of the time across all classes. It considers all instances in the dataset collectively, without distinguishing between different classes.
+A Precision Score (Micro-average) of 0.9178 means that, on average, our model is correctly predicting the positive class (failure) approximately 91.78% of the time across all classes. It considers all instances in the dataset collectively, without distinguishing between different classes.
 
 A high precision score indicates that our model is good at minimizing false positives — when it predicts a positive class, it is correct about 91.78% of the time.
 
 Precision is just one piece of the overall performance evaluation puzzle. Depending on the nature of our problem, we might also want to look at metrics like recall, F1 score, or the confusion matrix to get a more comprehensive understanding of how well our model is performing, especially if the dataset is imbalanced.
 
-
 ## Using an LSTM Model to Mitigate Variability
 
 A Long Short-Term Memory (LSTM) model is a type of recurrent neural network (RNN) architecture designed to capture and remember long-term dependencies in sequential data. LSTMs were introduced by Hochreiter and Schmidhuber in 1997 and have since become a popular choice for various tasks involving sequential or time-series data. The benefit of using this model is that unlike the previously used sequential model, the LSTM model can mitigate variability and signal oscillation by focusing on longer term dependencies in the data.
-

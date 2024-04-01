@@ -174,10 +174,7 @@ SpamEmails = SpamEmails.sample(Nsamp) # randomly sample 1000 (Nsamp emails)
 
 raw_data = pd.concat([SpamEmails,EnronEmails], axis=0).values
 analyze_data_object(raw_data,description="raw_data")
-print("Shape of combined data represented as numpy array is:")
-print(raw_data.shape)
-print("Data represented as numpy array is:") # an array of size 2000 with one dimension
-print(raw_data)
+
 
 # corresponding labels
 Categories = ['spam','notspam']
@@ -193,11 +190,7 @@ train_x, train_y = convert_data(raw_data[:idx],header[:idx])
 # remaining 30% for testing
 test_x, test_y = convert_data(raw_data[idx:],header[idx:])
 
-print("train_x/train_y list details, to make sure it is of the right form:")
-print(len(train_x))
-print(train_x)
-print(train_y[:5])
-print(train_y.shape)
+
 analyze_data_object(train_x,description="train_x")
 analyze_data_object(train_y,description="train_y")
 # Save datasets

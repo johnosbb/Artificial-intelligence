@@ -4,12 +4,14 @@ from tensorflow.keras.layers import Layer
 from tensorflow.keras import backend as K
 from tensorflow.keras import layers
 from tensorflow.keras.models import Model
+from tensorflow.keras.layers import Input, Lambda
 # from keras.engine import Layer
 import numpy as np
 import csv
 import pickle
 import pandas as pd
 import sys
+from tensorflow.keras.layers import Dense
 # https://github.com/tensorflow/text/blob/master/docs/tutorials/classify_text_with_bert.ipynb
 # https://www.tensorflow.org/hub/tutorials
 
@@ -86,27 +88,21 @@ class ElmoEmbeddingLayer(Layer):
         super(ElmoEmbeddingLayer, self).__init__(**kwargs)
  
     def build(self, input_shape):
-        self.elmo = hub.load("https://tfhub.dev/google/elmo/3")
+        self.elmo = hub.KerasLayer("https://tfhub.dev/google/elmo/3")
         super(ElmoEmbeddingLayer, self).build(input_shape)
  
-    def call(self, x, mask=None):
-        result = self.elmo(K.squeeze(K.cast(x, tf.string), axis=1),
-                           as_dict=True,
-                           signature='default')['default']
-        return result
+    def call(self, x):
+        return self.elmo(K.squeeze(K.cast(x, tf.string), axis=1))
  
     def compute_output_shape(self, input_shape):
         return (input_shape[0], self.dimensions)
 
-    
 
-
-
-def build_model(): 
-    input_text = layers.Input(shape=(1,), dtype=tf.string)
-    embedding = ElmoEmbeddingLayer(trainable=True)(input_text)  # Set trainable=True here
-    dense = layers.Dense(256, activation='relu')(embedding)
-    pred = layers.Dense(1, activation='sigmoid')(dense)
+def build_model():
+    input_text = Input(shape=(1,), dtype=tf.string)
+    embedding = ElmoEmbeddingLayer()(input_text)
+    dense = Dense(256, activation='relu')(embedding)
+    pred = Dense(1, activation='sigmoid')(dense)
  
     model = Model(inputs=input_text, outputs=pred)
  
@@ -115,11 +111,10 @@ def build_model():
   
     return model
 
- 
 # Build and fit
 model = build_model()
 model.fit(train_x,
           train_y,
           validation_data=(test_x, test_y),
           epochs=5,
-          batch_size=32)    
+          batch_size=32)
