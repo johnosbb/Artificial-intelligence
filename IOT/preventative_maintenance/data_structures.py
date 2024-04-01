@@ -3,6 +3,9 @@ import numpy as np
 import pandas as pd
 
 
+
+SHOW_DATAFRAMES=False
+
 def analyze_object(obj):
     print("------------------------Object Analysis Begins--------------------------")
     # Check if it's a Series
@@ -40,6 +43,7 @@ def analyze_object(obj):
     elif tf.is_tensor(obj):
         print("Object is a TensorFlow tensor")
         print("Shape:", obj.shape)
+        print("Dimensions in this tensor: ", obj.ndim)
         print("Length of TensorFlow Object:", obj.shape[0])
         print("Data type:", obj.dtype)
         print("First 3 elements:")
@@ -70,105 +74,95 @@ DataFrame: DataFrames are part of the pandas library, which is built on top of N
 NumPy Array: NumPy arrays are part of the NumPy library, which is a fundamental package for numerical computing in Python. NumPy provides support for multidimensional arrays, mathematical functions, random number generation, and more.
 """
 
+if SHOW_DATAFRAMES:
+    # Creating a DataFrame from a dictionary
+    data = {
+        'Name': ['John', 'Anna', 'Peter', 'Linda'],
+        'Age': [28, 35, 23, 45],
+        'City': ['Rome', 'Paris', 'London', 'Sydney']
+    }
 
-# Creating a DataFrame from a dictionary
-data = {
-    'Name': ['John', 'Anna', 'Peter', 'Linda'],
-    'Age': [28, 35, 23, 45],
-    'City': ['Rome', 'Paris', 'London', 'Sydney']
-}
+    df = pd.DataFrame(data)
+    analyze_object(df)
 
-df = pd.DataFrame(data)
-analyze_object(df)
+    print(df)
 
-print(df)
+    print(f"Element at '0', 'Name': {df.loc[0, 'Name']}")
+    print(f"Element at '0', 'Name': {df.loc[0, 'City']}")
+    print(f"Element at position (0, 1): {df.iloc[0, 1]}")
+    print(f"Element at position (2, 2): {df.iloc[2, 2]}")
 
-print(f"Element at '0', 'Name': {df.loc[0, 'Name']}")
-print(f"Element at '0', 'Name': {df.loc[0, 'City']}")
-print(f"Element at position (0, 1): {df.iloc[0, 1]}")
-print(f"Element at position (2, 2): {df.iloc[2, 2]}")
+    # Print the names of the rows (index)
+    print("Row names:")
+    print(df.index)
 
-# Print the names of the rows (index)
-print("Row names:")
-print(df.index)
-
-# Print the names of the columns
-print("\nColumn names:")
-print(df.columns)
-
-
-    # Example NumPy array
-data = np.array([[1, 2, 3],
-                 [4, 5, 6],
-                 [7, 8, 9]])
-
-analyze_object(data)
-print(f"npArray:\n {data} \nShape: {data.shape}" )
-for d in data:
-    print(f"Iterating npArray\n : {d}")
-
-# Create a DataFrame from the NumPy array
-df = pd.DataFrame(data)
-analyze_object(df)
-# We can optionally add row and column names
-df.columns = ['Column1', 'Column2', 'Column3']
-df.index = ['Row1', 'Row2', 'Row3']
-
-# Print the DataFrame
-print(f"DataFrame:\n {df} \nShape: {df.shape}" )
+    # Print the names of the columns
+    print("\nColumn names:")
+    print(df.columns)
 
 
-# In pandas DataFrames, when using .loc[], you first specify the row label and then the column label. 
-print(f"Element at 'Row1', 'Column1': {df.loc['Row1', 'Column1']}")
-print(f"Element at 'Row3', 'Column2': {df.loc['Row3', 'Column2']}")
-print(f"Element at position (0, 1): {df.iloc[0, 1]}")
-print(f"Element at position (2, 2): {df.iloc[2, 2]}")
+        # Example NumPy array
+    data = np.array([[1, 2, 3],
+                    [4, 5, 6],
+                    [7, 8, 9]])
 
-# Print the names of the rows (index)
-print("Row names:")
-print(df.index)
+    analyze_object(data)
+    print(f"npArray:\n {data} \nShape: {data.shape}" )
+    for d in data:
+        print(f"Iterating npArray\n : {d}")
 
-# Print the names of the columns
-print("\nColumn names:")
-print(df.columns)
+    # Create a DataFrame from the NumPy array
+    df = pd.DataFrame(data)
+    analyze_object(df)
+    # We can optionally add row and column names
+    df.columns = ['Column1', 'Column2', 'Column3']
+    df.index = ['Row1', 'Row2', 'Row3']
 
-
-# Iterate over columns
-for col_name, col_data in df.items():
-    print(f'Column name: {col_name}')
-    print(f'Column data:\n{col_data}')
-    print('---')
-
-    # Iterate over rows
-for idx, row in df.iterrows():
-    print(f'Row index: {idx}')
-    print(f'Row data:\n{row}')
-    print('---')
+    # Print the DataFrame
+    print(f"DataFrame:\n {df} \nShape: {df.shape}" )
 
 
-#     # Sample data
-# X = np.array([1, 2, 3, 4, 5])
-# y = np.array([0, 1, 0, 1, 1])
+    # In pandas DataFrames, when using .loc[], you first specify the row label and then the column label. 
+    print(f"Element at 'Row1', 'Column1': {df.loc['Row1', 'Column1']}")
+    print(f"Element at 'Row3', 'Column2': {df.loc['Row3', 'Column2']}")
+    print(f"Element at position (0, 1): {df.iloc[0, 1]}")
+    print(f"Element at position (2, 2): {df.iloc[2, 2]}")
 
-# # Create a TensorFlow dataset from tensors
-# dataset = tf.data.Dataset.from_tensor_slices((X, y))
-# print(f"X numpy array is = {X}")
-# # Iterate over the dataset
-# for x_elem, y_elem in dataset:
-#     print("X:", x_elem.numpy(), "Y:", y_elem.numpy())
-    
+    # Print the names of the rows (index)
+    print("Row names:")
+    print(df.index)
 
-# Example list of strings
-list_of_strings = ['description 1', 'description 2', 'description 3']
+    # Print the names of the columns
+    print("\nColumn names:")
+    print(df.columns)
 
-# Create a DataFrame
-df = pd.DataFrame(list_of_strings, columns=['descriptions'])
 
-# Print the DataFrame
-print(df)
+    # Iterate over columns
+    for col_name, col_data in df.items():
+        print(f'Column name: {col_name}')
+        print(f'Column data:\n{col_data}')
+        print('---')
 
-# Print the DataFrame
-print(f"DataFrame:\n {df} \nShape: {df.shape}" )
+        # Iterate over rows
+    for idx, row in df.iterrows():
+        print(f'Row index: {idx}')
+        print(f'Row data:\n{row}')
+        print('---')
+
+
+        
+
+    # Example list of strings
+    list_of_strings = ['description 1', 'description 2', 'description 3']
+
+    # Create a DataFrame
+    df = pd.DataFrame(list_of_strings, columns=['descriptions'])
+
+    # Print the DataFrame
+    print(df)
+
+    # Print the DataFrame
+    print(f"DataFrame:\n {df} \nShape: {df.shape}" )
 
 
 
@@ -191,6 +185,15 @@ arr_2d = np.array([[1],
 analyze_object(arr_2d)
 print("Array:")
 print(arr_2d)
+
+
+# Creating an array with shape (1,3)
+print(f"Creating an array with shape (1,3).\n")
+array_1x3 = np.array([[1, 2, 3]])
+analyze_object(array_1x3)
+print(array_1x3)
+
+
 
 # Creating an array with shape (3,0)
 print(f"Creating an empty numpy array with shape (3,0).\n")
@@ -286,3 +289,14 @@ print(f"Tensor Element:\n {element.numpy()}\n")  # Convert to NumPy array for pr
 # Extract a sub-tensor
 sub_tensor = tensor[:, 1:]  # Extracts all rows, but only columns from index 1 onwards
 print(f"Sub Tensor:\n{sub_tensor.numpy()}\n")   # Convert to NumPy array for printing
+
+print(f"Creating a tensor with shape (3,2,3).\n This indicates a three-dimensional tensor with 3 rows and 3 columns, where each element in the array is itself an array with 3 elements.")
+# Create a 3-dimensional tensor
+tensor_3d = tf.constant([
+    [[1, 2, 3], [4, 5, 6]],
+    [[7, 8, 9], [10, 11, 12]],
+    [[13, 14, 15], [16, 17, 18]]
+])
+
+analyze_object(tensor_3d)
+print(tensor_3d)

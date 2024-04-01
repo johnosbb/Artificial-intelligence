@@ -18,6 +18,8 @@ Pandas is an open-source Python library that provides high-level data structures
 
 **DataFrame:** A DataFrame is a two-dimensional labeled data structure with columns of potentially different types. It is part of the pandas library and is designed for handling tabular data. A DataFrame is specifically designed to be a two-dimensional labeled data structure. It cannot have more than two dimensions. Each column in a DataFrame represents a different variable, and each row represents a different observation.
 
+![image](./images/pandas_datastructure.png)
+
 ### Data Types
 
 DataFrames can contain columns of different data types (e.g., integers, floats, strings, etc.). Each column in a DataFrame is essentially a pandas Series, which can have its own data type.
@@ -61,6 +63,8 @@ print(df)
 3  Linda   45  Sydney
 ```
 
+![image](./images/pandas_datastructure_example.png)
+
 #### Referencing Elements in the Dataset
 
 **Note**: In pandas DataFrames, when using .loc[], you first specify the row label and then the column label.
@@ -87,6 +91,16 @@ NumPy is a fundamental Python library for numerical computing that provides supp
 
 A NumPy array is a grid of values of the same type. It is part of the NumPy library and is used for numerical computing. While arrays can have multiple dimensions, they lack built-in support for row and column labels.
 
+![image](./images/numpy_datastructure_3_1.png)
+
+![image](./images/numpy_datastructure_3_2.png)
+
+![image](./images/numpy_datastructure_1_3.png)
+
+![image](./images/numpy_datastructure_3_3.png)
+
+![image](./images/numpy_datastructure_3_2_3.png)
+
 ### Data Types
 
 NumPy arrays are homogeneous, meaning all elements in an array must have the same data type. This allows for more efficient storage and operations on numerical data.
@@ -112,6 +126,10 @@ TensorFlow is a popular library for working with tensors in Python. Developed by
 ### Data Representation
 
 In TensorFlow, data is represented primarily using tensors, which are multi-dimensional arrays with a fixed data type. Tensors can have any number of dimensions, allowing for flexible representation of data ranging from scalars (0-dimensional tensors) to higher-dimensional arrays. TensorFlow tensors can hold numerical data, such as integers or floating-point numbers, as well as string data and boolean values.
+
+![image](./images/tensor_datastructure.png)
+
+![image](./images/tensor_datastructure_3_2_3.png)
 
 ### Data Types
 
@@ -164,6 +182,7 @@ def analyze_object(obj):
     elif isinstance(obj, np.ndarray):
         print("Object is a NumPy array")
         print("Shape:", obj.shape)
+        print("Number of dimensions in this array: ", obj.ndim)
         print("Length of NumPy Array:", len(obj))
         print("Type of elements:", obj.dtype)
         print("First 3 elements:")
@@ -178,6 +197,4 @@ def analyze_object(obj):
         print(obj[:3])
     else:
         print("Unknown type")
-
-    print("------------------------Object Analysis Ends--------------------------")
 ```
