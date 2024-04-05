@@ -1,10 +1,12 @@
 import tensorflow as tf
 import numpy as np
 import pandas as pd
+import torch
 
 
 
-SHOW_DATAFRAMES=False
+
+SHOW_DATAFRAMES=True
 
 def analyze_object(obj):
     print("------------------------Object Analysis Begins--------------------------")
@@ -45,6 +47,14 @@ def analyze_object(obj):
         print("Shape:", obj.shape)
         print("Dimensions in this tensor: ", obj.ndim)
         print("Length of TensorFlow Object:", obj.shape[0])
+        print("Data type:", obj.dtype)
+        print("First 3 elements:")
+        print(obj[:3])
+    elif isinstance(obj, torch.Tensor):
+        print("Object is a PyTorch tensor")
+        print("Shape:", obj.shape)
+        print("Dimensions in this tensor: ", obj.dim())
+        print("Length of PyTorch tensor:", obj.size(0))
         print("Data type:", obj.dtype)
         print("First 3 elements:")
         print(obj[:3])
@@ -164,8 +174,37 @@ if SHOW_DATAFRAMES:
     # Print the DataFrame
     print(f"DataFrame:\n {df} \nShape: {df.shape}" )
 
+    print(f"Extracting a subset from a dataframe.\n")
 
+    # Example DataFrame
+    data = {
+        'A': [1, 2, 3],
+        'B': [4, 5, 6],
+        'C': [7, 8, 9]
+    }
+    df = pd.DataFrame(data)
+    print(data)
+    # Extracting a subset of columns
+    subset = df[['A', 'C']]  # Selecting columns 'A' and 'C'
+    print("Subset\n")
+    print(subset)
 
+print("We can also select a subset of a dataframe that consists of every second row.")
+
+# Example DataFrame
+data = {
+    'A': [1, 2, 3, 4, 5],
+    'B': [6, 7, 8, 9, 10],
+    'C': [11, 12, 13, 14, 15]
+}
+df = pd.DataFrame(data)
+
+print(df)
+# Selecting every second row
+every_second_row = df.iloc[::2]
+
+print("every_second_row\n")
+print(every_second_row)
 
 # Creating an array with shape (3,)
 print(f"Creating a numpy array with shape (3,).\n This array has three elements along a single dimension")
@@ -231,7 +270,21 @@ print(f"Subset [:, 1, :]:\n{array_3d[:, 1, :]}")
 
 
 
+# Example NumPy array
+array = np.array([[1, 2, 3], [4, 5, 6], [7, 8, 9]])
 
+# Extracting a subset of columns
+subset = array[:, [0, 2]]  # Selecting columns 0 and 2
+
+print(subset)
+
+# Example NumPy array
+array = np.array([[1, 2, 3], [4, 5, 6], [7, 8, 9], [10, 11, 12]])
+
+# Selecting every second row
+every_second_row = array[::2]
+
+print(every_second_row)
 
 
 """
@@ -263,6 +316,8 @@ print(f"The element at a: {s.loc['a']}")
 print(f"The element at row 2: {s.iloc[2]}")
 
 
+
+print(f"Creating a tensorflow tensor with shape (2,3).\n")
 # Create a TensorFlow tensor
 tensor = tf.constant([[1, 2, 3], [4, 5, 6]])
 
@@ -290,7 +345,7 @@ print(f"Tensor Element:\n {element.numpy()}\n")  # Convert to NumPy array for pr
 sub_tensor = tensor[:, 1:]  # Extracts all rows, but only columns from index 1 onwards
 print(f"Sub Tensor:\n{sub_tensor.numpy()}\n")   # Convert to NumPy array for printing
 
-print(f"Creating a tensor with shape (3,2,3).\n This indicates a three-dimensional tensor with 3 rows and 3 columns, where each element in the array is itself an array with 3 elements.")
+print(f"Creating a tensorflow tensor with shape (3,2,3).\n This indicates a three-dimensional tensor with 3 rows and 3 columns, where each element in the array is itself an array with 3 elements.")
 # Create a 3-dimensional tensor
 tensor_3d = tf.constant([
     [[1, 2, 3], [4, 5, 6]],
@@ -300,3 +355,39 @@ tensor_3d = tf.constant([
 
 analyze_object(tensor_3d)
 print(tensor_3d)
+
+print(f"Creating a torch tensor with shape (2,3).\n")
+# Create a PyTorch tensor
+tensor = torch.tensor([[1, 2, 3], [4, 5, 6]])
+
+analyze_object(tensor)
+print(tensor)
+
+# Accessing individual elements
+print("Element at position (0, 0):", tensor[0, 0])  # Accessing the element in the first row and first column
+print("Element at position (1, 2):", tensor[1, 2])  # Accessing the element in the second row and third column
+
+# Slicing to access subsets of the tensor
+print("First row:", tensor[0])    # Accessing the first row
+print("Second column:", tensor[:, 1])  # Accessing the second column
+
+
+print(f"Creating a torch tensor subset of every second row\n")
+
+# Example PyTorch tensor
+tensor = torch.tensor([[1, 2, 3], [4, 5, 6], [7, 8, 9], [10, 11, 12]])
+print(tensor)
+# Selecting every second row
+every_second_row = tensor[::2]
+print("Every_second_row\n")
+print(every_second_row)
+
+
+print(f"Creating a torch tensor subset of columns\n")
+# Example PyTorch tensor
+tensor = torch.tensor([[1, 2, 3], [4, 5, 6], [7, 8, 9], [10, 11, 12]])
+print(tensor)
+# Selecting a subset of columns
+subset = tensor[:, [0, 2]]  # Selecting columns 0 and 2
+print("Column Subset\n")
+print(subset)
