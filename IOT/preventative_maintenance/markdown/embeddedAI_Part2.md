@@ -65,7 +65,7 @@ print(df)
 
 The concept of shape is very important when dealing with different data formats. The dataframe above, for example, has a shape of (4,3).
 
-#### Referencing Elements in the Dataset
+#### Referencing Elements in the Dataframe
 
 **Note**: In pandas DataFrames, when using .loc[], you first specify the row label and then the column label.
 
