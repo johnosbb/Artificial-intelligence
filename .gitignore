@@ -137,3 +137,6 @@ IOT/preventative_maintenance/data/
 IOT/tool_wear/data/
 IOT/weather/data/
 TextStyleTransfer/Transfer_Learning_for_Natural_Language/data/
+Transformers/kantibert/content/
+Transformers/kantibert/kant.txt
+Transformers/kantibert/.vscode/
