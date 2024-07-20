@@ -140,3 +140,6 @@ TextStyleTransfer/Transfer_Learning_for_Natural_Language/data/
 Transformers/kantibert/content/
 Transformers/kantibert/kant.txt
 Transformers/kantibert/.vscode/
+Transformers/trax/data/
+Transformers/trax/.vscode/
+Transformers/TransformerExamples/data
