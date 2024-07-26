@@ -19,7 +19,7 @@ import re
 #!curl -H 'Authorization: token {github_token}' -L https://raw.githubusercontent.com/Denis2054/Transformers-for-NLP-and-Computer-Vision-3rd-Edition/master/Chapter08/gutenberg.org_cache_epub_4280_pg4280.html --output "gutenberg.org_cache_epub_4280_pg4280.html"
 
 # Open and read the downloaded HTML file
-with open("./data/gutenberg.org_cache_epub_4280_pg4280.html", 'r', encoding='utf-8') as file:
+with open("./data/mv ../.org_cache_epub_4280_pg4280.html", 'r', encoding='utf-8') as file:
     file_contents = file.read()
 
 # Parse the file contents using BeautifulSoup
@@ -28,6 +28,8 @@ soup = BeautifulSoup(file_contents, 'html.parser')
 # Get the text of the book and clean it up a bit
 text = soup.get_text()
 text = re.sub('\s+', ' ', text).strip()
+
+
 
 # Split the text into sentences
 sentences = sent_tokenize(text)

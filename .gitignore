@@ -143,3 +143,9 @@ Transformers/kantibert/.vscode/
 Transformers/trax/data/
 Transformers/trax/.vscode/
 Transformers/TransformerExamples/data
+Transformers/TransformerExamples/models
+Transformers/TransformerExamples/config
+Transformers/TransformerExamples/logs
+Transformers/TransformerExamples/results
+Transformers/TransformerExamples/results_large
+

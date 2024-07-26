@@ -1,0 +1,4 @@
+To enable the following instructions: AVX2 AVX_VNNI FMA, in other operations, rebuild TensorFlow with the appropriate compiler flags.
+2024-07-24 15:24:02.306137: W tensorflow/compiler/tf2tensorrt/utils/py_utils.cc:38] TF-TRT Warning: Could not find TensorRT
+Generating train split: 50600 examples [00:00, 1966802.73 examples/s]
+Map:  51%|██████████████████████████████████████████████████████████████████████████▌                                                                      | 26000/50600 [00:01<00:00, 25472.56 examples/s]Token indices sequence length is longer than the specified maximum sequence length for this model (1402 > 1024). Running this sequence through the model will result in indexing errors
