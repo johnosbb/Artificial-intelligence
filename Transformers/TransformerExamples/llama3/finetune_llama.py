@@ -47,14 +47,14 @@ token_reference = get_token_reference(hf_token_name, token_references)
 
 login(token = token_reference)
 
-wb_token = get_token_reference(wb_token_name, token_references)
+# wb_token = get_token_reference(wb_token_name, token_references)
 
-wandb.login(key=wb_token)
-run = wandb.init(
-    project='Fine-tune Llama 3 8B on Medical Dataset', 
-    job_type="training", 
-    anonymous="allow"
-)
+# wandb.login(key=wb_token)
+# run = wandb.init(
+#     project='Fine-tune Llama 3 8B on Medical Dataset', 
+#     job_type="training", 
+#     anonymous="allow"
+# )
 
 base_model = "meta-llama/Meta-Llama-3.1-8B-Instruct"
 dataset_name = "ruslanmv/ai-medical-chatbot"
@@ -69,6 +69,7 @@ bnb_config = BitsAndBytesConfig(
     bnb_4bit_quant_type="nf4",
     bnb_4bit_compute_dtype=torch_dtype,
     bnb_4bit_use_double_quant=True,
+    llm_int8_enable_fp32_cpu_offload=True,
 )
 
 # Load model
@@ -136,8 +137,7 @@ training_arguments = TrainingArguments(
     learning_rate=2e-4,
     fp16=False,
     bf16=False,
-    group_by_length=True,
-    report_to="wandb"
+    group_by_length=True
 )
 
 
