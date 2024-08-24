@@ -2,6 +2,8 @@ import time
 from gensim.models import FastText, KeyedVectors
 import re
 import nltk
+from sklearn.linear_model import LogisticRegression
+from sklearn.metrics import accuracy_score
 
 Nsamp = 1000 # number of samples to generate in each class - 'spam', 'not spam'
 maxtokens = 200 # the maximum number of tokens per document
@@ -104,7 +106,7 @@ def unison_shuffle_data(data, header):
     header = np.asarray(header)[p]
     return data, header
 
-# load data in appropriate form
+
 # load data in appropriate form
 def load_data(path):
     data, sentiments = [], []
@@ -194,3 +196,26 @@ print(len(train_x))
 print(train_x)
 print(train_y[:5])
 print(len(train_y))
+
+
+def fit(train_x,train_y):
+    model = LogisticRegression()
+
+    try:
+        model.fit(train_x, train_y)
+    except:
+        pass
+    return model
+
+model = fit(train_x,train_y)
+
+predicted_labels = model.predict(test_x)
+print("DEBUG::The logistic regression predicted labels are::")
+print(predicted_labels)
+
+
+
+acc_score = accuracy_score(test_y, predicted_labels)
+
+print("The logistic regression accuracy score is::")
+print(acc_score)

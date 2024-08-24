@@ -126,7 +126,7 @@ NumPy is a fundamental Python library for numerical computing that provides supp
 
 ### Data Representation
 
-NumPy arrays are homogeneous arrays of fixed size that support multi-dimensional indexing and slicing. While lacking built-in support for row and column labels, NumPy arrays excel in numerical operations and memory efficiency. While arrays can have multiple dimensions, they lack built-in support for row and column labels. The concept of shape is again very important when dealing with issues associated with formating data for models. Below are a number of data shapes for Numpy Arrays.
+NumPy arrays are homogeneous arrays of fixed size that support multi-dimensional indexing and slicing. While lacking built-in support for row and column labels, NumPy arrays excel in numerical operations and memory efficiency. While arrays can have multiple dimensions, they lack built-in support for row and column labels. The concept of shape is again very important when dealing with issues associated with formatting data for models. Below are a number of data shapes for Numpy Arrays.
 
 ![image](./images/numpy_datastructure_3_1.png)
 
@@ -202,6 +202,96 @@ every_second_row = array[::2]
 
 print(every_second_row)
 
+```
+
+### Applying Operations across a NumPy Array
+
+One of the most powerful features of numpy arrays is the ability to apply built-in functions across rows or columns in the array.
+
+```python
+# Create a sample 2D NumPy array
+arr = np.array([[1, 2, 3],
+                [4, 5, 6],
+                [7, 8, 9]])
+
+# Calculate the mean of each row
+row_means = np.mean(arr, axis=1)
+
+# Print the mean of each row
+print("Mean of each row:")
+for i, mean in enumerate(row_means):
+    print(f"Row {i+1}: {mean}")
+
+```
+
+```
+Mean of each row:
+Row 1: 2.0
+Row 2: 5.0
+Row 3: 8.0
+```
+
+### Filtering Operations on NumPy Arrays
+
+We can also use NumPys filtering methods to extract a filtered set of rows and columns.
+
+```python
+# Create a sample 2D NumPy array
+arr = np.array([[1, 2, 3],
+                [4, 5, 6],
+                [7, 8, 9]])
+
+# Filter rows where the sum of elements is greater than 10
+filtered_rows = arr[arr.sum(axis=1) > 10]
+
+# Filter elements greater than 5
+filtered_elements = arr[arr > 5]
+
+# Print the filtered rows and elements
+print("Filtered rows where the sum of elements is greater than 10:")
+print(filtered_rows)
+
+print("\nFiltered elements greater than 5:")
+print(filtered_elements)
+
+```
+
+```
+Filtered rows where the sum of elements is greater than 10:
+[[4 5 6]
+ [7 8 9]]
+
+Filtered elements greater than 5:
+[6 7 8 9]
+```
+
+We can also apply filtering to columns.
+
+```python
+    # Filter columns where the sum of elements is greater than 10
+    filtered_columns = arr[:, arr.sum(axis=0) > 10]
+
+    # Filter elements in specific columns greater than 5
+    filtered_elements = arr[:, (arr[:, 1] > 5) | (arr[:, 2] > 5)]
+
+    # Print the filtered columns and elements
+    print("Filtered columns where the sum of elements is greater than 10:")
+    print(filtered_columns)
+
+    print("\nFiltered elements in specific columns greater than 5:")
+    print(filtered_elements)
+```
+
+```python
+Filtered columns where the sum of elements is greater than 10:
+[[1 2 3]
+ [4 5 6]
+ [7 8 9]]
+
+Filtered elements in specific columns greater than 5:
+[[2 3]
+ [5 6]
+ [8 9]]
 ```
 
 ## TensorFlow
