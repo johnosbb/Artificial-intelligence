@@ -16,5 +16,14 @@
             "command": "extension.execute",
             "priority": 4
         }
+    ],
+    "python.autoComplete.extraPaths": [
+        "c:/Users/johno/.vscode/extensions/rt-thread.rt-thread-micropython-1.0.11/microExamples/code-completion"
+    ],
+    "files.associations": {
+        ".mpyproject.json": "jsonc"
+    },
+    "python.analysis.extraPaths": [
+        "c:/Users/johno/.vscode/extensions/rt-thread.rt-thread-micropython-1.0.11/microExamples/code-completion"
     ]
 }

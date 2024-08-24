@@ -21,7 +21,7 @@ def get_weather_data_for_month(year, month, api_key):
     
     params = {
         'key': api_key,
-        'q': 'London',  # Change this to the location you want
+        'q': 'Limerick',  # Change this to the location you want
         'format': 'json',
         'date': start_date,
         'enddate': end_date,
@@ -81,7 +81,7 @@ with open(output_json_filename, 'w', encoding='utf-8') as json_file:
 # Save the aggregated weather data to a CSV file
 csv_filename = './data/aggregated_weather_data.csv'
 with open(csv_filename, 'w', newline='', encoding='utf-8') as csv_file:
-    fieldnames = ['date', 'average_temperature', 'humidity']
+    fieldnames = ['date', 'average_temperature', 'humidity', 'precipitation', 'wind_speed', 'pressure', 'cloud_cover', 'dew_point']
     writer = csv.DictWriter(csv_file, fieldnames=fieldnames)
 
     writer.writeheader()
@@ -90,11 +90,22 @@ with open(csv_filename, 'w', newline='', encoding='utf-8') as csv_file:
         date = day['date']
         avg_temp = day['avgtempC']
         humidity = day['hourly'][0]['humidity']
+        precipitation = day['hourly'][0]['precipMM']  # Get precipitation data
+        wind_speed = day['hourly'][0]['windspeedKmph']  # Get wind speed
+        pressure = day['hourly'][0]['pressure']  # Get pressure
+        cloud_cover = day['hourly'][0]['cloudcover']  # Get cloud cover
+        dew_point = day['hourly'][0]['DewPointC']  # Get dew point
+
         writer.writerow({
             'date': date,
             'average_temperature': f"{avg_temp} °C",
-            'humidity': f"{humidity}%"
+            'humidity': f"{humidity}%",
+            'precipitation': f"{precipitation} mm",
+            'wind_speed': f"{wind_speed} km/h",
+            'pressure': f"{pressure} hPa",
+            'cloud_cover': f"{cloud_cover}%",
+            'dew_point': f"{dew_point} °C"
         })
-        print(f"Date: {date}, Avg Temp: {avg_temp}°C, Humidity: {humidity}%")
+        print(f"Date: {date}, Avg Temp: {avg_temp}°C, Humidity: {humidity}%, Precipitation: {precipitation} mm, Wind Speed: {wind_speed} km/h, Pressure: {pressure} hPa, Cloud Cover: {cloud_cover}%, Dew Point: {dew_point} °C")
 
 print(f"Aggregated weather data has been saved to {csv_filename}")
