@@ -91,15 +91,10 @@ limitations under the License.
 #endif  // PERIPHERALS_H_
 ```
 
-Create a Zip File
+
+Some core APIs do not have an implementation of RingBuffer, so it is best to add one. Create a RingBuffeTf.h in $ARDUINO_LIB_NAME/src/tensorflow/lite/micro/
 
 ```
-ZIP_FILENAME="$ARDUINO_LIB_NAME"".zip"
-zip -r $ZIP_FILENAME $ARDUINO_LIB_NAME -q
-```
-
-```
-
 /*
   Copyright (c) 2014 Arduino.  All right reserved.
 
@@ -120,8 +115,8 @@ zip -r $ZIP_FILENAME $ARDUINO_LIB_NAME -q
 
 #ifdef __cplusplus
 
-#ifndef _RING_BUFFER_
-#define _RING_BUFFER_
+#ifndef _RING_BUFFER_TF_
+#define _RING_BUFFER_TF_
 
 #include <stdint.h>
 #include <string.h>
@@ -135,7 +130,7 @@ namespace arduino {
 #define SERIAL_BUFFER_SIZE 64
 
 template <int N>
-class RingBufferN
+class RingBufferNN
 {
   public:
     uint8_t _aucBuffer[N] ;
@@ -144,7 +139,7 @@ class RingBufferN
     volatile int _numElems;
 
   public:
-    RingBufferN( void ) ;
+    RingBufferNN( void ) ;
     void store_char( uint8_t c ) ;
     void clear();
     int read_char();
@@ -158,18 +153,18 @@ class RingBufferN
     inline bool isEmpty() const { return (_numElems == 0); }
 };
 
-typedef RingBufferN<SERIAL_BUFFER_SIZE> RingBuffer;
+typedef RingBufferNN<SERIAL_BUFFER_SIZE> RingBuffer;
 
 
 template <int N>
-RingBufferN<N>::RingBufferN( void )
+RingBufferNN<N>::RingBufferNN( void )
 {
     memset( _aucBuffer, 0, N ) ;
     clear();
 }
 
 template <int N>
-void RingBufferN<N>::store_char( uint8_t c )
+void RingBufferNN<N>::store_char( uint8_t c )
 {
   // if we should be storing the received character into the location
   // just before the tail (meaning that the head would advance to the
@@ -184,7 +179,7 @@ void RingBufferN<N>::store_char( uint8_t c )
 }
 
 template <int N>
-void RingBufferN<N>::clear()
+void RingBufferNN<N>::clear()
 {
   _iHead = 0;
   _iTail = 0;
@@ -192,7 +187,7 @@ void RingBufferN<N>::clear()
 }
 
 template <int N>
-int RingBufferN<N>::read_char()
+int RingBufferNN<N>::read_char()
 {
   if (isEmpty())
     return -1;
@@ -205,19 +200,19 @@ int RingBufferN<N>::read_char()
 }
 
 template <int N>
-int RingBufferN<N>::available()
+int RingBufferNN<N>::available()
 {
   return _numElems;
 }
 
 template <int N>
-int RingBufferN<N>::availableForStore()
+int RingBufferNN<N>::availableForStore()
 {
   return (N - _numElems);
 }
 
 template <int N>
-int RingBufferN<N>::peek()
+int RingBufferNN<N>::peek()
 {
   if (isEmpty())
     return -1;
@@ -226,19 +221,45 @@ int RingBufferN<N>::peek()
 }
 
 template <int N>
-int RingBufferN<N>::nextIndex(int index)
+int RingBufferNN<N>::nextIndex(int index)
 {
   return (uint32_t)(index + 1) % N;
 }
 
 template <int N>
-bool RingBufferN<N>::isFull()
+bool RingBufferNN<N>::isFull()
 {
   return (_numElems == N);
 }
 
 }
 
-#endif /* _RING_BUFFER_ */
+#endif /* _RING_BUFFER_TF_ */
 #endif /* __cplusplus */
 ```
+
+Then add a reference to the RingBufferTf.h file in $ARDUINO_LIB_NAME/src/tensorflow/lite/micro/system_setup.cpp
+
+```
++ #include "tensorflow/lite/micro/RingBufferTf.h"
+#include "tensorflow/lite/micro/system_setup.h"
+#include <limits>
+
+#include "tensorflow/lite/micro/debug_log.h"
+```
+And change the ring buffer reference in $ARDUINO_LIB_NAME/src/tensorflow/lite/micro/system_setup.cpp from RingBufferN to RingBufferNN
+
+```
+    class _RingBuffer : public RingBufferNN<kSerialMaxInputLength + 1>
+    {
+```
+
+Create a Zip File
+
+```
+ZIP_FILENAME="$ARDUINO_LIB_NAME"".zip"
+zip -r $ZIP_FILENAME $ARDUINO_LIB_NAME -q
+```
+
+
+
