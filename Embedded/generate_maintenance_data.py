@@ -11,7 +11,7 @@ n = 1000
 rpm = np.random.normal(1600, 200, n)  # RPM centered around 1600 with std dev of 200
 temperature = np.random.normal(24, 5, n)  # Temperature centered around 24°C with std dev of 5
 vibration = np.random.normal(0.12, 0.02, n)  # Vibration centered around 0.12g with std dev of 0.02
-current = np.random.normal(7.5, 0.3, n)  # Current centered around 7.5A with std dev of 0.3
+current = np.random.normal(3.5, 0.3, n)  # Current centered around 3.5A with std dev of 0.3
 
 # Initialize the failure indicator
 motor_fails = np.zeros(n)

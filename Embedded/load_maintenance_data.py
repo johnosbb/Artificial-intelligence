@@ -25,6 +25,21 @@ data = pd.read_csv(file_path)
 # Display the first few rows of the dataset
 print(data.head())
 
+# Split the data into features and target
+X = data.drop('Motor Fails', axis=1)  # Features
+y = data['Motor Fails']  # Target
+
+# Calculate the mean and standard deviation for each feature before scaling and balancing
+feature_means = X.mean()
+feature_stds = X.std()
+
+# Print the statistical summary for each feature
+print("Statistical Summary of Features Before Scaling and Balancing:")
+for feature in X.columns:
+    print(f"{feature} - Mean: {feature_means[feature]:.3f}, Standard Deviation: {feature_stds[feature]:.3f}")
+
+
+
 # Count the occurrences of each class (0 or 1)
 counts = data['Motor Fails'].value_counts()
 
