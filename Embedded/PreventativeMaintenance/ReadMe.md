@@ -52,9 +52,9 @@ When converting floating-point values to integers, two important parameters are 
 
 The **scale** is calculated using the formula:
 
-$$
-\text{scale} = \frac{\text{max\_float} - \text{min\_float}}{\text{max\_int} - \text{min\_int}}
-$$
+```
+scale = (max_float - min_float) / (max_int - min_int)
+```
 
 where:
 
@@ -67,9 +67,9 @@ where:
 
 The **zero point** is calculated using the formula:
 
-$$
-\text{zero\_point} = \text{round} \left( \frac{\text{min\_float}}{\text{scale}} \right)
-$$
+```
+zero_point = round(min_float / scale)
+```
 
 where:
 
@@ -81,12 +81,12 @@ For a floating-point range from -1.0 to 1.0 and an 8-bit signed integer range fr
 
 1. **Calculate Scale:**
 
-   $$
-   \text{scale} = \frac{1.0 - (-1.0)}{127 - (-128)} = \frac{2.0}{255} \approx 0.00784
-   $$
+```
+scale = (1.0 - (-1.0)) / (127 - (-128)) = 2.0 / 255 ≈ 0.00784
+```
 
 2. **Calculate Zero Point:**
 
-   $$
-   \text{zero\_point} = \text{round} \left( \frac{-1.0}{0.00784} \right) = \text{round}(-127.56) = -128
-   $$
+```
+zero_point = round(-1.0 / 0.00784) = round(-127.56) = -128
+```
