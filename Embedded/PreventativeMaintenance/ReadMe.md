@@ -46,7 +46,7 @@ The script includes a function to generate a representative dataset used during 
 
 ### Scale and Zero Point Formulas
 
-### Scale and Zero Point Formulas
+When converting floating-point values to integers, two important parameters are the **scale** and the **zero point**.
 
 #### 1. Scale Calculation
 
@@ -58,10 +58,10 @@ $$
 
 where:
 
-- \(\text{max_float}\) is the maximum floating-point value.
-- \(\text{min_float}\) is the minimum floating-point value.
-- \(\text{max_int}\) is the maximum integer value representable in the target integer type.
-- \(\text{min_int}\) is the minimum integer value representable in the target integer type.
+- `max_float` is the maximum floating-point value.
+- `min_float` is the minimum floating-point value.
+- `max_int` is the maximum integer value representable in the target integer type.
+- `min_int` is the minimum integer value representable in the target integer type.
 
 #### 2. Zero Point Calculation
 
@@ -73,7 +73,7 @@ $$
 
 where:
 
-- \(\text{min_float}\) is the minimum floating-point value.
+- `min_float` is the minimum floating-point value.
 
 ### Example
 
