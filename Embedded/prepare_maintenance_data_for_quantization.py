@@ -54,4 +54,5 @@ tflite_model_quant = converter.convert()
 open("./models/preventive_forecast.tflite", "wb").write(tflite_model_quant)
 
 
-
+size_tfl_model = len(tflite_model_quant)
+print(f"Quantisised Model size in bytes:  {len(tflite_model_quant)} bytes")

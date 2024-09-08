@@ -9,19 +9,19 @@ n = 1000
 
 # Generate random data for features with specific ranges
 rpm = np.random.normal(1600, 200, n)  # RPM centered around 1600 with std dev of 200
-temperature = np.random.normal(55, 5, n)  # Temperature centered around 55°C with std dev of 5
-vibration = np.random.normal(0.04, 0.02, n)  # Vibration centered around 0.04g with std dev of 0.02
-current = np.random.normal(1.5, 0.3, n)  # Current centered around 1.5A with std dev of 0.3
+temperature = np.random.normal(24, 5, n)  # Temperature centered around 24°C with std dev of 5
+vibration = np.random.normal(0.12, 0.02, n)  # Vibration centered around 0.12g with std dev of 0.02
+current = np.random.normal(3.5, 0.3, n)  # Current centered around 3.5A with std dev of 0.3
 
 # Initialize the failure indicator
 motor_fails = np.zeros(n)
 
 # Define thresholds for failure conditions
-high_temp_threshold = 60
+high_temp_threshold = 30
 low_rpm_threshold = 1500
-high_vibration_threshold = 0.06
-abnormal_current_low_threshold = 1.2
-abnormal_current_high_threshold = 1.8
+high_vibration_threshold = 0.60
+abnormal_current_low_threshold = 4.2
+abnormal_current_high_threshold = 10.8
 
 # Determine failure based on defined thresholds
 for i in range(n):
