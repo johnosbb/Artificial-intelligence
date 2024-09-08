@@ -41,3 +41,46 @@ This script is designed to convert a trained TensorFlow model into a TensorFlow 
 Quantization is a technique used to reduce the precision of model parameters, converting them from 32-bit floating-point numbers to 8-bit integers. This helps to decrease the model size and increase inference speed, which is crucial for deploying models on resource-constrained devices.
 
 The script includes a function to generate a representative dataset used during the quantization process. This dataset helps the converter to understand the data distribution and apply appropriate scaling to the quantized model. It then configures the TFLite converter to use this representative dataset, applies the quantization optimizations, and sets the operation types to ensure the model is compatible with 8-bit integer quantization. Finally, the script converts the model, saves the quantized TFLite model to a file, and prints the size of the quantized model in bytes.
+
+## A Note on Scale and Zero-Point
+
+### Scale and Zero Point Formulas
+
+#### 1. Scale Calculation
+
+The **scale** determines the step size in the floating-point space for each step in the integer space. It is calculated as:
+
+\[ \text{scale} = \frac{\text{max_float} - \text{min_float}}{\text{max_int} - \text{min_int}} \]
+
+where:
+
+- `max_float` is the maximum floating-point value in the range of the data.
+- `min_float` is the minimum floating-point value in the range of the data.
+- `max_int` is the maximum integer value representable in the target integer type (e.g., 127 for 8-bit integers).
+- `min_int` is the minimum integer value representable in the target integer type (e.g., -128 for 8-bit integers).
+
+#### 2. Zero Point Calculation
+
+The **zero point** is used to shift the range of floating-point values to align with the integer range. It is calculated as:
+
+\[ \text{zero_point} = \text{round} \left( \frac{\text{min_float}}{\text{scale}} \right) \]
+
+where:
+
+- `min_float` is the minimum floating-point value in the range of the data.
+
+### Example
+
+For a floating-point range from -1.0 to 1.0 and an 8-bit signed integer range from -128 to 127:
+
+1. **Calculate Scale:**
+
+   \[
+   \text{scale} = \frac{1.0 - (-1.0)}{127 - (-128)} = \frac{2.0}{255} \approx 0.00784
+   \]
+
+2. **Calculate Zero Point:**
+
+   \[
+   \text{zero_point} = \text{round} \left( \frac{-1.0}{0.00784} \right) = \text{round}(-127.56) = -128
+   \]
