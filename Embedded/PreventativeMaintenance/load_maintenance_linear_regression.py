@@ -9,11 +9,13 @@ import tensorflow as tf
 from tensorflow.keras import layers
 import sklearn
 from sklearn.utils import class_weight
-from tensorflow.keras.callbacks import EarlyStopping
+from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score, confusion_matrix
+from sklearn.linear_model import LogisticRegression
 
 SHOW_DISTRIBUTIONS = False
 SIMPLE_MODEL = True
-USE_SMOTE=False
+LINEAR_REGRESSION = True
+USE_SMOTE=True
 NUMBER_OF_FEATURES=8 #32
 NUM_EPOCHS = 20
 BATCH_SIZE = 64
@@ -64,8 +66,8 @@ x_train, x_validate_test, y_train, y_validate_test = train_test_split(X, y, test
 x_test, x_validate, y_test, y_validate = train_test_split(x_validate_test, y_validate_test, test_size=0.50, random_state=3)
 
 if USE_SMOTE:
-    # Apply SMOTE to balance the training data
-    smote = SMOTE(random_state=42)
+    # Adjusted SMOTE parameters
+    smote = SMOTE(k_neighbors=3, sampling_strategy=0.5, random_state=42, n_jobs=-1)
     X_train_balanced, y_train_balanced = smote.fit_resample(x_train, y_train)
     # Check the distribution of the target variable after balancing
     print("Distribution of 'Motor Fails' after SMOTE:")
@@ -73,6 +75,22 @@ if USE_SMOTE:
 else:
     X_train_balanced = x_train
     y_train_balanced = y_train.values  # Convert to NumPy array
+
+
+# Convert the balanced and scaled data back to a DataFrame for visualization
+X_train_balanced_df = pd.DataFrame(X_train_balanced, columns=x_train.columns)
+
+if SHOW_DISTRIBUTIONS:
+    # Visualize RPM vs. Temperature for synthetic vs. real data
+    plt.figure(figsize=(10, 6))
+    sns.scatterplot(x=X_train_balanced_df['RPM'], y=X_train_balanced_df['Temperature (°C)'], hue=y_train_balanced)
+    plt.title('RPM vs. Temperature after SMOTE')
+    plt.show()
+
+
+# Check the distribution of the target variable after balancing
+print("Distribution of 'Motor Fails' after SMOTE:")
+print(y_train_balanced.value_counts())
 
 
 # Scale the features using Z-score normalization
@@ -112,54 +130,42 @@ f_names = X_train_balanced_scaled_df.columns.values
 x = X_train_balanced_scaled_df[f_names]
 print(f"x={f_names}:{x}")
 
-if SIMPLE_MODEL:
-    model = tf.keras.Sequential([
-    layers.Input(shape=(X_train_balanced_scaled.shape[1],)),
-    layers.Dense(NUMBER_OF_FEATURES, activation='relu'),
-    layers.Dense(1, activation='sigmoid')  # Single output neuron with sigmoid
-])
-else:
-    # Define the model with increased complexity
-    model = tf.keras.Sequential()
-    model.add(layers.Dense(NUMBER_OF_FEATURES, activation='relu', input_shape=(len(f_names),)))
-    model.add(layers.Dropout(0.3))
-    model.add(layers.Dense(16, activation='relu'))
-    model.add(layers.Dropout(0.3))
-    model.add(layers.Dense(1, activation='sigmoid'))
-    model.summary()
+
+# Train a simple Logistic Regression model
+model = LogisticRegression(class_weight='balanced')  # 'balanced' automatically adjusts weights based on class distribution
+
+
 
 # Compile the model with class weights to handle imbalance
+
 # Calculate class weights
 class_weights = class_weight.compute_class_weight('balanced', classes=np.unique(y_train), y=y_train)
-class_weights_dict = dict(enumerate(class_weights))
-#class_weights_dict = {0: 1.0, 1: 1.0}  # Adjust weights based on class imbalance if required
-model.compile(loss='binary_crossentropy', optimizer='adam', metrics=['accuracy'])
+if USE_SMOTE:
+    class_weights_dict = None # Remove class weights is using smote
+else:    
+    class_weights_dict = dict(enumerate(class_weights))
 
-
-# Use early stopping to prevent overfitting
-early_stopping = EarlyStopping(monitor='val_loss', patience=10, restore_best_weights=True)
 
 
 # Train the model
 
-history = model.fit(X_train_balanced_scaled, y_train_balanced,
-                    epochs=NUM_EPOCHS, 
-                    batch_size=BATCH_SIZE, 
-                    validation_data=(X_validate_scaled, y_validate),
-                    class_weight=class_weights_dict, callbacks=[early_stopping])
+model.fit(X_train_balanced_scaled, y_train_balanced)
 
-# Save the model in native Keras format
-model.save("./models/preventive_forecast.keras")
-model.export("./models/preventive_forecast_saved_model")
 
-# Evaluate the model
-test_loss, test_accuracy = model.evaluate(X_test_scaled, y_test)
-print(f"Test Accuracy: {test_accuracy}")
+
 
 # Predict and adjust the threshold
 y_test_pred = model.predict(X_test_scaled)
 adjusted_threshold = 0.514  # Adjust this value as needed
 y_test_pred = (y_test_pred > adjusted_threshold).astype("int32")
+
+# Evaluate the model
+test_accuracy = accuracy_score(y_test, y_test_pred)
+test_precision = precision_score(y_test, y_test_pred)
+test_recall = recall_score(y_test, y_test_pred)
+test_f1 = f1_score(y_test, y_test_pred)
+
+print(f"Test Accuracy: {test_accuracy}")
 
 # Generate confusion matrix
 cm = sklearn.metrics.confusion_matrix(y_test, y_test_pred)

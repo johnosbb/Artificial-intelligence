@@ -7,7 +7,6 @@ ARDUINO_LIB_NAME='Arduino_TensorFlowLite'
 git clone https://github.com/tensorflow/tflite-micro-arduino-examples.git $ARDUINO_LIB_NAME
 ```
 
-
 ## Checkout a Specific Hash
 
 ```
@@ -90,7 +89,6 @@ limitations under the License.
 
 #endif  // PERIPHERALS_H_
 ```
-
 
 Some core APIs do not have an implementation of RingBuffer, so it is best to add one. Create a RingBuffeTf.h in $ARDUINO_LIB_NAME/src/tensorflow/lite/micro/
 
@@ -247,6 +245,7 @@ Then add a reference to the RingBufferTf.h file in $ARDUINO_LIB_NAME/src/tensorf
 
 #include "tensorflow/lite/micro/debug_log.h"
 ```
+
 And change the ring buffer reference in $ARDUINO_LIB_NAME/src/tensorflow/lite/micro/system_setup.cpp from RingBufferN to RingBufferNN
 
 ```
@@ -260,6 +259,3 @@ Create a Zip File
 ZIP_FILENAME="$ARDUINO_LIB_NAME"".zip"
 zip -r $ZIP_FILENAME $ARDUINO_LIB_NAME -q
 ```
-
-
-

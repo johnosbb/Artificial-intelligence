@@ -1,5 +1,6 @@
 import numpy as np
 import pandas as pd
+import os
 
 # Set the seed for reproducibility
 np.random.seed(42)
@@ -20,19 +21,26 @@ motor_fails = np.zeros(n)
 high_temp_threshold = 30
 low_rpm_threshold = 1500
 high_vibration_threshold = 0.60
-abnormal_current_low_threshold = 4.2
+abnormal_current_low_threshold = 0.2
 abnormal_current_high_threshold = 10.8
 
-# Determine failure based on defined thresholds
 for i in range(n):
-    if (temperature[i] > high_temp_threshold or
-        rpm[i] < low_rpm_threshold or
-        vibration[i] > high_vibration_threshold or
-        current[i] < abnormal_current_low_threshold or
-        current[i] > abnormal_current_high_threshold):
+    # Check if failure conditions are met
+    condition_met = (temperature[i] > high_temp_threshold or
+                     rpm[i] < low_rpm_threshold or
+                     vibration[i] > high_vibration_threshold or
+                     current[i] < abnormal_current_low_threshold or
+                     current[i] > abnormal_current_high_threshold)
+
+    if condition_met:
         motor_fails[i] = np.random.choice([1, 0], p=[0.8, 0.2])  # Higher chance of failure if conditions met
     else:
         motor_fails[i] = np.random.choice([0, 1], p=[0.98, 0.02])  # Lower chance of failure otherwise
+
+    # Print warning if a failure is set but no threshold conditions are met
+    if motor_fails[i] == 1 and not condition_met:
+        print(f"Warning: Failure recorded at index {i} but no threshold conditions met.")
+        print(f"Values - RPM: {rpm[i]}, Temperature: {temperature[i]}, Vibration: {vibration[i]}, Current: {current[i]}\n")
 
 # Create a DataFrame
 data = pd.DataFrame({
@@ -45,6 +53,25 @@ data = pd.DataFrame({
 
 # Display the first few rows of the dataset
 print(data.head())
+
+# Count the occurrences of each class (0 or 1)
+counts = data['Motor Fails'].value_counts()
+
+# Calculate the ratio for each class
+ratios = counts / len(data)
+
+print("Class distribution (counts):")
+print(counts)
+
+print("\nClass distribution (ratios):")
+print(ratios)
+
+# Get the current working directory
+current_directory = os.getcwd()
+
+# Print the current working directory
+print("Running this code in the current working directory:", current_directory)
+
 
 # Save the data to a CSV file
 file_path = './data/predictive_maintenance_dataset.csv'
