@@ -46,28 +46,34 @@ The script includes a function to generate a representative dataset used during 
 
 ### Scale and Zero Point Formulas
 
+### Scale and Zero Point Formulas
+
 #### 1. Scale Calculation
 
-The **scale** determines the step size in the floating-point space for each step in the integer space. It is calculated as:
+The **scale** is calculated using the formula:
 
-\[ \text{scale} = \frac{\text{max_float} - \text{min_float}}{\text{max_int} - \text{min_int}} \]
+$$
+\text{scale} = \frac{\text{max\_float} - \text{min\_float}}{\text{max\_int} - \text{min\_int}}
+$$
 
 where:
 
-- `max_float` is the maximum floating-point value in the range of the data.
-- `min_float` is the minimum floating-point value in the range of the data.
-- `max_int` is the maximum integer value representable in the target integer type (e.g., 127 for 8-bit integers).
-- `min_int` is the minimum integer value representable in the target integer type (e.g., -128 for 8-bit integers).
+- \(\text{max_float}\) is the maximum floating-point value.
+- \(\text{min_float}\) is the minimum floating-point value.
+- \(\text{max_int}\) is the maximum integer value representable in the target integer type.
+- \(\text{min_int}\) is the minimum integer value representable in the target integer type.
 
 #### 2. Zero Point Calculation
 
-The **zero point** is used to shift the range of floating-point values to align with the integer range. It is calculated as:
+The **zero point** is calculated using the formula:
 
-\[ \text{zero_point} = \text{round} \left( \frac{\text{min_float}}{\text{scale}} \right) \]
+$$
+\text{zero\_point} = \text{round} \left( \frac{\text{min\_float}}{\text{scale}} \right)
+$$
 
 where:
 
-- `min_float` is the minimum floating-point value in the range of the data.
+- \(\text{min_float}\) is the minimum floating-point value.
 
 ### Example
 
@@ -75,12 +81,12 @@ For a floating-point range from -1.0 to 1.0 and an 8-bit signed integer range fr
 
 1. **Calculate Scale:**
 
-   \[
+   $$
    \text{scale} = \frac{1.0 - (-1.0)}{127 - (-128)} = \frac{2.0}{255} \approx 0.00784
-   \]
+   $$
 
 2. **Calculate Zero Point:**
 
-   \[
-   \text{zero_point} = \text{round} \left( \frac{-1.0}{0.00784} \right) = \text{round}(-127.56) = -128
-   \]
+   $$
+   \text{zero\_point} = \text{round} \left( \frac{-1.0}{0.00784} \right) = \text{round}(-127.56) = -128
+   $$
