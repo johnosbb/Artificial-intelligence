@@ -30,7 +30,7 @@ The model is compiled with appropriate loss and optimizer functions and trained 
 
 After training, the model is saved for future use and evaluated on the test set to determine its accuracy. Predictions are made, and an adjusted threshold is applied to classify the results. A confusion matrix is generated to assess the model’s performance, and various evaluation metrics like accuracy, precision, recall, and F-score are computed to understand the model’s effectiveness in predicting motor failures.
 
-Overall, this script demonstrates a comprehensive approach to building a predictive model for motor failure, from data preparation and preprocessing to model training and evaluation. The goal is to provide insights into how machine learning can be used to predict equipment failures based on sensor data.
+It’s important to note that this dataset is somewhat contrived, and as such, we should not be overly concerned with the accuracy and performance statistics of the resulting model. Our primary focus here is the process: building the model on a resource-rich platform like a PC, and then understanding the steps required to optimize and deploy it on an edge device with limited computational resources.
 
 ## Converting the Data to TFLite form
 
