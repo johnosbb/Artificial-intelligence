@@ -267,7 +267,7 @@ zip -r $ZIP_FILENAME $ARDUINO_LIB_NAME -q
 git clone https://github.com/tensorflow/tensorflow.git
 mkdir tflite_build
 cd tflite_build
-cmake ../tensorflow/tensorflow/lite/
+cmake -DCMAKE_TOOLCHAIN_FILE=stm32_toolchain.cmake ../tensorflow/tensorflow/lite/
 ```
 
 Install flatc
