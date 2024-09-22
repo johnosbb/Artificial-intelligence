@@ -260,8 +260,43 @@ ZIP_FILENAME="$ARDUINO_LIB_NAME"".zip"
 zip -r $ZIP_FILENAME $ARDUINO_LIB_NAME -q
 ```
 
-
 # Building TensorFlowLite for Linux
+
+```Makefile
+# toolchain.cmake
+
+# Define the toolchain name as a variable (replace this with your toolchain name)
+SET(TOOLCHAIN_NAME "arm-linux")
+
+# Set the toolchain prefix
+SET(TOOLCHAIN_PREFIX "/mnt/500GB/STM32MP157D/")
+
+# Set the system name and architecture
+SET(CMAKE_SYSTEM_NAME Linux)
+# it is critical to set the specific arm type for STM32 to armv7
+SET(CMAKE_SYSTEM_PROCESSOR armv7)
+
+# Specify the cross-compiler toolchain binaries using the TOOLCHAIN_PREFIX and TOOLCHAIN_NAME
+SET(CMAKE_C_COMPILER "${TOOLCHAIN_PREFIX}/buildroot/output/host/bin/${TOOLCHAIN_NAME}-gcc")
+SET(CMAKE_CXX_COMPILER "${TOOLCHAIN_PREFIX}/buildroot/output/host/bin/${TOOLCHAIN_NAME}-g++")
+SET(CMAKE_AR "${TOOLCHAIN_PREFIX}/buildroot/output/host/bin/${TOOLCHAIN_NAME}-ar")
+# we need to point CMAKE_ASM_COMPILER at the complier rather than assembler
+SET(CMAKE_ASM_COMPILER "${TOOLCHAIN_PREFIX}/buildroot/output/host/bin/${TOOLCHAIN_NAME}-gcc")
+
+# Specify the system root directory (this is the root filesystem of the target system)
+SET(CMAKE_FIND_ROOT_PATH "${TOOLCHAIN_PREFIX}/buildroot/output/host/${TOOLCHAIN_NAME}/sysroot")
+
+# Direct CMake to search for headers and libraries in the sysroot first
+SET(CMAKE_FIND_ROOT_PATH_MODE_PROGRAM NEVER)
+SET(CMAKE_FIND_ROOT_PATH_MODE_LIBRARY ONLY)
+SET(CMAKE_FIND_ROOT_PATH_MODE_INCLUDE ONLY)
+
+# Specify the build type (optional) : for Debug change this to SET(CMAKE_BUILD_TYPE Debug)
+SET(CMAKE_BUILD_TYPE Release)
+
+# Specify linker flags if necessary (optional)
+SET(CMAKE_EXE_LINKER_FLAGS "-static-libgcc -static-libstdc++")
+```
 
 ```
 git clone https://github.com/tensorflow/tensorflow.git
@@ -279,4 +314,24 @@ cmake -G "Unix Makefiles"
 make
 sudo make install
 # Installing: /usr/local/bin/flatc
+```
+
+## Build the Minimal Example
+
+```
+cd tensorflow/tensorflow/lite/examples/minimal/
+mkdir build
+cd build
+run ./buildMe.sh
+```
+
+```sh
+#!/bin/bash
+# where TFLITE_HOST_TOOLS_DIR is the location where the flatc compiler was installed
+# and TENSORFLOW_SOURCE_DIR is the location of the tensorflow source code
+# and stm32_toolchain.cmake is a toolchain file from the STM32 Buildroot
+cmake -DCMAKE_TOOLCHAIN_FILE=stm32_toolchain.cmake -DTENSORFLOW_SOURCE_DIR=/mnt/500GB/tensorflow -DTFLITE_HOST_TOOLS_DIR=/usr/local/bin ..
+cmake --build .
+
+
 ```
