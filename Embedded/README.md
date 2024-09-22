@@ -259,3 +259,24 @@ Create a Zip File
 ZIP_FILENAME="$ARDUINO_LIB_NAME"".zip"
 zip -r $ZIP_FILENAME $ARDUINO_LIB_NAME -q
 ```
+
+
+# Building TensorFlowLite for Linux
+
+```
+git clone https://github.com/tensorflow/tensorflow.git
+mkdir tflite_build
+cd tflite_build
+cmake ../tensorflow/tensorflow/lite/
+```
+
+Install flatc
+
+```
+git clone https://github.com/google/flatbuffers.git
+cd flatbuffers
+cmake -G "Unix Makefiles"
+make
+sudo make install
+# Installing: /usr/local/bin/flatc
+```
