@@ -98,6 +98,14 @@ X_train_balanced_scaled = scaler.fit_transform(X_train_balanced)
 X_validate_scaled = scaler.transform(x_validate)
 X_test_scaled = scaler.transform(x_test)
 
+
+min_value = np.min(X_train_balanced_scaled)
+max_value = np.max(X_train_balanced_scaled)
+
+print(f"Minimum value: X_train_balanced_scaled:  {min_value}")
+print(f"Maximum value: X_train_balanced_scaled: {max_value}")
+
+
 # Convert back to DataFrame for visualization
 X_train_balanced_scaled_df = pd.DataFrame(X_train_balanced_scaled, columns=X.columns)
 

@@ -4,5 +4,5 @@
 # Since every byte matters on a constrianed memory device and because the SRAM has a limited capacity,
 # we keep the model in program memory. This ia also generally more memory efficient when the weights are constant.
 
-(cd ./models; xxd -i preventive_forecast.tflite > model.h; sed -i 's/unsigned char/const unsigned char/g' model.h; sed -i 's/const/alignas(8) const/g' model.h;cat model.h)
+(cd ../models; xxd -i preventive_forecast.tflite > ../data/model.h; sed -i 's/unsigned char/const unsigned char/g' ../data/model.h; sed -i 's/const/alignas(8) const/g' ../data/model.h;cat ../data/model.h)
 echo "Created model.h in ./models"

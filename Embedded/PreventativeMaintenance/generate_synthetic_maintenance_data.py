@@ -54,6 +54,26 @@ data = pd.DataFrame({
 # Display the first few rows of the dataset
 print(data.head())
 
+# We calculate the scales and zero-points purely for reference in any subsequent trouble shooting we may need to do
+# Calculate input scales and zero-points for normalization
+min_values = data[['RPM', 'Temperature (°C)', 'Vibration (g)', 'Current (A)']].min().values
+max_values = data[['RPM', 'Temperature (°C)', 'Vibration (g)', 'Current (A)']].max().values
+input_scale = (max_values - min_values) / 255.0
+input_zero_point = min_values
+
+# Calculate output scale and zero-point
+min_output = 0  # Assuming binary classification, minimum output is 0
+max_output = 1  # Maximum output is 1 for probabilities
+output_scale = (max_output - min_output) / 255.0
+output_zero_point = min_output
+
+# Display input and output scales and zero points
+print("\nInput Scales:", input_scale)
+print("Input Zero Points:", input_zero_point)
+print("\nOutput Scale:", output_scale)
+print("Output Zero Point:", output_zero_point)
+
+
 # Count the occurrences of each class (0 or 1)
 counts = data['Motor Fails'].value_counts()
 
