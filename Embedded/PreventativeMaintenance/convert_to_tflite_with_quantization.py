@@ -26,6 +26,14 @@ x_train, x_validate_test, y_train, y_validate_test = train_test_split(X, y, test
 # Further split the temp set into validation and test sets
 x_test, x_validate, y_test, y_validate = train_test_split(x_validate_test, y_validate_test, test_size=0.50, random_state=3)
 
+
+# Before converting the TensorFlow model to TensorFlow Lite (TFLite), we chose to normalize the data used for generating the representative dataset. 
+# This decision was made because the input features in the original dataset have widely varying ranges—RPM is measured in the thousands, while vibration values are much smaller, often less than 1.
+# Such discrepancies in the scale of input features could lead to issues during quantization, as the model may struggle to handle the diverse ranges effectively. 
+# To mitigate this, we applied Z-score normalization to standardize the data, ensuring that each feature contributes equally during the quantization process.
+# By doing so, we aimed to improve the model’s performance and accuracy when deployed on resource-constrained embedded devices.
+# The original code has been left in place, but commented out
+
 # This function generates a small subset of the test data in the appropriate format to be used as representative data
 #  during the quantization process.
 # This version uses the original data (i.e non-normalised)
@@ -43,7 +51,8 @@ X_validate_scaled = scaler.transform(x_validate)
 X_test_scaled = scaler.transform(x_test)
 
 
-# Define the representative dataset generator, but with normalised data
+# Define the representative dataset generator, but with normalised data to try and address the imbalance in the scale of RPM and Vibrartion data
+
 def representative_data_gen():
     # Generate representative normalized data for calibration
     for i_value in tf.data.Dataset.from_tensor_slices(X_test_scaled).batch(1).take(100):
