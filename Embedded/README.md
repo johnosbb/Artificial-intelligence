@@ -261,6 +261,8 @@ zip -r $ZIP_FILENAME $ARDUINO_LIB_NAME -q
 ```
 
 # Building TensorFlowLite for Linux
+Create a toolchain file for the desired target processor and toolchain. I created stm32_toolchain.cmake for the STM32
+
 
 ```Makefile
 # toolchain.cmake
@@ -297,6 +299,16 @@ SET(CMAKE_BUILD_TYPE Release)
 # Specify linker flags if necessary (optional)
 SET(CMAKE_EXE_LINKER_FLAGS "-static-libgcc -static-libstdc++")
 ```
+
+If the following error is found:
+
+```
+Fatal error: bad defsym; format is --defsym name=value
+```
+
+Then make sure the tool chain option in stm32_toolchain.cmake sets the CMAKE_ASM_COMPILER option points to 'gcc' rather than 'as'
+
+
 Install flatc
 
 ```
