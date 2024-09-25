@@ -297,14 +297,6 @@ SET(CMAKE_BUILD_TYPE Release)
 # Specify linker flags if necessary (optional)
 SET(CMAKE_EXE_LINKER_FLAGS "-static-libgcc -static-libstdc++")
 ```
-
-```
-git clone https://github.com/tensorflow/tensorflow.git
-mkdir tflite_build
-cd tflite_build
-cmake -DCMAKE_TOOLCHAIN_FILE=stm32_toolchain.cmake ../tensorflow/tensorflow/lite/
-```
-
 Install flatc
 
 ```
@@ -315,6 +307,15 @@ make
 sudo make install
 # Installing: /usr/local/bin/flatc
 ```
+
+```
+git clone https://github.com/tensorflow/tensorflow.git
+mkdir tflite_build
+cd tflite_build
+cmake -DCMAKE_TOOLCHAIN_FILE=stm32_toolchain.cmake -DTFLITE_HOST_TOOLS_DIR=/usr/local/bin ../tensorflow/tensorflow/lite/
+```
+
+
 
 ## Build the Minimal Example
 
