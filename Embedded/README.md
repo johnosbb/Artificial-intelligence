@@ -320,10 +320,10 @@ cmake -DCMAKE_TOOLCHAIN_FILE=stm32_toolchain.cmake -DTFLITE_HOST_TOOLS_DIR=/usr/
 ## Build the Minimal Example
 
 ```
+mkdir minimal_build
+cd minimal_build
+cmake -DCMAKE_TOOLCHAIN_FILE=stm32_toolchain.cmake -DTFLITE_HOST_TOOLS_DIR=/usr/local/bin ../tensorflow_src/tensorflow/lite/examples/minimal
 cd tensorflow/tensorflow/lite/examples/minimal/
-mkdir build
-cd build
-run ./buildMe.sh
 ```
 
 ```sh
