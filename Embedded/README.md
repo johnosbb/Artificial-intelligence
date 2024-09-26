@@ -327,7 +327,12 @@ cd tflite_build
 cmake -DCMAKE_TOOLCHAIN_FILE=stm32_toolchain.cmake -DTFLITE_HOST_TOOLS_DIR=/usr/local/bin ../tensorflow/tensorflow/lite/
 ```
 
+## Build the Label Example
 
+```
+cd tflite_build/examples/label_image
+make # Note the build of tflite will have created the necessary Makefile
+```
 
 ## Build the Minimal Example
 
@@ -345,6 +350,5 @@ cd tensorflow/tensorflow/lite/examples/minimal/
 # and stm32_toolchain.cmake is a toolchain file from the STM32 Buildroot
 cmake -DCMAKE_TOOLCHAIN_FILE=stm32_toolchain.cmake -DTENSORFLOW_SOURCE_DIR=/mnt/500GB/tensorflow -DTFLITE_HOST_TOOLS_DIR=/usr/local/bin ..
 cmake --build .
-
-
 ```
+
