@@ -16,6 +16,13 @@ This exercise is meant for educational purposes, providing a controlled environm
 
 ![image](https://github.com/user-attachments/assets/d8422365-80fe-43a6-882e-53f0f0f37a47)
 
+We generate random data for features with specific ranges
+
+- RPM centered around 1600 with std dev of 200
+- Temperature centered around 24°C with std dev of 5
+- Vibration centered around 0.12g with std dev of 0.02
+- Current centered around 3.5A with std dev of 0.3
+
 
 ## Train Model and Evaluate
 
