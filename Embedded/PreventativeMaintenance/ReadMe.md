@@ -25,6 +25,18 @@ We generate random data for features with specific ranges
 - Vibration centered around 0.12g with std dev of 0.02
 - Current centered around 3.5A with std dev of 0.3
 
+We set a number of operating conditions for the motor
+
+### Define thresholds for failure conditions
+
+ | Measured Parameter |  Threshold | Description |
+ | ----- | ----- | ------ |
+| Temperature | high_temp_threshold = 30 | We should not exceed this temperature |
+| RPM | low_rpm_threshold = 1500 | If the Motor's RPM falls below this point then it may indicate possible issues |
+| Vibration  | high_vibration_threshold = 0.60 | If vibration is above this level then it indicates instability in the motor |
+| Current | abnormal_current_low_threshold = 0.2 | A very low current indcates the motor is not operating normally |
+| Current | abnormal_current_high_threshold = 10.8 | A very high current indicates the motor is under excessive load |
+
 
 ## Train Model and Evaluate
 
