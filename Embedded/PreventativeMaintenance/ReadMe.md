@@ -42,7 +42,7 @@ We set a number of operating conditions for the motor
 
 ### predictive_maintenance_model.py
 
-This script is designed to train a machine learning model using TensorFlow to predict motor failures based on various sensor data. The process involves several key steps, including data loading, preprocessing, model building, training, and evaluation.
+The [predictive_maintenance_model.py](./predictive_maintenance_model.py) script is designed to train a machine learning model using TensorFlow to predict motor failures based on various sensor data. The process involves several key steps, including data loading, preprocessing, model building, training, and evaluation.
 
 First, the script loads a dataset from a CSV file that contains sensor readings and a failure indicator. It separates the data into features (such as RPM, temperature, vibration, and current) and the target variable (motor failures). Before feeding the data into a model, it calculates and displays the mean and standard deviation of each feature to understand their distributions.
 
