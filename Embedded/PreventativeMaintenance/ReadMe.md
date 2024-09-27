@@ -16,6 +16,8 @@ This exercise is meant for educational purposes, providing a controlled environm
 
 ![image](https://github.com/user-attachments/assets/d8422365-80fe-43a6-882e-53f0f0f37a47)
 
+_Distributions of Normalized Data_
+
 We generate random data for features with specific ranges
 
 - RPM centered around 1600 with std dev of 200
