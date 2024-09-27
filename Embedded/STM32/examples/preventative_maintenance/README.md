@@ -153,6 +153,9 @@ int main(int argc, char* argv[]) {
 - Filling the Input Tensor: The standardized input data is written into the model's input tensor.
 - Model Invocation: The model is invoked to perform inference. If the invocation fails, an error message is displayed.
 
+
+![image](https://github.com/user-attachments/assets/fe17a110-b734-4384-9b08-08da2f75e762)
+
 ## Output Tensor Information
 
 ```cpp
