@@ -11,7 +11,7 @@ import sklearn
 from sklearn.utils import class_weight
 from tensorflow.keras.callbacks import EarlyStopping
 
-SHOW_DISTRIBUTIONS = False
+SHOW_DISTRIBUTIONS = True
 SIMPLE_MODEL = True
 LINEAR_REGRESSION = True
 USE_SMOTE=True
@@ -118,15 +118,15 @@ if SHOW_DISTRIBUTIONS:
     plt.title('RPM Distribution')
 
     plt.subplot(2, 2, 2)
-    sns.histplot(X_train_balanced_scaled_df['Temperature'], kde=True, color='red')
+    sns.histplot(X_train_balanced_scaled_df['Temperature (°C)'], kde=True, color='red')
     plt.title('Temperature Distribution')
 
     plt.subplot(2, 2, 3)
-    sns.histplot(X_train_balanced_scaled_df['Vibration'], kde=True, color='green')
+    sns.histplot(X_train_balanced_scaled_df['Vibration (g)'], kde=True, color='green')
     plt.title('Vibration Distribution')
 
     plt.subplot(2, 2, 4)
-    sns.histplot(X_train_balanced_scaled_df['Current'], kde=True, color='purple')
+    sns.histplot(X_train_balanced_scaled_df['Current (A)'], kde=True, color='purple')
     plt.title('Current Distribution')
 
     plt.tight_layout()
