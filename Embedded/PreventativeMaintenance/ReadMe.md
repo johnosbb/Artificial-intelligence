@@ -125,3 +125,9 @@ scale = (1.0 - (-1.0)) / (127 - (-128)) = 2.0 / 255 ≈ 0.00784
 ```
 zero_point = round(-1.0 / 0.00784) = round(-127.56) = -128
 ```
+
+
+## References
+
+- [Medium article related to this content](https://medium.com/@johnos3747/embedded-ai-systems-part-9-0884bdcddc47)
+  
