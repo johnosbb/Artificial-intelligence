@@ -1,6 +1,7 @@
 # Preventative Maintenance Inference Example
 
 This repository contains a C++ program that uses TensorFlow Lite to perform inference on a model that predicts motor failure based on several input parameters: RPM, Temperature (°C), Vibration (g), and Current (A). The model is expected to be pre-trained and saved in the TensorFlow Lite format (.tflite).
+
 ![image](https://github.com/user-attachments/assets/5b403e23-b8b5-4081-bd02-a604f8e10fc3)
 
 
