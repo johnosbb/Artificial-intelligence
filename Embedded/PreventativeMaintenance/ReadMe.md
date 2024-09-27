@@ -4,7 +4,7 @@
 
 ### generate_synthetic_maintenance_data.py
 
-This script marks the first stage in the process of developing a machine learning model that can be trained and evaluated on a PC, and later optimized to run efficiently on resource-constrained embedded devices like an Arduino board. The goal is to predict motor failures based on sensor data, which simulates real-world scenarios where motors are continuously monitored to ensure reliability. By generating and training the model on a PC, we can then fine-tune and optimize it for embedded systems, ensuring it operates effectively even in limited environments.
+[This script](./generate_synthetic_maintenance_data.py) is the first stage in the process of developing a machine learning model that can be trained and evaluated on a PC, and later optimized to run efficiently on resource-constrained embedded devices like an Arduino board. The goal is to predict motor failures based on sensor data, which simulates real-world scenarios where motors are continuously monitored to ensure reliability. By generating and training the model on a PC, we can then fine-tune and optimize it for embedded systems, ensuring it operates effectively even in limited environments.
 
 The script generates a synthetic dataset designed to simulate various conditions under which a motor might fail, using sensor readings for key features like RPM (revolutions per minute), temperature, vibration, and current. Each feature is generated using random values from normal distributions that mimic realistic operating conditions. For example, RPM values are centered around 1600 with a standard deviation of 200, while temperature values hover around 24°C with a standard deviation of 5.
 
