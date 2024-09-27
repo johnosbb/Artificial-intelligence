@@ -14,6 +14,9 @@ The data, along with a failure indicator, is stored in a pandas DataFrame and sa
 
 This exercise is meant for educational purposes, providing a controlled environment to understand how sensor data can be used to train predictive models. By creating this dataset, we can explore how machine learning techniques, such as those available in TensorFlow, can be applied to predict potential motor failures based on various input parameters.
 
+![image](https://github.com/user-attachments/assets/d8422365-80fe-43a6-882e-53f0f0f37a47)
+
+
 ## Train Model and Evaluate
 
 ### predictive_maintenance_model.py
