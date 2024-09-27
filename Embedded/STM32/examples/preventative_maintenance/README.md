@@ -107,6 +107,9 @@ int main(int argc, char* argv[]) {
 
 ## Standardizing Input Data
 
+![image](https://github.com/user-attachments/assets/a0ea1e62-624e-49f3-8e9e-682a7c8eb86e)
+
+
 ```cpp
 
   // Input data (raw values)
