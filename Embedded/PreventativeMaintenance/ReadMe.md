@@ -60,13 +60,15 @@ It’s important to note that this dataset is somewhat contrived, and as such, w
 
 ### convert_to_tflite_with_quantization.py
 
-This script is designed to convert a trained TensorFlow model into a TensorFlow Lite (TFLite) format for deployment on mobile or embedded devices. It starts by loading a pre-trained model and the associated dataset. The data is then split into training, validation, and test sets to prepare for the quantization process.
+This [script](./convert_to_tflite_with_quantization.py) is designed to convert a trained TensorFlow model into a TensorFlow Lite (TFLite) format for deployment on mobile or embedded devices. It starts by loading a pre-trained model and the associated dataset. The data is then split into training, validation, and test sets to prepare for the quantization process.
 
 Quantization is a technique used to reduce the precision of model parameters, converting them from 32-bit floating-point numbers to 8-bit integers. This helps to decrease the model size and increase inference speed, which is crucial for deploying models on resource-constrained devices.
 
 The script includes a function to generate a representative dataset used during the quantization process. This dataset helps the converter to understand the data distribution and apply appropriate scaling to the quantized model. Before converting the TensorFlow model to TensorFlow Lite (TFLite), we chose to normalize the data used for generating the representative dataset. This decision was made because the input features in the original dataset have widely varying ranges—RPM is measured in the thousands, while vibration values are much smaller, often less than 1. Such discrepancies in the scale of input features could lead to issues during quantization, as the model may struggle to handle the diverse ranges effectively. To mitigate this, we applied Z-score normalization to standardize the data, ensuring that each feature contributes equally during the quantization process. By doing so, we aimed to improve the model’s performance and accuracy when deployed on resource-constrained embedded devices.
 
 The script finally configures the TFLite converter to use this representative dataset, applies the quantization optimizations, and sets the operation types to ensure the model is compatible with 8-bit integer quantization. Finally, the script converts the model, saves the quantized TFLite model to a file, and prints the size of the quantized model in bytes.
+
+__Note__: There is also a version of the [script](./convert_to_tflite_without_quantization.py) that creates a non-quantized model using normalised float values.
 
 ## A Note on Scale and Zero-Point
 
@@ -75,6 +77,9 @@ The script finally configures the TFLite converter to use this representative da
 When converting floating-point values to integers, two important parameters are the **scale** and the **zero point**.
 
 #### 1. Scale Calculation
+
+
+![image](https://github.com/user-attachments/assets/48eee49c-c901-4de1-b4fc-bea63ad630cb)
 
 The **scale** is calculated using the formula:
 
@@ -90,6 +95,10 @@ where:
 - `min_int` is the minimum integer value representable in the target integer type.
 
 #### 2. Zero Point Calculation
+
+
+![image](https://github.com/user-attachments/assets/395204bb-5dfd-45ea-a44d-0317e3471b8d)
+
 
 The **zero point** is calculated using the formula:
 
