@@ -1,8 +1,7 @@
-#https://www.datacamp.com/tutorial/llama3-fine-tuning-locally?dc_referrer=https%3A%2F%2Fwww.google.com%2F
-
 from transformers import (
     AutoModelForCausalLM,
     AutoTokenizer,
+    LlamaConfig,
     BitsAndBytesConfig,
     HfArgumentParser,
     TrainingArguments,
@@ -72,9 +71,19 @@ bnb_config = BitsAndBytesConfig(
     llm_int8_enable_fp32_cpu_offload=True,
 )
 
-# Load model
+# Adjust LLaMA configuration
+config = LlamaConfig.from_pretrained(base_model)
+
+# Correct the rope_scaling to include only 'type' and 'factor'
+config.rope_scaling = {
+    "type": "dynamic",  # Specify the type of scaling (dynamic or linear, depending on the use case)
+    "factor": 8.0       # The scaling factor
+}
+
+# Load the model with modified configuration
 model = AutoModelForCausalLM.from_pretrained(
     base_model,
+    config=config,  # Pass the corrected config with the simplified rope_scaling
     quantization_config=bnb_config,
     device_map="auto",
     attn_implementation=attn_implementation
@@ -96,7 +105,7 @@ peft_config = LoraConfig(
 )
 model = get_peft_model(model, peft_config)
 
-#Importing the dataset
+# Importing the dataset
 dataset = load_dataset(dataset_name, split="all")
 dataset = dataset.shuffle(seed=65).select(range(100)) # Only use 100 samples for quick demo
 
@@ -111,17 +120,13 @@ dataset = dataset.map(
     num_proc=4,
 )
 
+# Inspect formatted data
+print(dataset['text'][3])
 
-
-
-
-
-dataset['text'][3]
-
-
+# Split the dataset into training and testing sets
 dataset = dataset.train_test_split(test_size=0.1)
 
-
+# Training arguments configuration
 training_arguments = TrainingArguments(
     output_dir=new_model,
     per_device_train_batch_size=1,
@@ -140,7 +145,7 @@ training_arguments = TrainingArguments(
     group_by_length=True
 )
 
-
+# Define the trainer
 trainer = SFTTrainer(
     model=model,
     train_dataset=dataset["train"],
@@ -150,13 +155,19 @@ trainer = SFTTrainer(
     dataset_text_field="text",
     tokenizer=tokenizer,
     args=training_arguments,
-    packing= False,
+    packing=False,
 )
 
+# Train the model
 trainer.train()
 
+# Finish W&B logging
 wandb.finish()
+
+# Set use_cache to True
 model.config.use_cache = True
+
+# Example prompt for inference
 messages = [
     {
         "role": "user",
@@ -164,18 +175,15 @@ messages = [
     }
 ]
 
-prompt = tokenizer.apply_chat_template(messages, tokenize=False, 
-                                       add_generation_prompt=True)
+# Generate a response
+prompt = tokenizer.apply_chat_template(messages, tokenize=False, add_generation_prompt=True)
+inputs = tokenizer(prompt, return_tensors='pt', padding=True, truncation=True).to("cuda")
+outputs = model.generate(**inputs, max_length=150, num_return_sequences=1)
 
-inputs = tokenizer(prompt, return_tensors='pt', padding=True, 
-                   truncation=True).to("cuda")
-
-outputs = model.generate(**inputs, max_length=150, 
-                         num_return_sequences=1)
-
+# Decode and print the output
 text = tokenizer.decode(outputs[0], skip_special_tokens=True)
-
 print(text.split("assistant")[1])
 
+# Save and push the model to the Hugging Face Hub
 trainer.model.save_pretrained(new_model)
 trainer.model.push_to_hub(new_model, use_temp_dir=False)

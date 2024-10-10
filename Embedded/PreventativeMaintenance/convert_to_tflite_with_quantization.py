@@ -87,7 +87,7 @@ input_details = interpreter.get_input_details()
 output_details = interpreter.get_output_details()
 
 # Print quantization details for debugging
-#  Remember that the model’s input uses the per-tensor quantization schema, so all 
+# Remember that the model’s input uses the per-tensor quantization schema, so all 
 # input features must be quantized with the same scale and zero point
 input_scales = input_details[0]['quantization'][0]  # Array of scales if available
 input_zero_points = input_details[0]['quantization'][1]  # Array of zero points if available
