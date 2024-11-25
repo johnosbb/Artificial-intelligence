@@ -154,3 +154,13 @@ Transformers/TransformerExamples/results_large/
 Embedded/config/
 Embedded/data/
 Embedded/models/
+Embedded/STM32/build
+Embedded/LuckFox_RV1106/rknn_mobilenet_demo/build/
+Embedded/LuckFox_RV1106/rknn_yolov5_demo/build/
+Embedded/LuckFox_RV1106/rknn_mobilenet_demo/install/ 
+Embedded/LuckFox_RV1106/rknn_yolov5_demo/install/
+Embedded/LuckFox_RV1106/rknn_mobilenet_demo/model/RV1106/ 
+Embedded/LuckFox_RV1106/rknn_yolov5_demo/model/RV1106/
+Embedded/LuckFox_RV1106/rknn_mobilenet_demo/.vscode 
+Embedded/LuckFox_RV1106/rknn_yolov5_demo/.vscode
+ObjectDetection/Yolo/data
