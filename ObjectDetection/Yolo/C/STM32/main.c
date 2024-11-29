@@ -4,18 +4,34 @@
 #include <time.h> // Include time.h for measuring time
 #include <darknet.h>
 #include <ctype.h>
-#define CLASS_FILE "../data/coco.names"
+#include <stb/stb_image.h> // a lite weight library for basic image manipulation
+
+#define CLASS_FILE "coco.names"
 #define DETECTION_THRESHOLD 0.3
 #define NMS_THRESHOLD 0.4
 
 // Original image size (640x424)
-int original_width = 640;
-int original_height = 424;
+// int original_width = 640;
+// int original_height = 424;
 
 typedef struct
 {
     float x, y, w, h;
 } bounding_box;
+
+void get_image_dimensions(const char *image_file, int *width, int *height)
+{
+    int channels;
+    unsigned char *data = stbi_load(image_file, width, height, &channels, 0);
+    if (data == NULL)
+    {
+        fprintf(stderr, "Error: Failed to load image %s using stb_image.\n", image_file);
+        *width = 0;
+        *height = 0;
+        return;
+    }
+    stbi_image_free(data); // Free the image data after retrieving dimensions
+}
 
 // Function to convert normalized bounding box to original image size, accounting for letterboxing
 void convert_bbox_to_original_size(bounding_box *bbox, int original_width, int original_height, int target_width, int target_height)
@@ -150,20 +166,21 @@ char **load_class_names(char *filename, int *num_classes)
 
 int main(int argc, char **argv)
 {
-    if (argc < 4)
+    if (argc < 5)
     {
-        fprintf(stderr, "Usage: %s <cfg-file> <weights-file> <image-file>\n", argv[0]);
+        fprintf(stderr, "Usage: %s <cfg-file> <weights-file> <class-file> <image-file>\n", argv[0]);
         return 1;
     }
 
     char *cfg_file = argv[1];     // Path to YOLO configuration file
     char *weights_file = argv[2]; // Path to YOLO weights file
-    char *image_file = argv[3];   // Path to the image file to analyze
+    char *class_file = argv[3];   // Path to the class names file
+    char *image_file = argv[4];   // Path to the image file to analyze
 
     // Variables to hold width and height from cfg
     int target_width = 608; // Default fallback
     int target_height = 608;
-
+    int original_width, original_height;
     // Parse the cfg file for width and height
     if (parse_cfg_for_image_size(cfg_file, &target_width, &target_height) != 0)
     {
@@ -198,6 +215,14 @@ int main(int argc, char **argv)
     {
         fprintf(stderr, "Error: Failed to load image %s.\n", image_file);
         free_network_ptr(net); // Use free_network_ptr for pointer
+        return 1;
+    }
+
+    get_image_dimensions(image_file, &original_width, &original_height);
+
+    if (original_width == 0 || original_height == 0)
+    {
+        fprintf(stderr, "Error: Could not determine original image dimensions.\n");
         return 1;
     }
 
