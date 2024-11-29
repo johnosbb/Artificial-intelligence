@@ -16,20 +16,18 @@ include_directories(${OpenCV_INCLUDE_DIRS})
 # Add the executable
 add_executable(yolo_realtime yolo_realtime.cpp)
 
-# Add the executable
-add_executable(tiny_yolo_realtime tiny_yolo_realtime.cpp)
 
 # Add the executable
-add_executable(tiny_yolo_image tiny_yolo_image.cpp)
+add_executable(yolo_image yolo_image.cpp)
 
 # Add the executable
-add_executable(tiny_yolo_boxes tiny_yolo_boxes.cpp)
+add_executable(yolo_boxes yolo_boxes.cpp)
 
 # Link OpenCV libraries
 target_link_libraries(yolo_realtime ${OpenCV_LIBS})
 
-target_link_libraries(tiny_yolo_realtime ${OpenCV_LIBS} pthread)
+target_link_libraries(yolo_realtime ${OpenCV_LIBS} pthread)
 
-target_link_libraries(tiny_yolo_image ${OpenCV_LIBS} pthread)
+target_link_libraries(yolo_image ${OpenCV_LIBS} pthread)
 
-target_link_libraries(tiny_yolo_boxes ${OpenCV_LIBS} pthread)
+target_link_libraries(yolo_boxes ${OpenCV_LIBS} pthread)

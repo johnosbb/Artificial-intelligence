@@ -4,14 +4,22 @@
 #include <vector>
 #include <fstream>
 
+// #define TINY_YOLO
+
 int main()
 {
-    // Paths to YOLO files
+// Paths to YOLO files
+#ifdef TINY_YOLO
     std::string modelConfiguration = "../data/yolov3-tiny.cfg";
     std::string modelWeights = "../data/yolov3-tiny.weights";
-    std::string classesFile = "../data/coco.names";
-    std::string imageFile = "image.jpg"; // Path to the local image
+#else
+    std::string modelConfiguration = "../data/yolov3.cfg";
+    std::string modelWeights = "../data/yolov3.weights";
 
+#endif
+
+    std::string classesFile = "../data/coco.names";
+    std::string imageFile = "../data/image.jpg"; // Path to the local image
     // Load class names
     std::vector<std::string> classes;
     std::ifstream ifs(classesFile.c_str());
@@ -99,11 +107,22 @@ int main()
         std::string label = classes[classIds[idx]];
         float confidence = confidences[idx];
 
+        // Draw rectangle and label on the frame
+        cv::rectangle(frame, box, cv::Scalar(0, 255, 0), 2);
+        cv::putText(frame, label + " " + cv::format("%.2f", confidence),
+                    cv::Point(box.x, box.y - 10), cv::FONT_HERSHEY_SIMPLEX, 0.5, cv::Scalar(0, 255, 0), 2);
+
         // Print bounding box details
         std::cout << "Detected: " << label << " - Confidence: " << confidence
                   << " - Box: [x=" << box.x << ", y=" << box.y
                   << ", width=" << box.width << ", height=" << box.height << "]" << std::endl;
     }
 
+    // Display the resulting frame
+    cv::imshow("Object Detection", frame);
+    cv::waitKey(0); // Wait for a key press before exiting
+
+    // Release resources
+    cv::destroyAllWindows();
     return 0;
 }

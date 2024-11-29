@@ -25,10 +25,18 @@ int main()
     // Register signal handler
     signal(SIGINT, signalHandler);
 
-    // Paths to YOLO files
+// Paths to YOLO files
+#ifdef TINY_YOLO
+    std::string modelConfiguration = "../data/yolov3-tiny.cfg";
+    std::string modelWeights = "../data/yolov3-tiny.weights";
+#else
     std::string modelConfiguration = "../data/yolov3.cfg";
     std::string modelWeights = "../data/yolov3.weights";
+
+#endif
+
     std::string classesFile = "../data/coco.names";
+    std::string imageFile = "../data/image.jpg"; // Path to the local image
 
     // Load class names
     std::vector<std::string> classes;
