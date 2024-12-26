@@ -122,7 +122,38 @@ The output feature map will have smaller height and width but the same depth as 
 | **Flatten Layer**            | Flatten multi-dimensional inputs into a 1D vector for the fully connected layer | Converts the multi-dimensional input (e.g., a 3D feature map) into a 1D vector that can be passed to fully connected layers.                           | Reduces dimensions to a 1D vector (e.g., $N \times H \times W$ to $N$) | Required before passing data to fully connected layers.                                                    |
 | **Up-sampling Layer** (`upsample`)  | Increase spatial dimensions of the feature map                               | Increases the size of the input by duplicating or interpolating values.                                                                                 | Increases spatial dimensions (height and width).                    | Used in architectures like autoencoders or generative models to produce higher-resolution outputs.      |
 | **Yolo Layer** (`yolo`)          | Perform object detection and bounding box prediction                           | Predicts class probabilities, objectness scores, and bounding box coordinates. Each grid cell in the output layer is responsible for detecting an object. | Output grid containing predictions (e.g., class probabilities and box coordinates). | Used in object detection networks like YOLO to output class and bounding box predictions.                |
+_summary of different layer types_
 
+
+
+The Yolo Model above uses the following layers
+```
+Layer    Filters    Size/Strides  Input Dimension      Output Dimension    BFLOPS
+0   conv      16       3x3/1       416x416x3        ->  416x416x16        0.150 BF
+1   max                2x2/2       416x416x16       ->  208x208x16        0.003 BF
+2   conv      32       3x3/1       208x208x16       ->  208x208x32        0.399 BF
+3   max                2x2/2       208x208x32       ->  104x104x32        0.001 BF
+4   conv      64       3x3/1       104x104x32       ->  104x104x64        0.399 BF
+5   max                2x2/2       104x104x64       ->  52x52x64          0.001 BF
+6   conv      128      3x3/1       52x52x64         ->  52x52x128         0.399 BF
+7   max                2x2/2       52x52x128        ->  26x26x128         0.000 BF
+8   conv      256      3x3/1       26x26x128        ->  26x26x256         0.399 BF
+9   max                2x2/2       26x26x256        ->  13x13x256         0.000 BF
+10  conv      512      3x3/1       13x13x256        ->  13x13x512         0.399 BF
+11  max                2x2/1       13x13x512        ->  13x13x512         0.000 BF
+12  conv      1024     3x3/1       13x13x512        ->  13x13x1024        1.595 BF
+13  conv      256      1x1/1       13x13x1024       ->  13x13x256         0.089 BF
+14  conv      512      3x3/1       13x13x256        ->  13x13x512         0.399 BF
+15  conv      255      1x1/1       13x13x512        ->  13x13x255         0.044 BF
+16  yolo                -           13x13x255       ->  -                  -
+17  route               -           13               ->  13x13x256         -
+18  conv      128      1x1/1       13x13x256        ->  13x13x128         0.011 BF
+19  upsample            -           13x13x128        ->  26x26x128         -
+20  route               19 8        -                 ->  26x26x384         -
+21  conv      256      3x3/1       26x26x384        ->  26x26x256         1.196 BF
+22  conv      255      1x1/1       26x26x256        ->  26x26x255         0.088 BF
+23  yolo                -           26x26x255       ->  -                  -
+```
 
 
 ### First Layer
