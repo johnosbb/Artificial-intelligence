@@ -224,7 +224,7 @@ YOLO predicts objects at multiple scales. Downsampling creates multi-scale featu
 
 
 
-### Thrid Layer
+### Third Layer
 
 ```
    2 conv     32       3 x 3/ 1    208 x 208 x  16 ->  208 x 208 x  32 0.399 BF
