@@ -87,6 +87,14 @@ _image with overlays_
 
 ## Analysis of the ouput
 
+We can see from the results that this model is using two detection scales:
+- One at 13×13 grid (for large objects).
+- Another at 26×26 grid (for smaller objects).
+
+  
+
+### First Layer
+
 ```
  0 conv     16       3 x 3/ 1    416 x 416 x   3 ->  416 x 416 x  16 0.150 BF
 ```
@@ -102,6 +110,12 @@ $1 \text{ BFLOP} = 10^9 \text{ FLOPs}$
 We have a final calculation of:
 
 $BFLOPS = \frac{149,520,384}{1,000,000,000} = 0.150 \text{ BFLOPS}$.
+
+### Second Layer
+
+The second layer is responsible for downsizing the image feature maps, so the width and height of the feature map are reduced by a factor of 2 (e.g., from $416 \times 416$ to $208 \times 208$). This reduces the computational cost and memory usage in subsequent layers. Smaller feature maps mean fewer calculations and less data to process. Each pixel in the downsampled feature map corresponds to a larger region in the original image and this allows the network to "see" larger parts of the image at higher levels, which helps in understanding more abstract and global features. Lower-level layers capture fine details, while downsampled layers focus on more abstract, high-level features. Object detection benefits from both local fine-grained details (e.g., edges, textures) and higher-level features (e.g., shapes, patterns). YOLO predicts objects at multiple scales. Downsampling creates multi-scale feature maps that enable the network to detect both small and large objects effectively. Smaller objects might be detected in earlier layers (finer resolution), while larger objects are detected in later layers (coarser resolution). Reducing the dimensions reduces the number of parameters in subsequent layers and this process also helps prevent overfitting, especially when training with limited data.
+
+
 
 
 
