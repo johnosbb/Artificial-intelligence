@@ -123,6 +123,7 @@ The output feature map will have smaller height and width but the same depth as 
 | **Flatten Layer**            | Flatten multi-dimensional inputs into a 1D vector for the fully connected layer | Converts the multi-dimensional input (e.g., a 3D feature map) into a 1D vector that can be passed to fully connected layers.                           | Reduces dimensions to a 1D vector (e.g., $N \times H \times W$ to $N$) | Required before passing data to fully connected layers.                                                    |
 | **Up-sampling Layer** (`upsample`)  | Increase spatial dimensions of the feature map                               | Increases the size of the input by duplicating or interpolating values.                                                                                 | Increases spatial dimensions (height and width).                    | Used in architectures like autoencoders or generative models to produce higher-resolution outputs.      |
 | **Yolo Layer** (`yolo`)          | Perform object detection and bounding box prediction                           | Predicts class probabilities, objectness scores, and bounding box coordinates. Each grid cell in the output layer is responsible for detecting an object. | Output grid containing predictions (e.g., class probabilities and box coordinates). | Used in object detection networks like YOLO to output class and bounding box predictions.                |
+
 _summary of different layer types_
 
 
