@@ -87,9 +87,9 @@ _image with overlays_
 
 ## Analysis of the ouput
 
-We can see from the results that this model is using two detection scales:
-- One at 13×13 grid (for large objects).
-- Another at 26×26 grid (for smaller objects).
+We can see from the results that this model is using diferent detection scales:
+- Layer 9 (13×13 grid) for large objects.
+- Layer 7 (26×26 grid) for medium-sized objects.
 
 ### Types of Layers  
 
@@ -233,6 +233,18 @@ YOLO predicts objects at multiple scales. Downsampling creates multi-scale featu
 The third layer performs convolution with 32 filters of size $3 \times 3$. Each filter is applied to the input feature map (of size 208 x 208 x 16), creating 32 different feature maps. This layer extracts different features from the previous layer’s outputs, such as edges, textures, or patterns. While the spatial dimensions (height and width) of the feature map remain the same (208 x 208), the depth increases from 16 to 32, indicating that the network is learning to represent more complex features by adding additional channels. After passing through earlier layers, the network is beginning to capture higher-level features, such as combinations of basic edges and textures. The third convolution layer allows for more sophisticated abstraction by increasing the number of features extracted from the image.
 
 
+### Intermediate Layers
 
+This process of convulution and Pooling continues for a number of layers.
+
+### Layer 16
+
+In layer 16 (13×13 grid) the model predicts bounding boxes for larger objects, as well as the class probabilities and objectness scores for each of those boxes.
+
+### Layer 23
+
+In layer 23 (26×26 grid) the model predicts bounding boxes for smaller objects, as well as the class probabilities and objectness scores for each of those boxes.
+
+These layers output the final detections, which are later processed using non-max suppression (NMS) to remove overlapping boxes and keep the most confident detections.
  
 
