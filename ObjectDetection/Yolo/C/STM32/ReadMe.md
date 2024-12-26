@@ -109,6 +109,7 @@ A max pooling layer reduces the spatial dimensions of the input feature map by p
 There are two important parameters in this layer: The __Pool size__: is the size of the region from which the maximum value is taken (e.g., $2 \times 2$) and the __Stride__: How much the pooling window moves after each operation. A stride of 2 means it moves by 2 pixels after each pooling operation.
 The output feature map will have smaller height and width but the same depth as the input. For example, applying $2 \times 2$ max pooling with stride 2 to an input of size $208 \times 208 \times 32$ would reduce the size to $104 \times 104 \times 32$.
 
+#### Types of Layers
 
 | **Layer**               | **Purpose**                                                                 | **Operation**                                                                                                                                          | **Effect on Size**                                                 | **Common Use**                                                                                         |
 |-------------------------|-----------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------|------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------|
@@ -126,7 +127,8 @@ _summary of different layer types_
 
 
 
-The Yolo Model above uses the following layers
+#### Layers used in the Yolo Model
+
 ```
 Layer    Filters    Size/Strides  Input Dimension      Output Dimension    BFLOPS
 0   conv      16       3x3/1       416x416x3        ->  416x416x16        0.150 BF
@@ -155,6 +157,34 @@ Layer    Filters    Size/Strides  Input Dimension      Output Dimension    BFLOP
 23  yolo                -           26x26x255       ->  -                  -
 ```
 
+#### Layer Breakdown for our Yolo Model
+
+- Convolutional Layers (conv)
+  - Layers: 0, 2, 4, 6, 8, 10, 12, 13, 14, 21
+  - Purpose: Feature extraction by applying convolutional filters. These layers are crucial for detecting patterns like edges, textures, and more complex features at deeper layers.
+  - Total: 10 layers (conv layers).
+
+Max Pooling Layers (max)
+- Layers: 1, 3, 5, 7, 9, 11
+- Purpose: Downsample the feature map by taking the maximum value in each local region. This reduces the spatial dimensions (height and width) while retaining the most important information.
+- Total: 6 layers (max pooling).
+
+- YOLO Layer (yolo)
+  - Layers: 16, 23
+  - Purpose: Perform object detection by predicting class labels, bounding box coordinates, and confidence scores. The output consists of class probabilities and bounding boxes for each grid cell.
+  - Total: 2 layers (YOLO layers).
+
+- Route Layer (route)
+  - Layers: 17, 20
+  - Purpose: This layer concatenates feature maps from different parts of the network to provide multi-scale feature information for later stages, such as detection.
+  - Total: 2 layers (route layers).
+
+- Upsample Layer (upsample)
+  - Layer: 19
+  - Purpose: Upsample the feature map, increasing its spatial resolution, which is especially useful for models like YOLO that need high-resolution feature maps for detection.
+  - Total: 1 layer (upsample layer).
+
+## In-depth Analysis
 
 ### First Layer
 
