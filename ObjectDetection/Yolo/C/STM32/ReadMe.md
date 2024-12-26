@@ -101,9 +101,14 @@ We can see from the results that this model is using two detection scales:
 
 After the first layer we are left with an output of 416 x 416 x  16. The input representing the image  416 x 416 x 3 (the 3 is the colour components R,G and B) goes through a convolutional layer with 16 filters. Each filter extracts a specific feature map from the image (e.g., edges, textures, patterns) producing of 16 feature maps. Each of these 16 channels represents a different feature map that was detected by one of the 16 convolutional filters. A convolutional filter (e.g., 3×3×3 for RGB input) slides over the image and computes a dot product at each position, producing a single channel output per filter, so with 16 filters, you get 16 channels in the output. We can also see in this output that this process took 0.150 BF, which means this convolutional layer requires 0.150 billion floating-point operations to process the input.
 
-A kernel (or filter) is a small matrix used to extract specific features from an image, such as edges or textures. In our case we can calculate the billion floating-point operations using the following formula: $FLOPs = 2 \cdot (k^2) \cdot C_{in} \cdot C_{out} \cdot W \cdot H$, where k is kernel size (3 x 3) aand C is the number of channels, and W, H is the width and height. This fives us:
+A kernel (or filter) is a small matrix used to extract specific features from an image, such as edges or textures. In our case we can calculate the billion floating-point operations using the following formula:
 
-$ 2 x (9) x 3 x 16 x 416 x 416 = 149,520,384 = 149,520,384 FLOPS$
+$FLOPs = 2 \cdot (k^2) \cdot C_{in} \cdot C_{out} \cdot W \cdot H$
+
+where k is kernel size (3 x 3) aand C is the number of channels, and W, H is the width and height. This fives us:
+
+$= 2 \cdot 9 \cdot 3 \cdot 16 \cdot 416 \cdot 416$
+$= 149,520,384$
 
 and as:
 
