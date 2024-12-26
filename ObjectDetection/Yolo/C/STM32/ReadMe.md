@@ -258,3 +258,8 @@ These layers output the final detections, which are later processed using non-ma
   - Box 2: Coordinates (x=0.6, y=0.4, w=0.3, h=0.2), Confidence score=0.4, Class probability (dog=0.3, car=0.7)
   - Box 3: Coordinates (x=0.8, y=0.7, w=0.2, h=0.2), Confidence score=0.9, Class probability (dog=0.9, car=0.1)
 - After applying NMS, only the highest confidence boxes are kept (e.g., Box 3), and others with high overlap are discarded.
+
+### Anchor Boxes
+
+YOLO uses a technique called anchor boxes (or prior boxes) to help guide the model in predicting bounding box shapes. Anchor boxes are predefined bounding boxes with fixed aspect ratios and sizes, which represent typical object shapes. For each grid cell, the model predicts the offsets from the anchor boxes to determine the final bounding box. The width and height of the predicted bounding box are scaled and adjusted using anchor boxes as a reference. This allows the model to detect objects with different aspect ratios and sizes more effectively.
+
