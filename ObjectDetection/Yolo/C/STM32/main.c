@@ -10,10 +10,6 @@
 #define DETECTION_THRESHOLD 0.3
 #define NMS_THRESHOLD 0.4
 
-// Original image size (640x424)
-// int original_width = 640;
-// int original_height = 424;
-
 typedef struct
 {
     float x, y, w, h;
