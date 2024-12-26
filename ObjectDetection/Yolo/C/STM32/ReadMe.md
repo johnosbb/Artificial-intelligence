@@ -96,9 +96,12 @@ After the first layer we are left with an output of 416 x 416 x  16. The input r
 A kernel (or filter) is a small matrix used to extract specific features from an image, such as edges or textures. In our case we can calculate the billion floating-point operations using the following formula: $FLOPs = 2 \cdot (k^2) \cdot C_{in} \cdot C_{out} \cdot W \cdot H$, where k is kernel size (3 x 3) aand C is the number of channels, and W, H is the width and height. This fives us:
 ``` 2 x (9) x 3 x 16 x 416 x 416 = 149,520,384 = 149,520,384 FLOPS```
 and as:
-```$1 \text{ BFLOP} = 10^9 \text{ FLOPs}$```
+
+$1 \text{ BFLOP} = 10^9 \text{ FLOPs}$
+
 We have a final calculation of:
-```$BFLOPS = \frac{149,520,384}{1,000,000,000} = 0.150 \text{ BFLOPS}$.```
+
+$BFLOPS = \frac{149,520,384}{1,000,000,000} = 0.150 \text{ BFLOPS}$.
 
 
 
