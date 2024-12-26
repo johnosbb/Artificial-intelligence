@@ -91,7 +91,23 @@ We can see from the results that this model is using two detection scales:
 - One at 13×13 grid (for large objects).
 - Another at 26×26 grid (for smaller objects).
 
-  
+### Types of Layers  
+
+
+#### Convolutional Layer (conv)
+
+The convolutional layer applies a set of filters (also called kernels) to an input feature map to create a new feature map. The operation involves sliding these filters over the input, performing element-wise multiplication between the filter and the section of the input it is currently covering, and summing the results to produce a single output value.
+
+To extract features from the input (e.g., edges, textures, or more complex patterns). Each filter detects a different feature (e.g., horizontal lines, vertical lines, etc.), and the network learns which features are important during training.
+
+The output of a convolutional layer is a feature map with typically higher depth (more channels) than the input, as each filter creates a new channel.
+
+#### Max Pooling Layer (max)
+
+A max pooling layer reduces the spatial dimensions of the input feature map by performing a downsampling operation. It works by dividing the input feature map into smaller regions (usually squares, such as $2 \times 2$) and picking the maximum value from each region. By downsampling, we reduce the spatial size (height and width) while preserving the most important features (by keeping the maximum value in each region). This helps reduce computational complexity and memory usage, as well as to make the network more invariant to small translations in the input (i.e., slight changes in the position of features).
+
+There are two important parameters in this layer: The __Pool size__: is the size of the region from which the maximum value is taken (e.g., $2 \times 2$) and the __Stride__: How much the pooling window moves after each operation. A stride of 2 means it moves by 2 pixels after each pooling operation.
+The output feature map will have smaller height and width but the same depth as the input. For example, applying $2 \times 2$ max pooling with stride 2 to an input of size $208 \times 208 \times 32$ would reduce the size to $104 \times 104 \times 32$.
 
 ### First Layer
 
@@ -120,10 +136,24 @@ $BFLOPS = \frac{149,520,384}{1,000,000,000} = 0.150 \text{ BFLOPS}$.
 
 ### Second Layer
 
-The second layer is responsible for downsizing the image feature maps, so the width and height of the feature map are reduced by a factor of 2 (e.g., from $416 \times 416$ to $208 \times 208$). This reduces the computational cost and memory usage in subsequent layers. Smaller feature maps mean fewer calculations and less data to process. Each pixel in the downsampled feature map corresponds to a larger region in the original image and this allows the network to "see" larger parts of the image at higher levels, which helps in understanding more abstract and global features. Lower-level layers capture fine details, while downsampled layers focus on more abstract, high-level features. Object detection benefits from both local fine-grained details (e.g., edges, textures) and higher-level features (e.g., shapes, patterns). YOLO predicts objects at multiple scales. Downsampling creates multi-scale feature maps that enable the network to detect both small and large objects effectively. Smaller objects might be detected in earlier layers (finer resolution), while larger objects are detected in later layers (coarser resolution). Reducing the dimensions reduces the number of parameters in subsequent layers and this process also helps prevent overfitting, especially when training with limited data.
+```
+   1 max                2x 2/ 2    416 x 416 x  16 ->  208 x 208 x  16 0.003 BF
+```
+
+
+The second layer is responsible for downsizing the image feature maps, so the width and height of the feature map are reduced by a factor of 2 (e.g., from $416 \times 416$ to $208 \times 208$). This reduces the computational cost and memory usage in subsequent layers. Smaller feature maps mean fewer calculations and less data to process. Each pixel in the downsampled feature map corresponds to a larger region in the original image and this allows the network to "see" larger parts of the image at higher levels, which helps in understanding more abstract and global features. Lower-level layers capture fine details, while downsampled layers focus on more abstract, high-level features. Object detection benefits from both local fine-grained details (e.g., edges, textures) and higher-level features (e.g., shapes, patterns).
+
+YOLO predicts objects at multiple scales. Downsampling creates multi-scale feature maps that enable the network to detect both small and large objects effectively. Smaller objects might be detected in earlier layers (finer resolution), while larger objects are detected in later layers (coarser resolution). Reducing the dimensions reduces the number of parameters in subsequent layers and this process also helps prevent overfitting, especially when training with limited data.
 
 
 
+### Thrid Layer
+
+```
+   2 conv     32       3 x 3/ 1    208 x 208 x  16 ->  208 x 208 x  32 0.399 BF
+```
+
+The third layer performs convolution with 32 filters of size $3 \times 3$. Each filter is applied to the input feature map (of size 208 x 208 x 16), creating 32 different feature maps. This layer extracts different features from the previous layer’s outputs, such as edges, textures, or patterns. While the spatial dimensions (height and width) of the feature map remain the same (208 x 208), the depth increases from 16 to 32, indicating that the network is learning to represent more complex features by adding additional channels. After passing through earlier layers, the network is beginning to capture higher-level features, such as combinations of basic edges and textures. The third convolution layer allows for more sophisticated abstraction by increasing the number of features extracted from the image.
 
 
 
