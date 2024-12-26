@@ -82,7 +82,7 @@ Detection complete.
 _target image_
 
 ![image](https://github.com/user-attachments/assets/e0cb7a16-1f26-4348-ac3f-93c4b593bf05)
-_image_with_overlays_
+_image with overlays_
 
 
 
