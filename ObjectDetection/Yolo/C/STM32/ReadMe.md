@@ -164,10 +164,10 @@ Layer    Filters    Size/Strides  Input Dimension      Output Dimension    BFLOP
   - Purpose: Feature extraction by applying convolutional filters. These layers are crucial for detecting patterns like edges, textures, and more complex features at deeper layers.
   - Total: 10 layers (conv layers).
 
-Max Pooling Layers (max)
-- Layers: 1, 3, 5, 7, 9, 11
-- Purpose: Downsample the feature map by taking the maximum value in each local region. This reduces the spatial dimensions (height and width) while retaining the most important information.
-- Total: 6 layers (max pooling).
+- Max Pooling Layers (max)
+  - Layers: 1, 3, 5, 7, 9, 11
+  - Purpose: Downsample the feature map by taking the maximum value in each local region. This reduces the spatial dimensions (height and width) while retaining the most important information.
+  - Total: 6 layers (max pooling).
 
 - YOLO Layer (yolo)
   - Layers: 16, 23
