@@ -248,4 +248,13 @@ In layer 23 (26×26 grid) the model predicts bounding boxes for smaller objects,
 
 These layers output the final detections, which are later processed using non-max suppression (NMS) to remove overlapping boxes and keep the most confident detections.
  
+### Bounding Boxes and Prediction
 
+- Suppose we have an image of size 416x416 and a 13x13 grid (for large objects).
+- The YOLO model divides the image into 13x13 grid cells.
+- Each grid cell predicts 3 bounding boxes with coordinates (x, y, w, h) and confidence scores. The confidence score tells you how confident the model is that an object is within that box.
+- For a grid cell, the model may predict:
+  - Box 1: Coordinates (x=0.2, y=0.3, w=0.4, h=0.5), Confidence score=0.8, Class probability (dog=0.9, car=0.1)
+  - Box 2: Coordinates (x=0.6, y=0.4, w=0.3, h=0.2), Confidence score=0.4, Class probability (dog=0.3, car=0.7)
+  - Box 3: Coordinates (x=0.8, y=0.7, w=0.2, h=0.2), Confidence score=0.9, Class probability (dog=0.9, car=0.1)
+- After applying NMS, only the highest confidence boxes are kept (e.g., Box 3), and others with high overlap are discarded.
