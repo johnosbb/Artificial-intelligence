@@ -10,4 +10,6 @@
  
 To run the example use: ./yolo_example <cfg-file> <weights-file> <class-file> <image-file>
 
+Images, Weights and Configuration files can be found [here](https://github.com/AlexeyAB/darknet/tree/master/data). 
+
 
