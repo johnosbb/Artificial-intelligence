@@ -148,6 +148,24 @@ char **load_class_names(char *filename, int *num_classes)
     return names;
 }
 
+void show_anchorbox_information(network *net)
+{
+    // Print anchor box dimensions for each YOLO layer
+    for (int i = 0; i < net->n; i++)
+    {
+        layer l = net->layers[i];
+        if (l.type == YOLO)
+        {
+            printf("\nLayer %d (YOLO Layer): Grid Size: %dx%d, Number of Anchors: %d\n", i, l.w, l.h, l.n);
+            printf("Anchors:\n");
+            for (int j = 0; j < l.n; j++)
+            {
+                printf("  Anchor %d: Width: %.2f, Height: %.2f\n", j, l.biases[2 * j], l.biases[2 * j + 1]);
+            }
+        }
+    }
+}
+
 int main(int argc, char **argv)
 {
     if (argc < 4)

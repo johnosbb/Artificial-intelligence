@@ -218,7 +218,7 @@ int main(int argc, char **argv)
 
     // Measure time for loading the image
     start_time = clock();
-    image im = load_image_color(image_file, target_width, target_height);
+    image im = load_image_color(image_file, target_width, target_height); // target_width and target_height should match the width and height parameters in our YOLO .cfg file (e.g., 608 in our case).
     if (!im.data)
     {
         fprintf(stderr, "Error: Failed to load image %s.\n", image_file);
