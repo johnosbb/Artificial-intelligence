@@ -263,3 +263,4 @@ These layers output the final detections, which are later processed using non-ma
 
 YOLO uses a technique called anchor boxes (or prior boxes) to help guide the model in predicting bounding box shapes. Anchor boxes are predefined bounding boxes with fixed aspect ratios and sizes, which represent typical object shapes. For each grid cell, the model predicts the offsets from the anchor boxes to determine the final bounding box. The width and height of the predicted bounding box are scaled and adjusted using anchor boxes as a reference. This allows the model to detect objects with different aspect ratios and sizes more effectively.
 
+If the centre of a bounding box falls within a cell then that cell is responsible for that bounding box. Bounding boxes that fall below a certain threshold are removed.
