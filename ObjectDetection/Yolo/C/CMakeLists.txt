@@ -17,7 +17,7 @@ add_executable(yolo_example main.c)
 
 
 # Link Darknet
-target_link_libraries(yolo_example darknet)
+target_link_libraries(yolo_example darknet m)
 
 
 
