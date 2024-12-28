@@ -1,1 +1,0 @@
-/usr/bin/cc CMakeFiles/yolo_example.dir/main.c.o -o yolo_example  -ldarknet -lm 

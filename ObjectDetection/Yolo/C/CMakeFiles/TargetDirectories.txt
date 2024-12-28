@@ -1,3 +1,0 @@
-/mnt/500GB/Artificial-intelligence/ObjectDetection/Yolo/C/CMakeFiles/yolo_example.dir
-/mnt/500GB/Artificial-intelligence/ObjectDetection/Yolo/C/CMakeFiles/edit_cache.dir
-/mnt/500GB/Artificial-intelligence/ObjectDetection/Yolo/C/CMakeFiles/rebuild_cache.dir
