@@ -18,6 +18,8 @@ YOLO is a deep learning-based object detection framework introduced by Joseph Re
 
 The image is divided into an SxS grid of cells (e.g., 13x13 for YOLOv3 with a 416x416 input image). Each cell is responsible for predicting objects whose center falls within it.
 
+In YOLOv3, the typical downsampling factor is 32x. This means the input image dimensions (width and height) are divided by 32 to calculate the final grid size. So for an image size of 608 X 608 we would end up with a grid of 19x19 in the final prediction layer.
+
 Each cell predicts B bounding boxes. A bounding box includes x,y: Coordinates of the box center relative to the cell and Width and height relative to the image dimensions. Each cell also has a confidence score to indicate the likelihood of an object being in the box and the accuracy of the box. Each cell also predicts C class probabilities for the object.
 
 YOLO combines these outputs (bounding boxes + class probabilities) in a single forward pass of the network. This enables end-to-end training, unlike region-based methods that split the task into separate stages.
