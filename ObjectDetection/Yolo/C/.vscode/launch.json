@@ -1,0 +1,49 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Debug Darknet Embedded",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/yolo_example",
+            "args": [
+                "../data/yolov3-tiny.cfg",
+                "../data/yolov3-tiny.weights",
+                "../data/image.jpg"
+            ],
+            "stopAtEntry": true,
+            "cwd": "${workspaceFolder}",
+            "environment": [],
+            "setupCommands": [
+                {
+                    "description": "Enable pretty-printing for gdb",
+                    "text": "-enable-pretty-printing",
+                    "ignoreFailures": true
+                }
+            ],
+            "logging": {
+                "trace": true
+            },
+            "preLaunchTask": "build Darknet"
+        },
+        {
+            "name": "alternative",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/yolo_example",
+            "stopAtEntry": true,
+            "args": [
+                "../data/yolov3-tiny.cfg",
+                "../data/yolov3-tiny.weights",
+                "../data/image.jpg"
+            ],
+            "environment": [
+                {
+                    "name": "config",
+                    "value": "Debug"
+                }
+            ],
+            "cwd": "${workspaceFolder}"
+        }
+    ]
+}
