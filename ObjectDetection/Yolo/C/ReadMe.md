@@ -23,37 +23,46 @@ Key Features of Tiny YOLO v3:
 
 YOLOv3 models, including Tiny YOLOv3, are configured through a .cfg (configuration) file. This file serves as a blueprint for the model architecture and defines key parameters, including the number and types of layers, filter sizes, activation functions, and anchor box dimensions. Each layer is specified with its unique settings, such as the number of filters, kernel size, stride, and padding. Additionally, the configuration file contains hyperparameters for training, such as learning rate, momentum, and batch size. The flexibility of the .cfg file allows developers and researchers to modify the architecture and experiment with different configurations without altering the core codebase.
 
+### The Yolo Network
+
+Throughout this article we will refer to the _network_ or the _YOLOv3 network_. This is a blanket term that generally encompasses:
+
+- The Darknet-53 backbone for feature extraction.
+- The FPN-style neck for multi-scale feature representation. FPN stands for _Feature Pyramid Network_ as Yolo uses this architecture to make predictions at three different scales, providing better performance on small, medium, and large objects.
+- The detection head layers for final predictions (bounding boxes, objectness, class probabilities).
+
+All these components work together as an end-to-end object detection pipeline that processes an input image in a single forward pass, achieving real-time detection performance.
+
 ### Layers used in the Yolo Model
 
 For our evaluation we will use the following 24 layer model.
 
-```
-Layer    Filters    Size/Strides  Input Dimension      Output Dimension    BFLOPS
-0   conv      16       3x3/1       416x416x3        ->  416x416x16        0.150 BF
-1   max                2x2/2       416x416x16       ->  208x208x16        0.003 BF
-2   conv      32       3x3/1       208x208x16       ->  208x208x32        0.399 BF
-3   max                2x2/2       208x208x32       ->  104x104x32        0.001 BF
-4   conv      64       3x3/1       104x104x32       ->  104x104x64        0.399 BF
-5   max                2x2/2       104x104x64       ->  52x52x64          0.001 BF
-6   conv      128      3x3/1       52x52x64         ->  52x52x128         0.399 BF
-7   max                2x2/2       52x52x128        ->  26x26x128         0.000 BF
-8   conv      256      3x3/1       26x26x128        ->  26x26x256         0.399 BF
-9   max                2x2/2       26x26x256        ->  13x13x256         0.000 BF
-10  conv      512      3x3/1       13x13x256        ->  13x13x512         0.399 BF
-11  max                2x2/1       13x13x512        ->  13x13x512         0.000 BF
-12  conv      1024     3x3/1       13x13x512        ->  13x13x1024        1.595 BF
-13  conv      256      1x1/1       13x13x1024       ->  13x13x256         0.089 BF
-14  conv      512      3x3/1       13x13x256        ->  13x13x512         0.399 BF
-15  conv      255      1x1/1       13x13x512        ->  13x13x255         0.044 BF
-16  yolo                -           13x13x255       ->  -                  -
-17  route               -           13               ->  13x13x256         -
-18  conv      128      1x1/1       13x13x256        ->  13x13x128         0.011 BF
-19  upsample            -           13x13x128        ->  26x26x128         -
-20  route               19 8        -                 ->  26x26x384         -
-21  conv      256      3x3/1       26x26x384        ->  26x26x256         1.196 BF
-22  conv      255      1x1/1       26x26x256        ->  26x26x255         0.088 BF
-23  yolo                -           26x26x255       ->  -                  -
-```
+| Layer | Type     | Filters | Size/Strides | Input Dimension | Output Dimension | BFLOPS   |
+| ----- | -------- | ------- | ------------ | --------------- | ---------------- | -------- |
+| 0     | conv     | 16      | 3x3/1        | 416x416x3       | 416x416x16       | 0.150 BF |
+| 1     | max      |         | 2x2/2        | 416x416x16      | 208x208x16       | 0.003 BF |
+| 2     | conv     | 32      | 3x3/1        | 208x208x16      | 208x208x32       | 0.399 BF |
+| 3     | max      |         | 2x2/2        | 208x208x32      | 104x104x32       | 0.001 BF |
+| 4     | conv     | 64      | 3x3/1        | 104x104x32      | 104x104x64       | 0.399 BF |
+| 5     | max      |         | 2x2/2        | 104x104x64      | 52x52x64         | 0.001 BF |
+| 6     | conv     | 128     | 3x3/1        | 52x52x64        | 52x52x128        | 0.399 BF |
+| 7     | max      |         | 2x2/2        | 52x52x128       | 26x26x128        | 0.000 BF |
+| 8     | conv     | 256     | 3x3/1        | 26x26x128       | 26x26x256        | 0.399 BF |
+| 9     | max      |         | 2x2/2        | 26x26x256       | 13x13x256        | 0.000 BF |
+| 10    | conv     | 512     | 3x3/1        | 13x13x256       | 13x13x512        | 0.399 BF |
+| 11    | max      |         | 2x2/1        | 13x13x512       | 13x13x512        | 0.000 BF |
+| 12    | conv     | 1024    | 3x3/1        | 13x13x512       | 13x13x1024       | 1.595 BF |
+| 13    | conv     | 256     | 1x1/1        | 13x13x1024      | 13x13x256        | 0.089 BF |
+| 14    | conv     | 512     | 3x3/1        | 13x13x256       | 13x13x512        | 0.399 BF |
+| 15    | conv     | 255     | 1x1/1        | 13x13x512       | 13x13x255        | 0.044 BF |
+| 16    | yolo     |         | -            | 13x13x255       | -                | -        |
+| 17    | route    |         | -            | 13              | 13x13x256        | -        |
+| 18    | conv     | 128     | 1x1/1        | 13x13x256       | 13x13x128        | 0.011 BF |
+| 19    | upsample |         | -            | 13x13x128       | 26x26x128        | -        |
+| 20    | route    |         | 19 8         | -               | 26x26x384        | -        |
+| 21    | conv     | 256     | 3x3/1        | 26x26x384       | 26x26x256        | 1.196 BF |
+| 22    | conv     | 255     | 1x1/1        | 26x26x256       | 26x26x255        | 0.088 BF |
+| 23    | yolo     |         | -            | 26x26x255       | -                | -        |
 
 ### Layer Breakdown for our Yolo Model
 
@@ -121,7 +130,7 @@ $BFLOPS = \frac{149,520,384}{1,000,000,000} = 0.150 \text{ BFLOPS}$.
 
 The second layer is responsible for downsizing the image feature maps, so the width and height of the feature map are reduced by a factor of 2 (e.g., from $416 \times 416$ to $208 \times 208$). This reduces the computational cost and memory usage in subsequent layers. Smaller feature maps mean fewer calculations and less data to process. Each pixel in the downsampled feature map corresponds to a larger region in the original image and this allows the network to "see" larger parts of the image at higher levels, which helps in understanding more abstract and global features. Lower-level layers capture fine details, while downsampled layers focus on more abstract, high-level features. Object detection benefits from both local fine-grained details (e.g., edges, textures) and higher-level features (e.g., shapes, patterns).
 
-YOLO predicts objects at multiple scales. Downsampling creates multi-scale feature maps that enable the network to detect both small and large objects effectively. Smaller objects might be detected in earlier layers (finer resolution), while larger objects are detected in later layers (coarser resolution). Reducing the dimensions reduces the number of parameters in subsequent layers and this process also helps prevent overfitting, especially when training with limited data.
+As we indicated earlier YOLO predicts objects at multiple scales (FPN-style architecture). Downsampling creates multi-scale feature maps that enable the network to detect both small and large objects effectively. Smaller objects might be detected in earlier layers (finer resolution), while larger objects are detected in later layers (coarser resolution). Reducing the dimensions reduces the number of parameters in subsequent layers and this process also helps prevent overfitting, especially when training with limited data.
 
 ### Third Layer
 
@@ -163,15 +172,20 @@ In Layer 16 (with a 13×13 grid), the model assigns three anchor boxes to each g
 
 _Anchor boxes for grid cell 6,4 on the 13 x 13 grid_
 
-For each anchor box, YOLO calculates:
+The YOLO network will refine these anchor boxes and then calculate:
 
-An objectness score, which estimates the likelihood that the box contains any object.
-Class probabilities, which estimate the likelihood that the detected object belongs to one of the predefined classes specified in the coco.names file.
+- An objectness score, which estimates the likelihood that the box contains any object.
+- Class probabilities, which estimate the likelihood that the detected object belongs to one of the predefined classes specified in the coco.names file.
+
 Together, these scores help YOLO determine what the object is and where it is located in the image.
 
 ### Layer 23
 
 In layer 23 a 26×26 grid is used. This grid size is used to smaller objects, as well as the class probabilities and objectness scores for each of those boxes.
+
+![image](../Resources/ObjectDetection/image_416_416_26_26_grid.jpg)
+
+_Image with the 26 x 26 grid overlayed_
 
 The process is similar to layer 16, the model assigns three anchor boxes to each grid cell and then again calculates an objectness score and class probabilities for each of the anchor boxes. Again, the cfg file defines the anchor box dimensions and the mask indicates for this layer we should use: `10,14,  23,27,  37,58`
 
@@ -186,6 +200,10 @@ ignore_thresh = .7
 truth_thresh = 1
 random=1
 ```
+
+![image](../Resources/ObjectDetection/image_416_416_26_26_anchorboxes.jpg)
+
+_26 x 26 with Anchor Boxes on Cell 18,5_
 
 ### Example: How YOLO Uses Bounding Boxes and Objectness Scores
 
