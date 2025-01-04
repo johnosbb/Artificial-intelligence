@@ -8,6 +8,9 @@ Tiny YOLO v3 is a lightweight version of the YOLO v3 model, optimized for device
 
 In essence, YOLO divides the input image into a grid and predicts bounding boxes, objectness scores, and class probabilities for each grid cell. This allows the model to directly predict the location and class of objects within the image in a single forward pass, making it significantly faster than traditional object detection methods.
 
+![image](../Resources/ObjectDetection/image_416_416_13_13.jpg)
+_Image with 13x13 grid_
+
 Key Features of Tiny YOLO v3:
 
 - Lightweight Architecture: Fewer layers and parameters compared to YOLO v3.
