@@ -267,6 +267,7 @@ Each bounding box then will have:
 - Center Coordinates ($x$, $y$) – Offset within the grid cell.
 - Width and Height ($w$, $h$) – Refined bounding box dimensions.
 - Objectness Score ($P_{\text{obj}}$) – Probability of an object existing.
+- Class Probabilities ($P(\text{class}_i)$)
 - Class Probabilities ($P(\text{class}_i \mid \text{object})$)
 
 This means YOLO doesn’t just detect if there’s an object—it also predicts what the object is in a single forward pass of the network.
