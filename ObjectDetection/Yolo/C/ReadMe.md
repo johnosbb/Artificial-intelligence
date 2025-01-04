@@ -6,12 +6,18 @@ Object detection is a critical task in computer vision, enabling systems to iden
 
 Tiny YOLO v3 is a lightweight version of the YOLO v3 model, optimized for devices with limited computational power, such as mobile phones, edge devices, and embedded systems. While it sacrifices some accuracy compared to the full YOLO v3, it significantly reduces computational requirements and inference time, making it ideal for real-time object detection in resource-constrained environments.
 
+In essence, YOLO divides the input image into a grid and predicts bounding boxes, objectness scores, and class probabilities for each grid cell. This allows the model to directly predict the location and class of objects within the image in a single forward pass, making it significantly faster than traditional object detection methods.
+
 Key Features of Tiny YOLO v3:
 
 - Lightweight Architecture: Fewer layers and parameters compared to YOLO v3.
 - Faster Inference Time: Optimized for real-time applications.
 - Lower Accuracy: A trade-off for speed and efficiency.
 - Compatibility: Can run on embedded systems like Raspberry Pi.
+
+### Configuration of the Model
+
+YOLOv3 models, including Tiny YOLOv3, are configured through a .cfg (configuration) file. This file serves as a blueprint for the model architecture and defines key parameters, including the number and types of layers, filter sizes, activation functions, and anchor box dimensions. Each layer is specified with its unique settings, such as the number of filters, kernel size, stride, and padding. Additionally, the configuration file contains hyperparameters for training, such as learning rate, momentum, and batch size. The flexibility of the .cfg file allows developers and researchers to modify the architecture and experiment with different configurations without altering the core codebase.
 
 ### Layers used in the Yolo Model
 
@@ -261,7 +267,7 @@ Each bounding box then will have:
 Center Coordinates ($x$, $y$) – Offset within the grid cell.
 Width and Height ($w$, $h$) – Refined bounding box dimensions.
 Objectness Score ($P_{\text{obj}}$) – Probability of an object existing.
-Class Probabilities ($P(\text{class}_i | \text{object})$) – Probabilities for each class.
+Class Probabilities ($P(\text{class}_i | \text{object})$)
 
 This means YOLO doesn’t just detect if there’s an object—it also predicts what the object is in a single forward pass of the network.
 
