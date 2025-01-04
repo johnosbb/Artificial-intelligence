@@ -9,6 +9,7 @@ Tiny YOLO v3 is a lightweight version of the YOLO v3 model, optimized for device
 In essence, YOLO divides the input image into a grid and predicts bounding boxes, objectness scores, and class probabilities for each grid cell. This allows the model to directly predict the location and class of objects within the image in a single forward pass, making it significantly faster than traditional object detection methods.
 
 ![image](../Resources/ObjectDetection/image_416_416_13_13.jpg)
+
 _Image with 13x13 grid_
 
 Key Features of Tiny YOLO v3:
@@ -23,6 +24,8 @@ Key Features of Tiny YOLO v3:
 YOLOv3 models, including Tiny YOLOv3, are configured through a .cfg (configuration) file. This file serves as a blueprint for the model architecture and defines key parameters, including the number and types of layers, filter sizes, activation functions, and anchor box dimensions. Each layer is specified with its unique settings, such as the number of filters, kernel size, stride, and padding. Additionally, the configuration file contains hyperparameters for training, such as learning rate, momentum, and batch size. The flexibility of the .cfg file allows developers and researchers to modify the architecture and experiment with different configurations without altering the core codebase.
 
 ### Layers used in the Yolo Model
+
+For our evaluation we will use the following 24 layer model.
 
 ```
 Layer    Filters    Size/Strides  Input Dimension      Output Dimension    BFLOPS
@@ -54,6 +57,8 @@ Layer    Filters    Size/Strides  Input Dimension      Output Dimension    BFLOP
 
 ### Layer Breakdown for our Yolo Model
 
+Let us take a look at these different layer types in the context of object detection.
+
 - Convolutional Layers (conv)
 
   - Layers: 0, 2, 4, 6, 8, 10, 12, 13, 14, 21
@@ -66,7 +71,7 @@ Layer    Filters    Size/Strides  Input Dimension      Output Dimension    BFLOP
   - Purpose: Downsample the feature map by taking the maximum value in each local region. This reduces the spatial dimensions (height and width) while retaining the most important information.
   - Total: 6 layers (max pooling).
 
-- YOLO Layer (yolo)
+- YOLO Layers (yolo)
 
   - Layers: 16, 23
   - Purpose: Perform object detection by predicting class labels, bounding box coordinates, and confidence scores. The output consists of class probabilities and bounding boxes for each grid cell.
@@ -78,7 +83,7 @@ Layer    Filters    Size/Strides  Input Dimension      Output Dimension    BFLOP
   - Purpose: This layer concatenates feature maps from different parts of the network to provide multi-scale feature information for later stages, such as detection.
   - Total: 2 layers (route layers).
 
-- Upsample Layer (upsample)
+- Upsample Layers (upsample)
   - Layer: 19
   - Purpose: Upsample the feature map, increasing its spatial resolution, which is especially useful for models like YOLO that need high-resolution feature maps for detection.
   - Total: 1 layer (upsample layer).
@@ -153,6 +158,10 @@ In this example the mask is 3,4,5 so only anchors 3, 4, and 5 (81,82, 135,169, 3
 Different YOLO layers often focus on detecting objects at different scales.
 
 In Layer 16 (with a 13×13 grid), the model assigns three anchor boxes to each grid cell. At this lower resolution, these anchor boxes are primarily responsible for detecting larger objects in the image.
+
+![image](../Resources/ObjectDetection/image_416_416_13_13_anchorboxes.jpg)
+
+_Anchor boxes for grid cell 6,4 on the 13 x 13 grid_
 
 For each anchor box, YOLO calculates:
 
