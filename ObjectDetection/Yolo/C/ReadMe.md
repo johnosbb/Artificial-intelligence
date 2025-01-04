@@ -203,7 +203,11 @@ random=1
 
 ![image](../Resources/ObjectDetection/image_416_416_26_26_anchorboxes.jpg)
 
-_26 x 26 with Anchor Boxes on Cell 18,5_
+_26 x 26 grid with Anchor Boxes on Cell 18,5_
+
+![image](../Resources/ObjectDetection/image_416_416_26_26_anchorboxes_closeup.jpg)
+
+_Detailed View of 26 x 26 grid with Anchor Boxes on Cell 18,5_
 
 ### Example: How YOLO Uses Bounding Boxes and Objectness Scores
 
