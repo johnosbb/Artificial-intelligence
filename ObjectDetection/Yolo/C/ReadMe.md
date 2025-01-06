@@ -10,7 +10,7 @@ In essence, YOLO divides the input image into a grid and predicts bounding boxes
 
 ![image](../Resources/ObjectDetection/image_416_416_13_13.jpg)
 
-_Image with 13x13 grid_
+_Figure 1: Image with 13x13 grid_
 
 Key Features of Tiny YOLO v3:
 
@@ -170,7 +170,7 @@ In Layer 16 (with a 13×13 grid), the model assigns three anchor boxes to each g
 
 ![image](../Resources/ObjectDetection/image_416_416_13_13_anchorboxes.jpg)
 
-_Anchor boxes for grid cell 6,4 on the 13 x 13 grid_
+_Figure 2: Anchor boxes for grid cell 6,4 on the 13 x 13 grid_
 
 The YOLO network will refine these anchor boxes and then calculate:
 
@@ -185,7 +185,7 @@ In layer 23 a 26×26 grid is used. This grid size is used to smaller objects, as
 
 ![image](../Resources/ObjectDetection/image_416_416_26_26_grid.jpg)
 
-_Image with the 26 x 26 grid overlayed_
+_Figure 3: Image with the 26 x 26 grid overlayed_
 
 The process is similar to layer 16, the model assigns three anchor boxes to each grid cell and then again calculates an objectness score and class probabilities for each of the anchor boxes. Again, the cfg file defines the anchor box dimensions and the mask indicates for this layer we should use: `10,14,  23,27,  37,58`
 
@@ -203,11 +203,11 @@ random=1
 
 ![image](../Resources/ObjectDetection/image_416_416_26_26_anchorboxes.jpg)
 
-_26 x 26 grid with Anchor Boxes on Cell 18,5_
+_Figure 4: 26 x 26 grid with Anchor Boxes on Cell 18,5_
 
 ![image](../Resources/ObjectDetection/image_416_416_26_26_anchorboxes_closeup.jpg)
 
-_Detailed View of 26 x 26 grid with Anchor Boxes on Cell 18,5_
+_Figure 5: Detailed View of 26 x 26 grid with Anchor Boxes on Cell 18,5_
 
 ### Example: How YOLO Uses Bounding Boxes and Objectness Scores
 
@@ -265,6 +265,12 @@ We can calculate the final width and height as follows:
 
 If the centre of a bounding box falls within a cell then that cell is responsible for that bounding box. These refined bounding boxes (with accurate width and height after transformation) are then scored for objectness (how confident the model is about an object being present) and for class probabilities (which class the object belongs to).
 
+If we take anchor box 1 which was centred on grid cell 6,4 (see figure 6 below) we can see this refinement in action. The box shown in blue is the original anchor box and the box shown with a black outline is the refined bounding box which has been transformed in the process described above. One can see how the box more closely maps to the human figure first identified in grid cell 6,4.
+
+![image](../Resources/ObjectDetection/image_416_416_13_13_anchor1_refined.jpg)
+
+_Figure 6: Anchor Box 1 and the Refined Bounding Box for that Anchor centered on Cell 6,4_
+
 ### Objectness
 
 The objectness score is a scalar value (ranging from 0 to 1) predicted for each anchor box. It represents the model's confidence that an object exists within that specific anchor box. If the objectness score exceeds a predefined threshold (e.g., 0.5), the model considers the anchor box to contain an object.
@@ -282,6 +288,14 @@ The threshold can be adjusted based on the application:
 - Higher Threshold (e.g., 0.7): Reduces false positives but might miss some valid detections (false negatives).
 - Lower Threshold (e.g., 0.3): Increases the number of detected objects but might introduce more false positives.
 
+The refined bounding box shown in figure 6 above had an associated objectness score of 0.348, so there is a low level of confidence on that particular box.
+
+However, if we look at anchor box 1 centered on grid cell 7,4 we get a much higher objectness score of 0.979016 for the refined bounding box (see figure 7 below).
+
+![image](../Resources/ObjectDetection/image_416_416_13_13_7_4_anchor1_refined.jpg)
+
+_Figure 7: Anchor Box 1 and the Refined Bounding Box for that Anchor centered on Cell 7,4_
+
 #### Selecting and sorting based on Objectness
 
 The objectness score is a probability between 0 and 1 that indicates the confidence level of the model that an object exists in a specific anchor box. If the objectness score exceeds the threshold, the anchor box is considered to contain an object. If it falls below the threshold, the box is ignored during the next stages of processing.
@@ -292,11 +306,13 @@ For each anchor box where the objectness score is high enough, YOLO also predict
 
 Class Probabilities ($P_{\text{class}_i}$)
 
+For the refined bounding box shown above in figure 7, we get a class probability of 0.978969 for class 0 (.i.e a man).
+
 ### Candidate Bounding Boxes
 
-This process results in a list of candidate bounding boxes (sometimes called detection boxes) with an objectness score and a set of class probability scores. These bounding boxes represent the model's best guess for object locations and dimensions. To remove redundant and overlapping boxes, Non-Maximum Suppression (NMS) is applied. NMS ensures that only the highest-confidence box for each object (e.g., Box 3) is kept, while overlapping lower-confidence boxes are discarded.
+The process described above results in a list of candidate bounding boxes (sometimes called detection boxes) with associated objectness score and a set of class probability scores. These bounding boxes represent the model's best guess for object locations and dimensions. To remove redundant and overlapping boxes, Non-Maximum Suppression (NMS) is applied. NMS ensures that only the highest-confidence box for each object (e.g., Box 3) is kept, while overlapping lower-confidence boxes are discarded.
 
-Each bounding box then will have:
+As discussed above each bounding box will have:
 
 - Center Coordinates ($x$, $y$) – Offset within the grid cell.
 - Width and Height ($w$, $h$) – Refined bounding box dimensions.
@@ -307,7 +323,7 @@ This means YOLO doesn’t just detect if there’s an object—it also predicts 
 
 ### Finalising the Detections
 
-We are now left with a collection of bounding boxes. As we saw above, these have been refined by the anchor boxes dimensions to more closely match the actual object dimensions of the objects they seek to predict. Out task now, is to eliminate overlapping bounding boxes for the same class of object. To do this we first sort the boxes and then evaluate the degree to which two boxes overlap. We will retain the boxes with the higest _objectness_ score for a particular class and discard the others belonging to that class.
+We are now left with a collection of bounding boxes. These have been refined by the anchor boxes dimensions to more closely match the actual object dimensions of the objects they seek to predict. Out task now, is to eliminate overlapping bounding boxes for the same class of object. To do this we first sort the boxes and then evaluate the degree to which two boxes overlap. We will retain the boxes with the higest _objectness_ score for a particular class and discard the others belonging to that class.
 
 #### Checking for Overlapping Bounding Boxes
 
