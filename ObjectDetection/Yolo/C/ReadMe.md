@@ -336,8 +336,28 @@ IoU= Area of Intersection/Area of Union
 Where
 
 - Intersection: The area where the two bounding boxes overlap.
-- Union: The total area covered by both bounding boxes, minus the overlap. For two boxes A and B, the area of intersection is `A + Area of B - Intersection`. Since we want to account for the common area of intersection only once, we can subtract the area of intersection we calculated, from the total area of the two boxes. If two boxes have a high IoU (> thresh) and are for the same class (prob[k]), the less confident box (dets[j].prob[k]) is suppressed.
+- Union: The total area covered by both bounding boxes, minus the overlap. For two boxes A and B, the area of intersection is `A + Area of B - Intersection`. Since we want to account for the common area of intersection only once, we can subtract the area of intersection we calculated, from the total area of the two boxes. The calculation for IoU is illustrated in figure 8 below.
+
+If two boxes have a high IoU (> thresh) and are for the same class (prob[k]), the less confident box (dets[j].prob[k]) is suppressed.
+
+![image](../Resources/ObjectDetection/iou.jpg)
+
+_Figure 8: IOU_
 
 #### Non-Maximum Suppression
 
 This process of iterating through all of the boxes and comparing their IoU's is called one Non-Maximum Suppression (NMS). This process is used to determine whether two bounding boxes (a and b) are likely referring to the same object in the image. We iterate one class at a time and eliminating the lower scoring boxes for the predicted object. Once the process completes we are left with high-confidence detections, non-overlapping boxes for each class.
+
+![image](../Resources/ObjectDetection/image_416_416_13_13_iou.jpg)
+
+_Figure 9: Two Bounding Boxes Overlapping_
+
+Figure 9 above shows two candidate bounding boxes detecting a person. The first of these was centered on grid cell 6,4 and the second on grid cell on 7,4.
+
+As we can see there is a significant amount of overlap between these images.
+
+The box centered on 6,4 has a class probability of 0.347352, while the box centered on 7,4 has a class probability of 0.978969. In this instance the bounding box centered on 6,4 is suppressed because of its lower probability.
+
+![image](../Resources/ObjectDetection/image_416_416_13_13_final_detectionbox.jpg)
+
+_Figure 10: Final Bounding Box for the Person Class_
