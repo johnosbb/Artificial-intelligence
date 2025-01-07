@@ -358,6 +358,8 @@ As we can see there is a significant amount of overlap between these images.
 
 The box centered on 6,4 has a class probability of 0.347352, while the box centered on 7,4 has a class probability of 0.978969. In this instance the bounding box centered on 6,4 is suppressed because of its lower probability.
 
+The box centered on 7,4 becomes the final bounding box for the _Person_ class with a probability of 0.978969.
+
 ![image](../Resources/ObjectDetection/image_416_416_13_13_final_detectionbox.jpg)
 
 _Figure 10: Final Bounding Box for the Person Class_
