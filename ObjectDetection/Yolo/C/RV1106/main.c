@@ -4,6 +4,7 @@
 #include <time.h> // Include time.h for measuring time
 #include <darknet.h>
 #include <ctype.h>
+#include <sys/time.h>
 #include <stb/stb_image.h> // a lite weight library for basic image manipulation
 
 #define CLASS_FILE "coco.names"
@@ -164,6 +165,24 @@ char **load_class_names(char *filename, int *num_classes)
     return names;
 }
 
+// Function to calculate the time difference in milliseconds using timespec
+double get_time_difference_ms(struct timespec start_time, struct timespec end_time)
+{
+    // Calculate the difference in seconds and nanoseconds
+    double diff_sec = end_time.tv_sec - start_time.tv_sec;
+    double diff_nsec = end_time.tv_nsec - start_time.tv_nsec;
+
+    // If nanoseconds is negative, adjust the seconds and nanoseconds accordingly
+    if (diff_nsec < 0)
+    {
+        diff_sec--;
+        diff_nsec += 1000000000; // Add one second worth of nanoseconds
+    }
+
+    // Convert the difference into milliseconds
+    return (diff_sec * 1000.0) + (diff_nsec / 1000000.0);
+}
+
 int main(int argc, char **argv)
 {
     if (argc < 5)
@@ -191,11 +210,16 @@ int main(int argc, char **argv)
     printf("Using input size: %dx%d as per %s\n", target_width, target_height, cfg_file);
 
     // Start timing
-    clock_t start_time, end_time;
-    double total_time, load_network_time, load_image_time, prediction_time, detection_time, conversion_time;
+    struct timespec start_time_ms, end_time_ms;
+
+    // Record the start time
+
+    double total_time_ms, load_network_time_ms, load_image_time_ms,
+        prediction_time_ms, post_processing_time_ms, conversion_time_ms, load_classes_time_ms;
+    ;
 
     // Measure time for loading the network
-    start_time = clock();
+    clock_gettime(CLOCK_MONOTONIC, &start_time_ms);
     // load_network custom reads the YOLO configuration file (usually a .cfg file) to set up the architecture of the neural network.
     // The configuration specifies:
     // The network structure (e.g., number of layers, types of layers like convolutional, max pooling, etc.).
@@ -214,14 +238,14 @@ int main(int argc, char **argv)
         fprintf(stderr, "Error: Failed to load YOLO network from %s and %s.\n", cfg_file, weights_file);
         return 1;
     }
-    end_time = clock();
-    load_network_time = ((double)(end_time - start_time)) / CLOCKS_PER_SEC;
+    clock_gettime(CLOCK_MONOTONIC, &end_time_ms);
+    load_network_time_ms = get_time_difference_ms(start_time_ms, end_time_ms);
     printf("Network loaded with %d layers.\n", net->n);
 
     set_batch_network(net, 1); // Set batch size to 1 for inference
 
     // Measure time for loading the image
-    start_time = clock();
+    clock_gettime(CLOCK_MONOTONIC, &start_time_ms);
     image im = load_image_color(image_file, target_width, target_height);
     if (!im.data)
     {
@@ -239,15 +263,15 @@ int main(int argc, char **argv)
     }
 
     printf("Original image dimensions: %dx%d\n", original_width, original_height);
-    end_time = clock();
-    load_image_time = ((double)(end_time - start_time)) / CLOCKS_PER_SEC;
+    clock_gettime(CLOCK_MONOTONIC, &end_time_ms);
+    load_image_time_ms = get_time_difference_ms(start_time_ms, end_time_ms);
 
     // Measure time for loading class names
-    start_time = clock();
+    clock_gettime(CLOCK_MONOTONIC, &start_time_ms);
     int num_classes = 0;
     char **class_names = load_class_names(CLASS_FILE, &num_classes);
-    end_time = clock();
-    detection_time = ((double)(end_time - start_time)) / CLOCKS_PER_SEC;
+    clock_gettime(CLOCK_MONOTONIC, &end_time_ms);
+    load_classes_time_ms = get_time_difference_ms(start_time_ms, end_time_ms);
     if (!class_names)
     {
         fprintf(stderr, "Error loading class names.\n");
@@ -255,16 +279,16 @@ int main(int argc, char **argv)
     }
 
     // Measure time for running YOLO prediction
-    start_time = clock();
+    clock_gettime(CLOCK_MONOTONIC, &start_time_ms);
     network_predict_ptr(net, im.data); // Use network_predict_ptr
-    end_time = clock();
-    prediction_time = ((double)(end_time - start_time)) / CLOCKS_PER_SEC;
+    clock_gettime(CLOCK_MONOTONIC, &end_time_ms);
+    prediction_time_ms = get_time_difference_ms(start_time_ms, end_time_ms);
 
     layer output_layer = net->layers[net->n - 1];                     // The output layer
     int num_boxes = output_layer.w * output_layer.h * output_layer.n; // Number of detections
 
     // Measure time for decoding detections
-    start_time = clock();
+    clock_gettime(CLOCK_MONOTONIC, &start_time_ms);
 
     detection *dets = get_network_boxes(net, im.w, im.h, DETECTION_THRESHOLD, 0.5, 0, 1, &num_boxes, 0); // Pass 0 or 1 for `letter`
     if (!dets)
@@ -274,11 +298,7 @@ int main(int argc, char **argv)
         free_network_ptr(net);
         return 1;
     }
-    end_time = clock();
-    detection_time += ((double)(end_time - start_time)) / CLOCKS_PER_SEC;
 
-    // Measure time for bounding box conversion
-    start_time = clock();
     // Non-maximal suppression to remove redundant detections
     do_nms_sort(dets, num_boxes, output_layer.classes, NMS_THRESHOLD);
     // The YOLO model outputs bounding box coordinates as relative values between 0 and 1,
@@ -311,8 +331,8 @@ int main(int argc, char **argv)
             }
         }
     }
-    end_time = clock();
-    conversion_time = ((double)(end_time - start_time)) / CLOCKS_PER_SEC;
+    clock_gettime(CLOCK_MONOTONIC, &end_time_ms);
+    post_processing_time_ms = get_time_difference_ms(start_time_ms, end_time_ms);
 
     // Free resources
     free_detections(dets, num_boxes);
@@ -327,15 +347,13 @@ int main(int argc, char **argv)
     free(class_names);
 
     // Output timing statistics
-    total_time = load_network_time + load_image_time + prediction_time + detection_time + conversion_time;
+    total_time_ms = load_network_time_ms + load_image_time_ms + prediction_time_ms + post_processing_time_ms + load_classes_time_ms;
     printf("\nTiming statistics:\n");
-    printf("Network loading time: %.2f seconds\n", load_network_time);
-    printf("Image loading time: %.2f seconds\n", load_image_time);
-    printf("Class names loading time: %.2f seconds\n", detection_time);
-    printf("Prediction time: %.2f seconds\n", prediction_time);
-    printf("Detection and conversion time: %.2f seconds\n", conversion_time);
-    printf("Total time: %.2f seconds\n", total_time);
-
-    printf("Detection complete.\n");
+    printf("Network loading time (ms): %.2f\n", load_network_time_ms);
+    printf("Image loading time (ms): %.2f \n", load_image_time_ms);
+    printf("Class names loading time: (ms) %.2f \n", load_classes_time_ms);
+    printf("Prediction time (ms): %.2f\n", prediction_time_ms);
+    printf("post_processing time (ms): %.2f seconds\n", post_processing_time_ms);
+    printf("Total time: (ms) %.2f \n", total_time_ms);
     return 0;
 }
