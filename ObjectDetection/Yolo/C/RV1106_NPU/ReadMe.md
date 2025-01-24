@@ -96,6 +96,10 @@ dog @ (66 400 203 524) Probability0.864517
 - Post Processing (ms): 11.37
 - Total time: (ms) 361.76
 
+
+![image](https://github.com/user-attachments/assets/4c7e42e6-6745-477b-aff9-dabd4a9ffea5)
+
+
 ## Comparing performance
 
 | Timing Statistics        | NPU (ms)   | Software Only (ms) |
