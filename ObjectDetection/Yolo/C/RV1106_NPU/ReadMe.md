@@ -42,6 +42,7 @@ In this section, we look further into a detailed comparison of object detection 
 
 ## CPU only Performance
 
+```
 Using input size: 416x416 as per yolov3-tiny.cfg
 loading cfg: yolov3-tiny.cfg, weights: yolov3-tiny.weights, clear = 0
 Total BFLOPS 5.571
@@ -56,14 +57,16 @@ Detected object: Class dog, Probability 0.89, Box with normalised locations [Cen
 Box in original image size pixel locations: Box [Center: (141.57, 422.24) Width: 121.81 Height: 86.42]
 Detected object: Class person, Probability 0.98, Box with normalised locations [Center: (0.36, 0.56) Width: 0.15 Height: 0.68]
 Box in original image size pixel locations: Box [Center: (229.56, 352.94) Width: 98.66 Height: 286.97]
+```
 
-Timing statistics:
-Network loading time (ms): 4712.62
-Image loading time (ms): 597.75
-Class names loading time: (ms) 1.27
-Prediction time (ms): 196712.35
-post_processing time (ms): 9.66 seconds
-Total time: (ms) 202033.65
+**Timing statistics:**
+
+- Network loading time (ms): 4712.62
+- Image loading time (ms): 597.75
+- Class names loading time: (ms) 1.27
+- Prediction time (ms): 196712.35
+- Post_processing time (ms): 9.66 seconds
+- Total time: (ms) 202033.65
 
 ## NPU
 
@@ -81,19 +84,17 @@ result 4: ( 66, 400, 203, 524), dog
 person @ (187 161 273 563) Probability 0.895416
 horse @ (402 213 601 520) Probability 0.872058
 dog @ (66 400 203 524) Probability0.864517
-```
 
 ```
-Releasing rknn memory
 
-Timing statistics:
-Network loading time (ms): 4.93
-Image loading time (ms): 262.38
-Class names loading time: (ms) 0.44
-Prediction time (ms): 83.08
-Post Processing (ms): 11.37
-Total time: (ms) 361.76
-```
+**Timing statistics:**
+
+- Network loading time (ms): 4.93
+- Image loading time (ms): 262.38
+- Class names loading time: (ms) 0.44
+- Prediction time (ms): 83.08
+- Post Processing (ms): 11.37
+- Total time: (ms) 361.76
 
 ## Comparing performance
 
