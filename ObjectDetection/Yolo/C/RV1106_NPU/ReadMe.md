@@ -11,7 +11,7 @@ Neural Processing Units (NPUs) are becoming an integral component of modern proc
 
 ![image](../../../../ObjectDetection/Yolo/Resources/ObjectDetection/npu.png)
 
-\_\_Figure 1: NPU Block Diagram
+_Figure 1: NPU Block Diagram_
 
 The Neural Processing Unit (NPU) featured in the RV1106 is a specialized architecture designed to accelerate AI tasks, primarily deep learning inference. Its core functionality is divided into several key components, each playing a critical role in optimizing performance and efficiency.
 
