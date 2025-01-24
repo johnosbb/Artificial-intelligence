@@ -13,7 +13,7 @@ Neural Processing Units (NPUs) are becoming an integral component of modern proc
 
 _Figure 1: NPU Block Diagram_
 
-The Neural Processing Unit (NPU) featured in the RV1106 is a specialized architecture designed to accelerate AI tasks, primarily deep learning inference. Its core functionality is divided into several key components, each playing a critical role in optimizing performance and efficiency.
+A Neural Processing Unit (NPU) is a specialized architecture designed to accelerate AI tasks, primarily deep learning inference. Its core functionality is divided into several key components (shown in _Figure 1_ above), each playing a critical role in optimizing performance and efficiency.
 
 The input processing block is the entry point of the NPU, responsible for receiving data from the CPU or memory. This block ensures that data is preprocessed and formatted in a way that aligns with the requirements of the neural network model. This specifc NPU is optimised for image processing, so it expects the data in a format (for example: NHWC format) that aligns with the models expectations. By offloading this step from the CPU, the input processing block reduces latency and prepares the data for efficient computation.
 
@@ -30,14 +30,11 @@ The output processing block prepares the results for the next stage, whether itâ
 A critical feature of the NPU is its power management capability. The NPU is designed to deliver substantial computational power at far lower energy levels compared to traditional GPUs, which would require significantly more power to achieve similar performance. This efficiency stems from the NPU's highly specialized architecture, which is tuned exclusively for AI inference. This makes NPUs an attractive solution for edge and embedded devices, where power availability is limited, and energy efficiency is paramount.
 NPUs achieve significantly higher performance and efficiency, enabling real-time applications in fields like autonomous driving, healthcare, and natural language processing.
 
-The Luckfox Pico Pro is a compact Linux microdevelopment board powered by the [Rockchip RV1106 system-on-chip (SoC)](https://files.luckfox.com/wiki/Luckfox-Pico/PDF/Rockchip%20RV1106%20Datasheet%20V1.7-20231218.pdf). This SoC integrates a Neural Processing Unit (NPU) designed to accelerate machine learning inference tasks. The RV1106 is based on single-core ARM Cortex-A7 32-bit core which integrates NEON and FPU. Its NPU supports INT4/INT8/INT16 hybrid operation and its computing power is up to 0.5TOPs. The video encoder embedded in RV1106 supports H.265/H.264 encoding. It also supports
-multi-stream encoding. To accelerate video processing, an intelligent video engine with 22 calculation units is also embedded.
-
 # Object Detection on LuckFox
 
-In my previous [article](https://medium.com/@johnos3747/an-introduction-to-object-detection-8374539b1f11) we explored YOLO (You Only Look Once) in detail. Today, we'll compare two implementations on the Luckfox Pico Pro: one that relies solely on the Cortex-A7 CPU and another that takes advantage of its integrated Neural Processing Unit (NPU).
+In my previous [article](https://medium.com/@johnos3747/an-introduction-to-object-detection-8374539b1f11) we explored YOLO (You Only Look Once) in detail. Today, we'll compare two implementations of YOLO on the Luckfox Pico Pro: one that relies solely on the Cortex-A7 CPU and another that takes advantage of its integrated Neural Processing Unit (NPU). The Luckfox Pico Pro is a compact Linux microdevelopment board powered by the Rockchip RV1106 system-on-chip (SoC). This SoC integrates a Neural Processing Unit (NPU) designed to accelerate machine learning inference tasks. The RV1106 is based on single-core ARM Cortex-A7 32-bit core which integrates NEON and FPU. Its NPU supports INT4/INT8/INT16 hybrid operation and its computing power is up to 0.5TOPs.
 
-Both implementations will use the same input image, but there is a slight difference in the image size due to model compatibility. The NPU implementation processes images at a preferred size of 640x640, while the CPU implementation uses 416x416, as required by the YOLO Tiny model we are using.
+Both the CPU and NPU implementation will use the same input image, but there is a slight difference in the image size due to model compatibility. The NPU implementation processes images at a preferred size of 640x640, while the CPU implementation uses 416x416, as required by the YOLO Tiny model we are using.
 
 The software for both versions can be found in my [github repository](https://github.com/johnosbb/Artificial-intelligence/tree/main/ObjectDetection/Yolo). For the CPU implementation I will be using my [Darknet Embedded library](https://github.com/johnosbb/darknet_embedded).
 
