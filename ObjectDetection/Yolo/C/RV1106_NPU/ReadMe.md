@@ -7,105 +7,48 @@ A Neural Processing Unit (NPU) is a specialized hardware accelerator designed to
 
 Neural Processing Units (NPUs) are becoming an integral component of modern processors, designed to handle AI workloads more efficiently than traditional CPUs. The RV1106, a processor built for edge applications, features an integrated NPU that offers a practical example of how these specialized units can be utilized for tasks like inference. This article examines the architecture and performance of the RV1106's NPU, comparing its capabilities to CPU-based processing for AI inference tasks. By exploring these, we aim to provide a clear understanding of the performance improvements that NPUs bring to edge computing, helping you grasp their growing significance in AI-driven devices.
 
-## Optimized Data Flow Architecture
+## NPU Architecture and Design
 
-- Parallel Processing: NPUs are designed to handle highly parallelizable operations, which are common in ML tasks like matrix multiplications and convolutions.
-- Data Movement Minimization: They often use architectures that minimize data movement (e.g., by using on-chip memory), reducing latency and energy consumption.
-- Pipeline Optimization: NPUs implement pipelining and parallelism to process multiple data streams simultaneously, ensuring continuous execution of inference tasks.
+![image](../Resources/ObjectDetection/npu.png)
 
-## Specialized Compute Units
+\_\_Figure 1: NPU Block Diagram
 
-- Matrix and Tensor Operations: NPUs are optimized for linear algebra operations, such as matrix multiplications (a core operation in ML), using hardware blocks like systolic arrays or vector processors.
-- Fixed-Point Arithmetic: Many NPUs use lower-precision fixed-point arithmetic (e.g., INT8) instead of floating-point arithmetic to perform calculations more efficiently while maintaining acceptable accuracy.
+The Neural Processing Unit (NPU) featured in the RV1106 is a specialized architecture designed to accelerate AI tasks, primarily deep learning inference. Its core functionality is divided into several key components, each playing a critical role in optimizing performance and efficiency.
 
-## Custom Instruction Sets
+The input processing block is the entry point of the NPU, responsible for receiving data from the CPU or memory. This block ensures that data is preprocessed and formatted in a way that aligns with the requirements of the neural network model. This specifc NPU is optimised for image processing, so it expects the data in a format (for example: NHWC format) that aligns with the models expectations. By offloading this step from the CPU, the input processing block reduces latency and prepares the data for efficient computation.
 
-- NPUs include instructions specifically designed for ML workloads, such as activation functions, pooling operations, and normalization. This eliminates the overhead of executing these tasks using general-purpose instructions.
+The compute engine is the heart of the NPU, where the majority of operations, such as matrix multiplications and convolutions, take place. This block is designed to handle the high computational demands of neural networks, leveraging parallelism and specialized arithmetic units to perform these tasks rapidly. It supports both integer and floating-point calculations, enabling flexibility in running various models with different precision requirements.
 
-## On-Chip Memory
+The activation and pooling block is dedicated to non-linear transformations and dimensionality reductions. Neural networks rely on activation functions, such as ReLU, to introduce non-linearities, which are crucial for learning complex patterns. Pooling operations, on the other hand, reduce the spatial size of feature maps, which helps in lowering computational load and improving generalization. This block executes these functions efficiently in hardware.
 
-- NPUs include high-bandwidth, low-latency memory close to the compute units. This design reduces the need for frequent data transfers to and from external memory, a common bottleneck in ML inference.
+The memory management unit coordinates data movement between the NPU and memory. Neural networks often process large datasets and generate substantial intermediate results, requiring careful optimization of memory access patterns. This unit minimizes bottlenecks by ensuring that data is fetched, stored, and reused efficiently, reducing delays caused by memory latency.
 
-## Model Compression and Pruning Support
+The control logic orchestrates the overall functioning of the NPU, managing task scheduling and execution order. It ensures that operations across the various blocks are synchronized and executed in the correct sequence. By automating these processes, the control logic allows the NPU to operate independently, minimizing the need for CPU intervention.
 
-- NPUs often support compressed or sparse model formats (e.g., weight pruning, quantization) natively, which reduces the computational workload and memory requirements during inference.
+The output processing block prepares the results for the next stage, whether it’s further computation, visualization, or storage. It formats the output data appropriately and transfers it back to the CPU or memory, completing the inference process. This block helps maintain the integrity and usability of the results, streamlining the overall workflow.
 
-## Concurrency Management
+A critical feature of the NPU is its power management capability. The NPU is designed to deliver substantial computational power at far lower energy levels compared to traditional GPUs, which would require significantly more power to achieve similar performance. This efficiency stems from the NPU's highly specialized architecture, which is tuned exclusively for AI inference. This makes NPUs an attractive solution for edge and embedded devices, where power availability is limited, and energy efficiency is paramount.
+NPUs achieve significantly higher performance and efficiency, enabling real-time applications in fields like autonomous driving, healthcare, and natural language processing.
 
-- NPUs can process multiple model layers or batches simultaneously by efficiently scheduling and managing hardware resources. This capability is especially beneficial for complex models with diverse layer types.
-  Example Use Case: Convolutional Neural Networks (CNNs)
-  For tasks like image recognition, an NPU will:
-
-Break down convolutions into smaller parallelizable units.
-Execute these units in specialized compute blocks for high throughput.
-Use on-chip memory to store intermediate results, reducing memory latency.
-Perform post-processing tasks like activation functions efficiently using custom hardware.
-By addressing the unique demands of ML inference, NPUs achieve significantly higher performance and efficiency, enabling real-time applications in fields like autonomous driving, healthcare, and natural language processing.
-
-The Luckfox Pico Pro is a compact Linux microdevelopment board powered by the Rockchip RV1106 system-on-chip (SoC). This SoC integrates a Neural Processing Unit (NPU) designed to accelerate machine learning inference tasks.
-
-RV1106 is a highly integrated vision processor SoC for IPC, especially for AI related
-application.
-It is based on single-core ARM Cortex-A7 32-bit core which integrates NEON and FPU.
-There is a 32KB I-cache and 32KB D-cache and 128KB unified L2 cache.
-The build-in NPU supports INT4/INT8/INT16 hybrid operation and computing power is up to
-0.5TOPs. In addition, with its strong compatibility, network models based on a series of
-frameworks such as TensorFlow/MXNet/PyTorch/Caffe can be easily converted.
-
-RV1106 introduces a new generation totally hardware-based maximum 5-Megapixel ISP
-(image signal processor). It implements a lot of algorithm accelerators, such as HDR, 3A,
-LSC, 3DNR, 2DNR, sharpening, dehaze, gamma correction and so on. Cooperating with two
-MIPI CSI (or LVDS) and one DVP (BT.601/BT.656/BT.1120) interface, users can build a
-system that receives video data from 3 camera sensors simultaneous.
-The video encoder embedded in RV1106 supports H.265/H.264 encoding. It also supports
-multi-stream encoding. With the help of this feature, the video from camera can be
-encoded with higher resolution and stored in local memory and transferred another lower
-resolution video to cloud storage at the same time. To accelerate video processing, an
-intelligent video engine with 22 calculation units is also embedded.
-RV1106 has a build-in 16-bit DRAM DDR3L capable of sustaining demanding m
-
-https://files.luckfox.com/wiki/Luckfox-Pico/PDF/Rockchip%20RV1106%20Datasheet%20V1.7-20231218.pdf
+The Luckfox Pico Pro is a compact Linux microdevelopment board powered by the [Rockchip RV1106 system-on-chip (SoC)](https://files.luckfox.com/wiki/Luckfox-Pico/PDF/Rockchip%20RV1106%20Datasheet%20V1.7-20231218.pdf). This SoC integrates a Neural Processing Unit (NPU) designed to accelerate machine learning inference tasks. The RV1106 is based on single-core ARM Cortex-A7 32-bit core which integrates NEON and FPU. Its NPU supports INT4/INT8/INT16 hybrid operation and its computing power is up to 0.5TOPs. The video encoder embedded in RV1106 supports H.265/H.264 encoding. It also supports
+multi-stream encoding. To accelerate video processing, an intelligent video engine with 22 calculation units is also embedded.
 
 # Object Detection on LuckFox
 
-## Using Software Only
+In my previous [article](https://medium.com/@johnos3747/an-introduction-to-object-detection-8374539b1f11) we explored YOLO (You Only Look Once) in detail. Today, we'll compare two implementations on the Luckfox Pico Pro: one that relies solely on the Cortex-A7 CPU and another that takes advantage of its integrated Neural Processing Unit (NPU).
+
+Both implementations will use the same input image, but there is a slight difference in the image size due to model compatibility. The NPU implementation processes images at a preferred size of 640x640, while the CPU implementation uses 416x416, as required by the YOLO Tiny model we are using.
+
+The software for both versions can be found in my [github repository](https://github.com/johnosbb/Artificial-intelligence/tree/main/ObjectDetection/Yolo). For the CPU implementation I will be using my [Darknet Embedded library](https://github.com/johnosbb/darknet_embedded).
+
+In this section, we look further into a detailed comparison of object detection performance between a software-only implementation running on the Luckfox Pico Pro's Cortex-A7 CPU and an optimized implementation utilizing its NPU. This analysis is based on the timing statistics of key stages in the inference process, including network loading, image loading, class name loading, prediction, and post-processing. Both approaches employ the YOLO models, with the software implementation using a 416x416 input size and the NPU using a slightly larger 640x640 input size. The results highlight the performance benefits provided by the NPU, especially in terms of speed and efficiency.
+
+## CPU only Performance
 
 Using input size: 416x416 as per yolov3-tiny.cfg
-Try to load cfg: yolov3-tiny.cfg, weights: yolov3-tiny.weights, clear = 0
-mini_batch = 1, batch = 1, time_steps = 1, train = 0
-layer filters size/strd(dil) input output
-0 conv 16 3 x 3/ 1 416 x 416 x 3 -> 416 x 416 x 16 0.150 BF
-1 max 2x 2/ 2 416 x 416 x 16 -> 208 x 208 x 16 0.003 BF
-2 conv 32 3 x 3/ 1 208 x 208 x 16 -> 208 x 208 x 32 0.399 BF
-3 max 2x 2/ 2 208 x 208 x 32 -> 104 x 104 x 32 0.001 BF
-4 conv 64 3 x 3/ 1 104 x 104 x 32 -> 104 x 104 x 64 0.399 BF
-5 max 2x 2/ 2 104 x 104 x 64 -> 52 x 52 x 64 0.001 BF
-6 conv 128 3 x 3/ 1 52 x 52 x 64 -> 52 x 52 x 128 0.399 BF
-7 max 2x 2/ 2 52 x 52 x 128 -> 26 x 26 x 128 0.000 BF
-8 conv 256 3 x 3/ 1 26 x 26 x 128 -> 26 x 26 x 256 0.399 BF
-9 max 2x 2/ 2 26 x 26 x 256 -> 13 x 13 x 256 0.000 BF
-10 conv 512 3 x 3/ 1 13 x 13 x 256 -> 13 x 13 x 512 0.399 BF
-11 max 2x 2/ 1 13 x 13 x 512 -> 13 x 13 x 512 0.000 BF
-12 conv 1024 3 x 3/ 1 13 x 13 x 512 -> 13 x 13 x1024 1.595 BF
-13 conv 256 1 x 1/ 1 13 x 13 x1024 -> 13 x 13 x 256 0.089 BF
-14 conv 512 3 x 3/ 1 13 x 13 x 256 -> 13 x 13 x 512 0.399 BF
-15 conv 255 1 x 1/ 1 13 x 13 x 512 -> 13 x 13 x 255 0.044 BF
-16 yolo
-[yolo] params: iou loss: mse (2), iou_norm: 0.75, obj_norm: 1.00, cls_norm: 1.00, delta_norm: 1.00, scale_x_y: 1.00
-17 route 13 -> 13 x 13 x 256
-18 conv 128 1 x 1/ 1 13 x 13 x 256 -> 13 x 13 x 128 0.011 BF
-19 upsample 2x 13 x 13 x 128 -> 26 x 26 x 128
-20 route 19 8 -> 26 x 26 x 384
-21 conv 256 3 x 3/ 1 26 x 26 x 384 -> 26 x 26 x 256 1.196 BF
-22 conv 255 1 x 1/ 1 26 x 26 x 256 -> 26 x 26 x 255 0.088 BF
-23 yolo
-[yolo] params: iou loss: mse (2), iou_norm: 0.75, obj_norm: 1.00, cls_norm: 1.00, delta_norm: 1.00, scale_x_y: 1.00
+loading cfg: yolov3-tiny.cfg, weights: yolov3-tiny.weights, clear = 0
 Total BFLOPS 5.571
-avg_outputs = 341534
-Try to load weights: yolov3-tiny.weights
-Loading weights from yolov3-tiny.weights...
-seen 64, trained: 32013 K-images (500 Kilo-batches_64)
-Done! Loaded 24 layers from weights-file
+
 Network loaded with 24 layers.
 Original image dimensions: 640x424
 Detected object: Class sheep, Probability 0.83, Box with normalised locations [Center: (0.78, 0.55) Width: 0.35 Height: 0.51]
@@ -127,46 +70,23 @@ Total time: (ms) 202033.65
 
 ## NPU
 
+```
 Model Path: yolov5s-640-640.rknn
-Input Path: image_640_640.jpg
-Class Path: coco_80_labels_list.txt
-Loop Count: 1
-Initialised Model Successfully
 rknn_api/rknnrt version: 1.4.1b9 (09eb4be80@2022-10-19T09:51:39), driver version: 0.8.2
-model input num: 1, output num: 3
-input tensors:
-index=0, name=images, n_dims=4, dims=[1, 640, 640, 3], n_elems=1228800, size=1228800, fmt=NHWC, type=INT8, qnt_type=AFFINE, zp=-128, scale=0.003922
-output tensors:
-index=0, name=output, n_dims=4, dims=[1, 80, 80, 255], n_elems=1632000, size=1632000, fmt=NHWC, type=INT8, qnt_type=AFFINE, zp=-128, scale=0.003860
-index=1, name=283, n_dims=4, dims=[1, 40, 40, 255], n_elems=408000, size=408000, fmt=NHWC, type=INT8, qnt_type=AFFINE, zp=-128, scale=0.003922
-index=2, name=285, n_dims=4, dims=[1, 20, 20, 255], n_elems=102000, size=102000, fmt=NHWC, type=INT8, qnt_type=AFFINE, zp=-128, scale=0.003915
-custom string:
-Our model requires NHWC format with height=640,width=640,channels=3
-Our image loaded with height=640,width=640,channels=3
-Loaded input data from path : image_640_640.jpg
-Creating tensor input memory
-Copying input data to input tensor memory: width =640, stride=640
-Creating tensor output memory
-Setting tensor input memory
-Setting tensor output memory
-Begin perf ...
-0: Elapse Time = 79.97ms, FPS = 12.50
-model is NHWC input format
-Post processing data
-Confidence Threshold: 0.250000
-Non-Maximum Suppression (NMS) Threshold: 0.250000
-Scale Width: : 1.000000 Scale Height 1.000000
-Loading labels
-loadLabelName coco_80_labels_list.txt
-Valid Count for Stride 8 : 0
-Valid Count for Stride 16 : 14
-Valid Count for Stride 32 : 22
 result 0: ( 187, 161, 273, 563), person
 result 1: ( 402, 213, 601, 520), horse
 result 4: ( 66, 400, 203, 524), dog
-person @ (187 161 273 563) 0.895416
-horse @ (402 213 601 520) 0.872058
-dog @ (66 400 203 524) 0.864517
+```
+
+### Confidence Levels
+
+```
+person @ (187 161 273 563) Probability 0.895416
+horse @ (402 213 601 520) Probability 0.872058
+dog @ (66 400 203 524) Probability0.864517
+```
+
+```
 Releasing rknn memory
 
 Timing statistics:
@@ -176,6 +96,9 @@ Class names loading time: (ms) 0.44
 Prediction time (ms): 83.08
 Post Processing (ms): 11.37
 Total time: (ms) 361.76
+```
+
+## Comparing performance
 
 | Timing Statistics        | NPU (ms)   | Software Only (ms) |
 | ------------------------ | ---------- | ------------------ |
@@ -190,13 +113,6 @@ Total time: (ms) 361.76
 | ----------------- | ------------- | ----------------------- |
 | **Total time**    | **0.36176**   | **202.03365**           |
 
-Prediction time: 2368 times faster with NPU during prediction
-Network loading time: 956 times faster with NPU
+The performance difference between the CPU and NPU implementations is impressive. For network loading, the NPU completes the task 956 times faster than the CPU, reducing the time from over 4.7 seconds to just 4.93 milliseconds. The prediction stage shows an even more significant improvement, with the NPU achieving inference 2368 times faster than the CPU, completing the task in just 83.08 milliseconds compared to the CPU's 196.7 seconds. Overall, the NPU implementation processes the entire inference pipeline in 0.36 seconds, whereas the CPU implementation takes 202.03 seconds.
 
-Timing statistics:
-Network loading time (ms): 3153.33
-Image loading time (ms): 591.00
-Class names loading time: (ms) 0.19
-Prediction time (ms): 196868.38
-post_processing time (ms): 9.79 seconds
-Total time: (ms) 200622.70
+This significant improvement demonstrates the specialized efficiency of NPUs for inference tasks. Beyond just raw speed, the NPU achieves this performance with lower power consumption compared to a CPU or GPU, making it an ideal solution for edge devices where power efficiency is critical. These results highlight the NPU's role in enabling real-time AI applications that were previously impractical on embedded systems.
