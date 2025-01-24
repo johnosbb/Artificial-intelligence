@@ -9,7 +9,7 @@ Neural Processing Units (NPUs) are becoming an integral component of modern proc
 
 ## NPU Architecture and Design
 
-![image](../../../Resources/ObjectDetection/npu.png)
+![image](../../../../ObjectDetection/Yolo/Resources/ObjectDetection/)
 
 \_\_Figure 1: NPU Block Diagram
 
