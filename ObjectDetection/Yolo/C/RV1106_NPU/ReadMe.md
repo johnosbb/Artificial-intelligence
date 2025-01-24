@@ -68,7 +68,7 @@ Box in original image size pixel locations: Box [Center: (229.56, 352.94) Width:
 - Post_processing time (ms): 9.66 seconds
 - Total time: (ms) 202033.65
 
-## NPU
+## NPU Performance
 
 ```
 Model Path: yolov5s-640-640.rknn
