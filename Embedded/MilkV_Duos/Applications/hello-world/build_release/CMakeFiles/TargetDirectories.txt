@@ -1,0 +1,7 @@
+/mnt/500GB/MilkVDuoS/Applications/hello-world/build_release/CMakeFiles/hello_world.dir
+/mnt/500GB/MilkVDuoS/Applications/hello-world/build_release/CMakeFiles/edit_cache.dir
+/mnt/500GB/MilkVDuoS/Applications/hello-world/build_release/CMakeFiles/rebuild_cache.dir
+/mnt/500GB/MilkVDuoS/Applications/hello-world/build_release/CMakeFiles/list_install_components.dir
+/mnt/500GB/MilkVDuoS/Applications/hello-world/build_release/CMakeFiles/install.dir
+/mnt/500GB/MilkVDuoS/Applications/hello-world/build_release/CMakeFiles/install/local.dir
+/mnt/500GB/MilkVDuoS/Applications/hello-world/build_release/CMakeFiles/install/strip.dir

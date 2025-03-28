@@ -1,0 +1,21 @@
+CMakeFiles/hello_world.dir/helloworld.c.o: \
+ /mnt/500GB/MilkVDuoS/Applications/hello-world/helloworld.c \
+ /mnt/500GB/MilkVDuoS/duo-buildroot-sdk-v2/buildroot-2024.02/output/milkv-duos-glibc-arm64-sd/host/aarch64-buildroot-linux-gnu/sysroot/usr/include/stdc-predef.h \
+ /mnt/500GB/MilkVDuoS/duo-buildroot-sdk-v2/buildroot-2024.02/output/milkv-duos-glibc-arm64-sd/host/aarch64-buildroot-linux-gnu/sysroot/usr/include/stdio.h \
+ /mnt/500GB/MilkVDuoS/duo-buildroot-sdk-v2/buildroot-2024.02/output/milkv-duos-glibc-arm64-sd/host/aarch64-buildroot-linux-gnu/sysroot/usr/include/bits/libc-header-start.h \
+ /mnt/500GB/MilkVDuoS/duo-buildroot-sdk-v2/buildroot-2024.02/output/milkv-duos-glibc-arm64-sd/host/aarch64-buildroot-linux-gnu/sysroot/usr/include/features.h \
+ /mnt/500GB/MilkVDuoS/duo-buildroot-sdk-v2/buildroot-2024.02/output/milkv-duos-glibc-arm64-sd/host/aarch64-buildroot-linux-gnu/sysroot/usr/include/sys/cdefs.h \
+ /mnt/500GB/MilkVDuoS/duo-buildroot-sdk-v2/buildroot-2024.02/output/milkv-duos-glibc-arm64-sd/host/aarch64-buildroot-linux-gnu/sysroot/usr/include/bits/wordsize.h \
+ /mnt/500GB/MilkVDuoS/duo-buildroot-sdk-v2/buildroot-2024.02/output/milkv-duos-glibc-arm64-sd/host/aarch64-buildroot-linux-gnu/sysroot/usr/include/bits/long-double.h \
+ /mnt/500GB/MilkVDuoS/duo-buildroot-sdk-v2/buildroot-2024.02/output/milkv-duos-glibc-arm64-sd/host/aarch64-buildroot-linux-gnu/sysroot/usr/include/gnu/stubs.h \
+ /mnt/500GB/MilkVDuoS/duo-buildroot-sdk-v2/buildroot-2024.02/output/milkv-duos-glibc-arm64-sd/host/aarch64-buildroot-linux-gnu/sysroot/usr/include/gnu/stubs-lp64.h \
+ /mnt/500GB/MilkVDuoS/duo-buildroot-sdk-v2/host-tools/gcc/gcc-linaro-7.3.1-2018.05-x86_64_aarch64-linux-gnu/lib/gcc/aarch64-linux-gnu/7.3.1/include/stddef.h \
+ /mnt/500GB/MilkVDuoS/duo-buildroot-sdk-v2/buildroot-2024.02/output/milkv-duos-glibc-arm64-sd/host/aarch64-buildroot-linux-gnu/sysroot/usr/include/bits/types.h \
+ /mnt/500GB/MilkVDuoS/duo-buildroot-sdk-v2/buildroot-2024.02/output/milkv-duos-glibc-arm64-sd/host/aarch64-buildroot-linux-gnu/sysroot/usr/include/bits/typesizes.h \
+ /mnt/500GB/MilkVDuoS/duo-buildroot-sdk-v2/buildroot-2024.02/output/milkv-duos-glibc-arm64-sd/host/aarch64-buildroot-linux-gnu/sysroot/usr/include/libio.h \
+ /mnt/500GB/MilkVDuoS/duo-buildroot-sdk-v2/buildroot-2024.02/output/milkv-duos-glibc-arm64-sd/host/aarch64-buildroot-linux-gnu/sysroot/usr/include/_G_config.h \
+ /mnt/500GB/MilkVDuoS/duo-buildroot-sdk-v2/buildroot-2024.02/output/milkv-duos-glibc-arm64-sd/host/aarch64-buildroot-linux-gnu/sysroot/usr/include/wchar.h \
+ /mnt/500GB/MilkVDuoS/duo-buildroot-sdk-v2/host-tools/gcc/gcc-linaro-7.3.1-2018.05-x86_64_aarch64-linux-gnu/lib/gcc/aarch64-linux-gnu/7.3.1/include/stdarg.h \
+ /mnt/500GB/MilkVDuoS/duo-buildroot-sdk-v2/buildroot-2024.02/output/milkv-duos-glibc-arm64-sd/host/aarch64-buildroot-linux-gnu/sysroot/usr/include/bits/stdio_lim.h \
+ /mnt/500GB/MilkVDuoS/duo-buildroot-sdk-v2/buildroot-2024.02/output/milkv-duos-glibc-arm64-sd/host/aarch64-buildroot-linux-gnu/sysroot/usr/include/bits/sys_errlist.h \
+ /mnt/500GB/MilkVDuoS/duo-buildroot-sdk-v2/buildroot-2024.02/output/milkv-duos-glibc-arm64-sd/host/aarch64-buildroot-linux-gnu/sysroot/usr/include/bits/stdio.h
