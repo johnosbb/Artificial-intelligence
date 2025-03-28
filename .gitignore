@@ -164,3 +164,5 @@ Embedded/LuckFox_RV1106/rknn_yolov5_demo/model/RV1106/
 Embedded/LuckFox_RV1106/rknn_mobilenet_demo/.vscode 
 Embedded/LuckFox_RV1106/rknn_yolov5_demo/.vscode
 ObjectDetection/Yolo/data
+Embedded/MilkV_Duos/Applications/gpio_example/build_release/
+Embedded/MilkV_Duos/Applications/hello_world/build_release/
