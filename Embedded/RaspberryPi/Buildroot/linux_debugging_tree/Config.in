@@ -1,0 +1,15 @@
+# linux_debugging_tree/Config.in
+menu "Linux Debugging Tree"
+
+    config BR2_LINUX_DEBUGGING_TREE
+        bool "Linux Debugging Tree modules"
+        help
+          This is a collection of various kernel modules for debugging purposes.
+          You can enable and build one or more kernel modules here.
+
+
+    source "$BR2_EXTERNAL_LINUX_DEBUGGING_TREE_PATH/package/pr_dev_demo/Config.in"
+    source "$BR2_EXTERNAL_LINUX_DEBUGGING_TREE_PATH/package/log_demo/Config.in"
+    source "$BR2_EXTERNAL_LINUX_DEBUGGING_TREE_PATH/package/dev_log_demo/Config.in"
+
+endmenu

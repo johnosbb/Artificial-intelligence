@@ -1,0 +1,57 @@
+
+#!/bin/sh
+${CVI_SHOPTS}
+#
+# Start firmware
+#
+export USERDATAPATH=/mnt/data/
+export SYSTEMPATH=/mnt/system/
+
+echo "S99user script started" > /tmp/s99user.log
+
+case "$1" in
+    start)
+        echo "init mpp system..." >> /tmp/s99user.log
+        if [ -d $SYSTEMPATH/ko ]; then
+            sh $SYSTEMPATH/ko/loadsystemko.sh >> /tmp/s99user.log 2>&1
+        fi
+        
+        echo "Starting app..." >> /tmp/s99user.log
+        
+        if [ -f $SYSTEMPATH/duo-init.sh ]; then
+            echo "Running duo-init.sh" >> /tmp/s99user.log
+            . $SYSTEMPATH/duo-init.sh & >> /tmp/s99user.log 2>&1
+        fi
+        
+        if [ -f $SYSTEMPATH/blink.sh ]; then
+            echo "Running blink.sh" >> /tmp/s99user.log
+            . $SYSTEMPATH/blink.sh & >> /tmp/s99user.log 2>&1
+        fi
+        
+        if [ -f $SYSTEMPATH/usb.sh ]; then
+            echo "Running usb.sh" >> /tmp/s99user.log
+            . $SYSTEMPATH/usb.sh & >> /tmp/s99user.log 2>&1
+        fi
+        
+        if [ -f $SYSTEMPATH/auto.sh ]; then
+            usleep 30000
+            echo "Executing auto.sh from S99user" >> /tmp/s99user.log
+            sh $SYSTEMPATH/auto.sh >> /tmp/s99user.log 2>&1 &
+        fi
+        
+        if [ -f $USERDATAPATH/auto.sh ]; then
+            echo "Running /mnt/data/auto.sh" >> /tmp/s99user.log
+            usleep 30000
+            . $USERDATAPATH/auto.sh & >> /tmp/s99user.log 2>&1
+        fi
+    ;;
+    stop)
+    ;;
+    restart|reload)
+    ;;
+    *)
+        echo "Usage: $0 {start|stop|restart}" >> /tmp/s99user.log
+        exit 1
+esac
+
+exit $?

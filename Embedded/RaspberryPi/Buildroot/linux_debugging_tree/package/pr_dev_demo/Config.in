@@ -1,0 +1,5 @@
+config BR2_PACKAGE_PR_DEV_DEMO
+    bool "pr_format_demo kernel module"
+    depends on BR2_LINUX_KERNEL
+    help
+      A kernel module that demonstrates printk format specifiers.

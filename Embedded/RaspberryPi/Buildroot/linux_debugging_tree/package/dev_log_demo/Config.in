@@ -1,0 +1,5 @@
+config BR2_PACKAGE_DEV_LOG_DEMO
+    bool "dev_log_demo kernel module"
+    depends on BR2_LINUX_KERNEL
+    help
+      A kernel module that logs device activity.
