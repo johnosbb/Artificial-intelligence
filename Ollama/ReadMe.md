@@ -1,8 +1,11 @@
-## References
+# Evaluating RAG
 
-```
-/api/embed
-```
+I have put some evaluation code in the RAG directory.
+
+First install chromadb `pip install chromadb`
+Then run the server creating a default database: `chroma run --path /mnt/500GB/ChromaDB`
+import_mkdocs.py creates the database and assumes your docs are in `/mnt/500gb/docs`
+search.py allows you to interogate the resulting embeddings
 
 ## Setting up Chroma in a container
 
@@ -48,10 +51,90 @@ chroma run --path /mnt/500GB/ChromaDB
 
 ![image](https://github.com/user-attachments/assets/9fdef661-d7cb-4ba5-96d5-ce76de3b365d)
 
+## Getting the default database
 
+```
+curl -X 'GET'   'http://localhost:8000/api/v2/tenants/default_tenant/databases'   -H 'accept: application/json'
+```
 
+returns
+
+```json
+[
+  {
+    "id": "00000000-0000-0000-0000-000000000000",
+    "name": "default_database",
+    "tenant": "default_tenant"
+  }
+]
+```
+
+## Listing collections
+
+```
+curl -X 'GET' \
+  'http://localhost:8000/api/v2/tenants/default_tenant/databases/default_database/collections' \
+  -H 'accept: application/json'
+```
+
+```json
+[
+  {
+    "id": "358e6fea-3359-439c-a48d-d53a4f5d04c9",
+    "name": "my_test_collection",
+    "metadata": null,
+    "dimension": null,
+    "tenant": "default_tenant",
+    "database": "default_database",
+    "log_position": 0,
+    "version": 0,
+    "configuration_json": {
+      "_type": "CollectionConfigurationInternal",
+      "hnsw_configuration": {
+        "M": 16,
+        "_type": "HNSWConfigurationInternal",
+        "batch_size": 100,
+        "ef_construction": 100,
+        "ef_search": 100,
+        "num_threads": 16,
+        "resize_factor": 1.2,
+        "space": "l2",
+        "sync_threshold": 1000
+      }
+    }
+  },
+  {
+    "id": "b3dbf6df-ddf0-4fde-86fb-63d73de6d60c",
+    "name": "buildragwithpython",
+    "metadata": { "hnsw:space": "cosine" },
+    "dimension": 768,
+    "tenant": "default_tenant",
+    "database": "default_database",
+    "log_position": 0,
+    "version": 0,
+    "configuration_json": {
+      "_type": "CollectionConfigurationInternal",
+      "hnsw_configuration": {
+        "M": 16,
+        "_type": "HNSWConfigurationInternal",
+        "batch_size": 100,
+        "ef_construction": 100,
+        "ef_search": 100,
+        "num_threads": 16,
+        "resize_factor": 1.2,
+        "space": "l2",
+        "sync_threshold": 1000
+      }
+    }
+  }
+]
+```
 
 ## References
 
 - [technovangelist](https://github.com/technovangelist)
 - [Video Projects](https://github.com/technovangelist/videoprojects)
+
+```
+/api/embed
+```
