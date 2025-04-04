@@ -44,6 +44,10 @@ docker logs <CONTAINER ID>>
 chroma run --path /mnt/500GB/ChromaDB
 ```
 
+## Checking the collections
+
+![image](https://github.com/user-attachments/assets/9fdef661-d7cb-4ba5-96d5-ce76de3b365d)
+
 ## References
 
 - [technovangelist](https://github.com/technovangelist)
