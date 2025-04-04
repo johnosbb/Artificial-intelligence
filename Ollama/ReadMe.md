@@ -1,11 +1,13 @@
 # Evaluating RAG
 
+## Quick Start
+
 I have put some evaluation code in the RAG directory.
 
-First install chromadb `pip install chromadb`
-Then run the server creating a default database: `chroma run --path /mnt/500GB/ChromaDB`
-import_mkdocs.py creates the database and assumes your docs are in `/mnt/500gb/docs`
-search.py allows you to interogate the resulting embeddings
+- First install chromadb `pip install chromadb`
+- Then run the server creating a default database: `chroma run --path /mnt/500GB/ChromaDB`
+- import_mkdocs.py creates the database and assumes your docs are in `/mnt/500gb/docs`
+- search.py allows you to interogate the resulting embeddings
 
 ## Setting up Chroma in a container
 
