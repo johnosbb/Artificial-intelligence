@@ -4,7 +4,9 @@
 
 I have put some evaluation code in the RAG directory.
 
-- First install chromadb `pip install chromadb`
+- Install Ollama `curl -fsSL https://ollama.com/install.sh | sh`
+- Install a database `ollama pull llama2`
+- Then install chromadb `pip install chromadb`
 - Then run the server creating a default database: `chroma run --path /mnt/500GB/ChromaDB`
 - import_mkdocs.py creates the database and assumes your docs are in `/mnt/500gb/docs`
 - search.py allows you to interogate the resulting embeddings
@@ -43,7 +45,7 @@ fb3a008aff3c   chromadb/chroma   "/docker_entrypoint.…"   About a minute ago  
 docker logs <CONTAINER ID>>
 ```
 
-## Setting up Ollama without a container
+## Setting up ChromaDB without a container
 
 ```
 chroma run --path /mnt/500GB/ChromaDB
