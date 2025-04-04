@@ -5,7 +5,7 @@
 I have put some evaluation code in the RAG directory.
 
 - Install Ollama `curl -fsSL https://ollama.com/install.sh | sh`
-- Install a database `ollama pull llama2`
+- Install a model `ollama pull llama2`
 - Then install chromadb `pip install chromadb`
 - Then run the server creating a default database: `chroma run --path /mnt/500GB/ChromaDB`
 - import_mkdocs.py creates the database and assumes your docs are in `/mnt/500gb/docs`
