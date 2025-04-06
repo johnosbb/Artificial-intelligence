@@ -14,6 +14,7 @@ static int __init pr_format_demo_init(void)
     struct page *page = alloc_page(GFP_KERNEL);
 
     pr_info("[%s] Hashed pointer: %p\n", KBUILD_MODNAME, ptr);
+    pr_info("[%s] Pointer as raw address: %px\n", KBUILD_MODNAME, ptr);
     pr_err("[%s] Error string for -EINVAL: %pe\n", KBUILD_MODNAME, ERR_PTR(-EINVAL));
     pr_warn("[%s] Function symbol: %pS\n", KBUILD_MODNAME, pr_format_demo_init);
     if (page)
