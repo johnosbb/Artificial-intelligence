@@ -13,8 +13,8 @@
 Hasing a pointer does not modify the actual pointer—only its printed representation.The hashing behavior is controlled by kptr_restrict (sysctl setting).
 
 ```
-echo 0 | sudo tee /proc/sys/kernel/kptr_restrict # Show full pointers
-echo 1 | sudo tee /proc/sys/kernel/kptr_restrict # Default: Hash for normal users
-echo 2 | sudo tee /proc/sys/kernel/kptr_restrict # Always hash pointers
+echo 0 |  tee /proc/sys/kernel/kptr_restrict # Show full pointers
+echo 1 |  tee /proc/sys/kernel/kptr_restrict # Default: Hash for normal users
+echo 2 |  tee /proc/sys/kernel/kptr_restrict # Always hash pointers
 
 ```

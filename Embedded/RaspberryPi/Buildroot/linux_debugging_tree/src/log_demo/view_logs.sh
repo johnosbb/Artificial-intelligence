@@ -1,2 +1,3 @@
-#!/bin/bash
-sudo dmesg | tail -50 | grep log_demo
+#!/bin/sh
+dmesg | grep pr_format_demo
+

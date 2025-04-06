@@ -1,3 +1,3 @@
-#!/bin/bash
-sudo rmmod dev_log_demo
-echo "Module removed."
+#!/bin/sh
+dmesg | grep pr_format_demo
+

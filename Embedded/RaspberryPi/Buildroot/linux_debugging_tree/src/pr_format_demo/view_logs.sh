@@ -1,3 +1,3 @@
-#!/bin/bash
-sudo dmesg | grep pr_format_demo
+#!/bin/sh
+dmesg | grep pr_format_demo
 

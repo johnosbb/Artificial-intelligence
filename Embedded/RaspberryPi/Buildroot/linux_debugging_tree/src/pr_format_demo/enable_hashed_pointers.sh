@@ -1,1 +1,0 @@
-echo 2 | sudo tee /proc/sys/kernel/kptr_restrict # Always hash pointers
