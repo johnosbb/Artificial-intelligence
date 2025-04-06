@@ -1,1 +1,2 @@
-obj - m += pr_format_demo.o
+obj-m += pr_format_demo.o
+

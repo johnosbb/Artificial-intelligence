@@ -1,1 +1,1 @@
-obj-m := log_demo.o
+obj-m := dev_log_demo.o

@@ -3,7 +3,7 @@
 ################################################################################
 
 PR_FORMAT_DEMO_VERSION = 1.0
-PR_FORMAT_DEMO_SITE = $(BR2_EXTERNAL_LINUX_DEBUGGING_TREE_PATH)/src/format_specifiers
+PR_FORMAT_DEMO_SITE = $(BR2_EXTERNAL_LINUX_DEBUGGING_TREE_PATH)/src/pr_format_demo
 PR_FORMAT_DEMO_SITE_METHOD = local
 PR_FORMAT_DEMO_DEPENDENCIES = linux
 

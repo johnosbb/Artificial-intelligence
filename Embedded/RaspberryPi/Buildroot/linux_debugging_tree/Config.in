@@ -8,7 +8,7 @@ menu "Linux Debugging Tree"
           You can enable and build one or more kernel modules here.
 
 
-    source "$BR2_EXTERNAL_LINUX_DEBUGGING_TREE_PATH/package/pr_dev_demo/Config.in"
+    source "$BR2_EXTERNAL_LINUX_DEBUGGING_TREE_PATH/package/pr_format_demo/Config.in"
     source "$BR2_EXTERNAL_LINUX_DEBUGGING_TREE_PATH/package/log_demo/Config.in"
     source "$BR2_EXTERNAL_LINUX_DEBUGGING_TREE_PATH/package/dev_log_demo/Config.in"
 
