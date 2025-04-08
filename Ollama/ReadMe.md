@@ -44,6 +44,22 @@ sudo ufw allow 11434/tcp
 docker rm -f open-webui
 ```
 
+Find where Docker stores the volume
+
+```
+docker volume inspect open-webui
+```
+
+Go to that directory, for example:
+```
+cd /var/lib/docker/volumes/open-webui/_data
+```
+For example, uploaded documents are stored in
+
+```
+/var/lib/docker/volumes/open-webui/_data/uploads
+```
+
 ## Evaluating RAG
 
 ### Quick Start
