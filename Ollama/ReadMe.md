@@ -1,6 +1,15 @@
-# Evaluating RAG
+# Ollama
 
-## Quick Start
+## Setting up OPen Web UI
+
+```
+docker run -d -p 3000:8080 --add-host=host.docker.internal:host-gateway -v open-webui:/app/backend/data --name open-webui --restart always ghcr.io/open-webui/open-webui:main
+```
+
+
+## Evaluating RAG
+
+### Quick Start
 
 I have put some evaluation code in the RAG directory.
 
@@ -11,7 +20,7 @@ I have put some evaluation code in the RAG directory.
 - import_mkdocs.py creates the database and assumes your docs are in `/mnt/500gb/docs`
 - search.py allows you to interogate the resulting embeddings
 
-## Setting up Chroma in a container
+### Setting up Chroma in a container
 
 ```
 docker run -d -p 8000:8000 -v ~/my-chroma-data:/chromadb/data chromadb/chroma
@@ -24,7 +33,7 @@ Browse to
 http://127.0.0.1:8000/
 ```
 
-## Accessing the Docker instance
+### Accessing the Docker instance
 
 ```
 docker exec -it charming_poitras bash
@@ -39,23 +48,23 @@ fb3a008aff3c   chromadb/chroma   "/docker_entrypoint.…"   About a minute ago  
 
 ```
 
-## Docker Logs
+### Docker Logs
 
 ```
 docker logs <CONTAINER ID>>
 ```
 
-## Setting up ChromaDB without a container
+### Setting up ChromaDB without a container
 
 ```
 chroma run --path /mnt/500GB/ChromaDB
 ```
 
-## Checking the collections
+### Checking the collections
 
 ![image](https://github.com/user-attachments/assets/9fdef661-d7cb-4ba5-96d5-ce76de3b365d)
 
-## Getting the default database
+### Getting the default database
 
 ```
 curl -X 'GET'   'http://localhost:8000/api/v2/tenants/default_tenant/databases'   -H 'accept: application/json'
@@ -73,7 +82,7 @@ returns
 ]
 ```
 
-## Listing collections
+### Listing collections
 
 ```
 curl -X 'GET' \
@@ -134,7 +143,7 @@ curl -X 'GET' \
 ]
 ```
 
-## References
+### References
 
 - [technovangelist](https://github.com/technovangelist)
 - [Video Projects](https://github.com/technovangelist/videoprojects)
