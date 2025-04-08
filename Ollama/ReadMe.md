@@ -1,9 +1,39 @@
 # Ollama
 
-## Setting up OPen Web UI
+
+## Setting up Ollama
+
+Create an Ollama Service
 
 ```
-docker run -d -p 3000:8080 --add-host=host.docker.internal:host-gateway -v open-webui:/app/backend/data --name open-webui --restart always ghcr.io/open-webui/open-webui:main
+[Unit]
+Description=Ollama Service
+After=network-online.target
+
+[Service]
+Environment="OLLAMA_HOST=0.0.0.0"
+ExecStart=/usr/local/bin/ollama serve
+User=ollama
+Group=ollama
+Restart=always
+RestartSec=3
+Environment="PATH=<your path>
+
+[Install]
+WantedBy=default.target
+```
+
+```
+sudo systemctl enable ollama
+sudo systemctl daemon-reload
+systemctl restart  ollama
+```
+
+
+## Setting up Open Web UI
+
+```
+docker run -d -p 3000:8080 -e OLLAMA_BASE_URL=https://192.168.1.191:11434 -v open-webui:/app/backend/data --name open-webui --restart always ghcr.io/open-webui/open-webui:main
 ```
 
 
