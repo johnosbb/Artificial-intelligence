@@ -184,6 +184,7 @@ curl -X 'GET' \
 
 - [technovangelist](https://github.com/technovangelist)
 - [Video Projects](https://github.com/technovangelist/videoprojects)
+- [sbert - embedding models](https://sbert.net/)
 
 ```
 /api/embed
