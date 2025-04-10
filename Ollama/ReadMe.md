@@ -113,6 +113,51 @@ docker logs <CONTAINER ID>>
 chroma run --path /mnt/500GB/ChromaDB
 ```
 
+
+### Configuring Chroma as a Service
+
+
+
+```
+sudo nano /etc/systemd/system/chromadb.service
+```
+
+Create a script to launch Chroma
+
+```
+#!/bin/bash
+exec /home/$USER/anaconda3/bin/chroma run --path /mnt/500GB/ChromaDB
+```
+
+```
+sudo chmod +x /usr/local/bin/start-chromadb.sh
+```
+
+Enable and start the service
+
+```
+ sudo systemctl enable chromadb
+ sudo systemctl start chromadb
+ sudo systemctl status chromadb
+```
+
+```
+[Unit]
+Description=ChromaDB Vector Database Service
+After=network.target
+
+[Service]
+Type=simple
+User=johnos
+WorkingDirectory=/home/<you name>
+ExecStart=/usr/local/bin/start-chromadb.sh
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target
+```
+
 ### Checking the collections
 
 ![image](https://github.com/user-attachments/assets/9fdef661-d7cb-4ba5-96d5-ce76de3b365d)
