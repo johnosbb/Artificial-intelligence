@@ -1,6 +1,5 @@
 # Ollama
 
-
 ## Setting up Ollama
 
 Create an Ollama Service
@@ -29,7 +28,6 @@ sudo systemctl daemon-reload
 systemctl restart  ollama
 ```
 
-
 ## Setting up Open Web UI
 
 ```
@@ -51,9 +49,11 @@ docker volume inspect open-webui
 ```
 
 Go to that directory, for example:
+
 ```
 cd /var/lib/docker/volumes/open-webui/_data
 ```
+
 For example, uploaded documents are stored in
 
 ```
@@ -113,10 +113,7 @@ docker logs <CONTAINER ID>>
 chroma run --path /mnt/500GB/ChromaDB
 ```
 
-
 ### Configuring Chroma as a Service
-
-
 
 ```
 sudo nano /etc/systemd/system/chromadb.service
@@ -241,7 +238,34 @@ curl -X 'GET' \
 ]
 ```
 
-### References
+## Environment Variables
+
+- OLLAMA_DEBUG=1 ollama serve
+- OLLAMA_HOST
+- OLLAMA_KEEP_ALIVE # time for model to remain in memory
+- OLLAMA_MODELS
+- OLLAMA_MAX_LOADED_MODELS # 3 times the number of GPUs
+- OLLAMA_NUM_PARALLEL # defaults 4 or 1
+- OLLAMA_MAX_QUEUE # defaults 512
+
+## Linux
+
+- sudo systemctl edit ollala.service
+
+```
+  [service]
+  Environment="OLLAMA_HOST=127.0.0.1"
+```
+
+- sudo systemctl daemon-relaod
+- sudo systemctl restart ollama
+
+## Search Integration
+
+- searchng
+-
+
+## References
 
 - [technovangelist](https://github.com/technovangelist)
 - [Video Projects](https://github.com/technovangelist/videoprojects)

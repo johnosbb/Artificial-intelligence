@@ -37,7 +37,9 @@ for root, dirs, files in os.walk("/mnt/500GB/docs"):
     for file in files:
         full_path = os.path.join(root, file)
 
-        if not file.lower().endswith(".md"): # target files with the markdown extension
+        allowed_extensions = [".md", ".txt", ".html"]
+
+        if not any(file.lower().endswith(ext) for ext in allowed_extensions):
             skipped_files.append(full_path)
             continue
 
