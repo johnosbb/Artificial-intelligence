@@ -1,6 +1,68 @@
-# Evaluating RAG
+# Ollama
 
-## Quick Start
+## Setting up Ollama
+
+Create an Ollama Service
+
+```
+[Unit]
+Description=Ollama Service
+After=network-online.target
+
+[Service]
+Environment="OLLAMA_HOST=0.0.0.0"
+ExecStart=/usr/local/bin/ollama serve
+User=ollama
+Group=ollama
+Restart=always
+RestartSec=3
+Environment="PATH=<your path>
+
+[Install]
+WantedBy=default.target
+```
+
+```
+sudo systemctl enable ollama
+sudo systemctl daemon-reload
+systemctl restart  ollama
+```
+
+## Setting up Open Web UI
+
+```
+docker run -d -p 3000:8080 -e OLLAMA_BASE_URL=http://192.168.1.191:11434 -v open-webui:/app/backend/data --name open-webui --restart always ghcr.io/open-webui/open-webui:main
+```
+
+```
+sudo ufw allow 11434/tcp
+```
+
+```
+docker rm -f open-webui
+```
+
+Find where Docker stores the volume
+
+```
+docker volume inspect open-webui
+```
+
+Go to that directory, for example:
+
+```
+cd /var/lib/docker/volumes/open-webui/_data
+```
+
+For example, uploaded documents are stored in
+
+```
+/var/lib/docker/volumes/open-webui/_data/uploads
+```
+
+## Evaluating RAG
+
+### Quick Start
 
 I have put some evaluation code in the RAG directory.
 
@@ -11,7 +73,7 @@ I have put some evaluation code in the RAG directory.
 - import_mkdocs.py creates the database and assumes your docs are in `/mnt/500gb/docs`
 - search.py allows you to interogate the resulting embeddings
 
-## Setting up Chroma in a container
+### Setting up Chroma in a container
 
 ```
 docker run -d -p 8000:8000 -v ~/my-chroma-data:/chromadb/data chromadb/chroma
@@ -24,7 +86,7 @@ Browse to
 http://127.0.0.1:8000/
 ```
 
-## Accessing the Docker instance
+### Accessing the Docker instance
 
 ```
 docker exec -it charming_poitras bash
@@ -39,23 +101,65 @@ fb3a008aff3c   chromadb/chroma   "/docker_entrypoint.…"   About a minute ago  
 
 ```
 
-## Docker Logs
+### Docker Logs
 
 ```
 docker logs <CONTAINER ID>>
 ```
 
-## Setting up ChromaDB without a container
+### Setting up ChromaDB without a container
 
 ```
 chroma run --path /mnt/500GB/ChromaDB
 ```
 
-## Checking the collections
+### Configuring Chroma as a Service
+
+```
+sudo nano /etc/systemd/system/chromadb.service
+```
+
+Create a script to launch Chroma
+
+```
+#!/bin/bash
+exec /home/$USER/anaconda3/bin/chroma run --path /mnt/500GB/ChromaDB
+```
+
+```
+sudo chmod +x /usr/local/bin/start-chromadb.sh
+```
+
+Enable and start the service
+
+```
+ sudo systemctl enable chromadb
+ sudo systemctl start chromadb
+ sudo systemctl status chromadb
+```
+
+```
+[Unit]
+Description=ChromaDB Vector Database Service
+After=network.target
+
+[Service]
+Type=simple
+User=johnos
+WorkingDirectory=/home/<you name>
+ExecStart=/usr/local/bin/start-chromadb.sh
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target
+```
+
+### Checking the collections
 
 ![image](https://github.com/user-attachments/assets/9fdef661-d7cb-4ba5-96d5-ce76de3b365d)
 
-## Getting the default database
+### Getting the default database
 
 ```
 curl -X 'GET'   'http://localhost:8000/api/v2/tenants/default_tenant/databases'   -H 'accept: application/json'
@@ -73,7 +177,7 @@ returns
 ]
 ```
 
-## Listing collections
+### Listing collections
 
 ```
 curl -X 'GET' \
@@ -156,16 +260,16 @@ curl -X 'GET' \
 - sudo systemctl daemon-relaod
 - sudo systemctl restart ollama
 
-
-
 ## Search Integration
 
 - searchng
-- 
+-
+
 ## References
 
 - [technovangelist](https://github.com/technovangelist)
 - [Video Projects](https://github.com/technovangelist/videoprojects)
+- [sbert - embedding models](https://sbert.net/)
 
 ```
 /api/embed
