@@ -42,16 +42,23 @@ Examples:
     sys.exit(0)
 
 def parse_command_line():
-    global save_docs, where_filter, prefixed_query, query, rerank, n_results, release_filter, section_filter
-
-    args = sys.argv[1:]
-    save_docs = "--save-docs" in args
-    rerank = "--rerank" in args
-    n_results = 5  # default
-    where_filter = {}
+    # Initialize the config variables
+    save_docs = False
+    rerank = False
+    n_results = 5  # Default number of results
     release_filter = None
     section_filter = None
+    doc_types = []
 
+
+    # Parse arguments
+    args = sys.argv[1:]
+
+    # Flags for --save-docs and --rerank
+    save_docs = "--save-docs" in args
+    rerank = "--rerank" in args
+
+    # If --help flag is present, show usage
     if "--help" in args:
         usage()
 
@@ -60,10 +67,18 @@ def parse_command_line():
         if flag in args:
             args.remove(flag)
 
-    if "--release-notes-only" in args:
-        where_filter["doctype"] = "release note"
-        args.remove("--release-notes-only")
+    # Parse --doctype flag
+    if "--doctype" in args:
+        idx = args.index("--doctype")
+        try:
+            doctype_arg = args[idx + 1]
+            doc_types = [dt.strip() for dt in doctype_arg.split(",")]
+            del args[idx:idx + 2]
+        except (IndexError, ValueError):
+            print("❌ Error: --doctype requires a comma-separated list of types")
+            usage()
 
+    # Parse --release flag
     if "--release" in args:
         idx = args.index("--release")
         try:
@@ -73,6 +88,7 @@ def parse_command_line():
             print("❌ Error: --release requires a value (e.g., 1.4.0)")
             usage()
 
+    # Parse --section flag
     if "--section" in args:
         idx = args.index("--section")
         try:
@@ -82,29 +98,42 @@ def parse_command_line():
             print("❌ Error: --section requires a value (e.g., \"new functionality\")")
             usage()
 
+    # Parse --n-results flag
     if "--n-results" in args:
-        index = args.index("--n-results")
+        idx = args.index("--n-results")
         try:
-            n_results = int(args[index + 1])
-            del args[index:index + 2]
+            n_results = int(args[idx + 1])
+            del args[idx:idx + 2]
         except (IndexError, ValueError):
             print("❌ Error: --n-results requires a numeric value")
             usage()
 
-    # Get actual user query
-    query = get_query(args)
+    # Get the actual user query (the remaining arguments)
+    query = " ".join(args)  # Combine remaining args as the query
     prefixed_query = "search_query: " + query
 
+    # Return the config dictionary
+    return {
+        "query": query,
+        "release": release_filter,
+        "section": section_filter,
+        "n_results": n_results,
+        "save_docs": save_docs,
+        "rerank": rerank,
+        "doc_types": doc_types,  
+        "prefixed_query": prefixed_query
+    }
 
 def main():
-    parse_command_line()
+    config = parse_command_line()
     collection = load_collection()
     print("Checking Embeddings.")
-    queryembed = get_query_embedding(prefixed_query)
+    queryembed = get_query_embedding(config["prefixed_query"])
     
     # Perform vector search
-    release = ru.extract_release_version(prefixed_query)
-    results = perform_vector_search(queryembed, collection, release=release,n_results=n_results)
+    if(config["release"]==None):
+        release = ru.extract_release_version(config["prefixed_query"])
+    results = perform_vector_search(queryembed, collection, release=release,n_results=config["n_results"],doc_types=config["doc_types"])
 
     relevantdocs = results["documents"][0]
     # Check if relevantdocs is empty
@@ -117,15 +146,15 @@ def main():
 
     # Save similarity scores to file
     if DEBUGGING:
-        ru.log_vector_scores(query, relevantdocs, metadatas, distances)
+        ru.log_vector_scores(config["query"], relevantdocs, metadatas, distances)
 
-    if save_docs:
-        save_documents(relevantdocs, metadatas, query)
+    if config["save_docs"]:
+        save_documents(relevantdocs, metadatas, config["query"])
 
     # If reranking is enabled, rerank the documents
-    if rerank:
+    if config["rerank"]:
         print("\n🔄 Reranking documents with bge-reranker-large...")
-        relevantdocs, metadatas = rerank_results(query, relevantdocs, metadatas)
+        relevantdocs, metadatas = rerank_results(config["query"], relevantdocs, metadatas)
 
     # Combine documents into a prompt
     docs = "\n\n".join(
@@ -133,7 +162,7 @@ def main():
         for i, (doc, meta) in enumerate(zip(relevantdocs, metadatas))
     )
 
-    modelquery = build_prompt(getconfig()["mainmodel"], docs, query)
+    modelquery = build_prompt(getconfig()["mainmodel"], docs, config["query"])
     print(f"Prompt: {modelquery}\n")
     print("Sending Prompt to Model.")
     

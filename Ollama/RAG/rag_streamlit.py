@@ -7,17 +7,21 @@ import ollama
 # Predefined dropdown options
 release_versions = ["", "1.0.0", "1.1.0", "1.2.0", "1.3.0", "1.4.0", "1.5.0", "1.6.0", "1.7.0"]
 sections = ["", "new functionality", "fixes", "improvements", "deprecations"]
-doc_types = [
+all_doc_types = [
     "Release Notes",
     "Software Design Documents",
     "Architectural Documents",
     "Feature Description Documents",
     "Technical Documents",
-    "Performance Analysis Documents"
+    "Performance Analysis Documents",
+    "Detailed Product Specifications"
 ]
 
+
+
+
 # Function to process the query using rag_search.py
-def process_query(query, release, section, n_results, save_docs, rerank, release_notes_only):
+def process_query(query, release, section, n_results, save_docs, rerank, doc_types):
     # Loading the collection
     collection = rs.load_collection()
 
@@ -25,7 +29,7 @@ def process_query(query, release, section, n_results, save_docs, rerank, release
     query_embed = rs.get_query_embedding(query)
 
     # Perform vector search
-    results = rs.perform_vector_search(query_embed, collection, release=release)
+    results = rs.perform_vector_search(query_embed, collection, release=release,doc_types=doc_types,n_results=n_results)
 
     relevant_docs = results["documents"][0]
     metadatas = results["metadatas"][0]
@@ -64,18 +68,23 @@ def process_query(query, release, section, n_results, save_docs, rerank, release
 # Streamlit UI
 st.title("MkDocs Search Application")
 
+# Set default based on the list defined above
+default_doc_types = ["Release Note"]  # You can also use all_doc_types if you want all pre-selected
 query = st.text_input("🔍 Enter your question:")
+selected_doc_types = st.multiselect(
+    "Select document types to include:",
+    options=all_doc_types,
+    default=default_doc_types
+)
+
+
 release = st.selectbox("📦 Filter by release version (optional):", release_versions)
 section = st.selectbox("📑 Filter by section (optional):", sections)
 
 n_results = st.slider("📄 Number of results to retrieve:", 1, 20, 5)
-rerank = st.checkbox("🔁 Rerank with bge-reranker-large")
+rerank = st.checkbox("🔁 Rerank with bge-reranker-large", value=True)  # Set default value to True
 save_docs = st.checkbox("💾 Save retrieved documents")
-selected_doc_types = st.multiselect(
-    "Select document types to include:",
-    doc_types,
-    default=doc_types  # optionally pre-select all
-)
+
 
 if st.button("Ask"):
     if not query.strip():
@@ -86,7 +95,7 @@ if st.button("Ask"):
                 answer = process_query(
                     query, release if release else None,
                     section if section else None,
-                    n_results, save_docs, rerank, release_notes_only
+                    n_results, save_docs, rerank, selected_doc_types
                 )
                 st.success("✅ Answer:")
                 st.write(answer)

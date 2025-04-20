@@ -24,37 +24,38 @@ def get_query_embedding(query):
     embedmodel = getconfig()["embedmodel"]
     return ollama.embeddings(model=embedmodel, prompt=f"search_query: {query}")['embedding']
 
-def perform_vector_search(queryembed, collection, release=None, section=None, release_notes_only=False, n_results=5):
+def perform_vector_search(queryembed, collection, release=None, section=None,  n_results=5,doc_types=None,):
     query_kwargs = {
         "query_embeddings": [queryembed],
         "n_results": n_results,
         "include": ["documents", "metadatas", "distances"]
     }
 
-    # Build combined filters as a list
-    combined_filter = []
+    filters = []
 
     if release:
-        combined_filter.append({"release": {"$eq": release}})
+        filters.append({"release": {"$eq": release}})
     if section:
-        combined_filter.append({"section": {"$eq": section}})
-    if release_notes_only:
-        combined_filter.append({"doctype": {"$eq": "release note"}})
+        filters.append({"section": {"$eq": section}})
+    if doc_types:
+        # Normalize document types to lowercase
+        normalized_doc_types = [dt.lower() for dt in doc_types]
+        filters.append({"doctype": {"$in": normalized_doc_types}})
 
-    # Apply correct filtering based on the number of filters
-    if len(combined_filter) > 1:
-        query_kwargs["where"] = {"$and": combined_filter}
-    elif len(combined_filter) == 1:
-        query_kwargs["where"] = combined_filter[0]
-    # else: no "where" clause — retrieve all
+    if len(filters) == 1:
+        query_kwargs["where"] = filters[0]  # Single condition, no $and
+    elif len(filters) > 1:
+        query_kwargs["where"] = {"$and": filters}  # Multiple conditions
 
-    # Debug print
+    # Debugging output
     debug_query = dict(query_kwargs)
     debug_query["query_embeddings"] = ["<embedding omitted for readability>"]
     print("\n🔍 Final query to ChromaDB:")
     pprint(debug_query)
 
     return collection.query(**query_kwargs)
+
+
 
 
 def rerank_results(query, documents, metadatas):
