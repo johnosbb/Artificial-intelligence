@@ -86,7 +86,6 @@ def index_summary(summary, full_path, doc_type, collection):
 
 
 def index_chunks(text, full_path, doc_type, collection):
-    
     dprefix = "search_document: "
     release_version = None
 
@@ -108,15 +107,22 @@ def index_chunks(text, full_path, doc_type, collection):
     else:
         chunks = ru.chunk_by_sentences(source_text=section_text, sentences_per_chunk=7, overlap=0)
 
+    base_filename = os.path.splitext(os.path.basename(full_path))[0]
+    source_label = f"{base_filename}"
+    if release_version:
+        source_label += f" v{release_version}"
+
     # === Index chunks ===
     for index, chunk in enumerate(chunks):
-        full_chunk = f"{dprefix}{doc_type} (source: {full_path}, release: {release_version})\n{chunk}"
+        citation_tag = f"[{source_label}, chunk {index}]"
+        full_chunk = f"{dprefix}{doc_type} {citation_tag}\n{chunk}"
         embed = ollama.embeddings(model=embedmodel, prompt=full_chunk)['embedding']
         doc_id = f"{full_path}_chunk{index}"
 
         metadata = {
             "source": full_path,
-            "doctype": doc_type_clean
+            "doctype": doc_type_clean,
+            "source_label": f"{source_label}, chunk {index}"
         }
 
         if release_version:
@@ -131,7 +137,6 @@ def index_chunks(text, full_path, doc_type, collection):
             metadatas=metadata
         )
         print(".", end="", flush=True)
-
 
 
 

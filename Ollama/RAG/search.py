@@ -31,12 +31,14 @@ DEBUGGING=False
 
 reranker = CrossEncoder("BAAI/bge-reranker-large")
 
-def rerank_results(query, documents):
+def rerank_results(query, documents, metadatas):
     pairs = [(query, doc) for doc in documents]
     scores = reranker.predict(pairs)
-    reranked = sorted(zip(documents, scores), key=lambda x: x[1], reverse=True)
-    reranked_docs = [doc for doc, score in reranked]
-    return reranked_docs
+    reranked = sorted(zip(documents, metadatas, scores), key=lambda x: x[2], reverse=True)
+    reranked_docs = [doc for doc, _, _ in reranked]
+    reranked_metas = [meta for _, meta, _ in reranked]
+    return reranked_docs, reranked_metas
+
 
 def build_prompt(model_id, docs, query):
     # Check for summary intent (simple keyword check, could be replaced with NLP classifier later)
@@ -93,7 +95,7 @@ def build_prompt(model_id, docs, query):
     elif "internlm2" in model_id:
         return (
             "<|im_start|>system\n"
-            "You are a helpful assistant. Only use the provided documents to answer. If unsure, say so. Avoid guessing.'\n"
+            "You are a helpful assistant. Only use the provided documents to answer. Always include citations like [Doc 3] when referencing facts. If unsure, say so. Avoid guessing.'\n"
             "<|im_end|>\n"
             "<|im_start|>user\n"
             "=== DOCUMENTS ===\n"
@@ -363,23 +365,25 @@ if save_docs:
     save_documents(relevantdocs,metadatas,query)
 
 # Combine documents into a prompt
-docs = "\n\n".join(relevantdocs)
+# docs = "\n\n".join(relevantdocs)
 
-# Combine documents into a prompt
-docs = "\n\n".join(relevantdocs)
 
-if(DEBUGGING):
+
+if DEBUGGING:
     log_all_vector_scores(queryembed, collection, query)
-
 
 if rerank:
     print("\n🔄 Reranking documents with bge-reranker-large...")
-    relevantdocs = rerank_results(query, relevantdocs)
-    docs = "\n\n".join(relevantdocs)
+    relevantdocs, metadatas = rerank_results(query, relevantdocs, metadatas)
 
-
+# Add citation-style metadata headers before sending to the model
+docs = "\n\n".join(
+    f"[Doc {i+1}] (release: {meta.get('release', '?')}, section: {meta.get('section', '?')})\n{doc}"
+    for i, (doc, meta) in enumerate(zip(relevantdocs, metadatas))
+)
 
 modelquery = build_prompt(mainmodel, docs, query)
+
 
 print(f"Prompt: {modelquery}\n")
 print("Sending Prompt to Model.")
