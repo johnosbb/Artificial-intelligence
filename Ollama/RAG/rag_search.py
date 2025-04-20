@@ -1,0 +1,193 @@
+import ollama
+import chromadb
+import numpy as np
+from sentence_transformers import CrossEncoder
+from pprint import pprint
+from utilities import getconfig
+import rag_utilities as ru
+from datetime import datetime
+
+# Reranking model
+reranker = CrossEncoder("BAAI/bge-reranker-large")
+
+def load_collection():
+    try:
+        chroma = chromadb.HttpClient(host="localhost", port=8000)
+        collection = chroma.get_or_create_collection("buildragwithpython")
+        return collection
+    except Exception as e:
+        print("\n❌ Unable to connect to ChromaDB at localhost:8000.")
+        print("👉 Please make sure the Chroma server is running.")
+        sys.exit(1)
+
+def get_query_embedding(query):
+    embedmodel = getconfig()["embedmodel"]
+    return ollama.embeddings(model=embedmodel, prompt=f"search_query: {query}")['embedding']
+
+def perform_vector_search(queryembed, collection, release=None, section=None, release_notes_only=False, n_results=5):
+    query_kwargs = {
+        "query_embeddings": [queryembed],
+        "n_results": n_results,
+        "include": ["documents", "metadatas", "distances"]
+    }
+
+    # Build combined filters as a list
+    combined_filter = []
+
+    if release:
+        combined_filter.append({"release": {"$eq": release}})
+    if section:
+        combined_filter.append({"section": {"$eq": section}})
+    if release_notes_only:
+        combined_filter.append({"doctype": {"$eq": "release note"}})
+
+    # Apply correct filtering based on the number of filters
+    if len(combined_filter) > 1:
+        query_kwargs["where"] = {"$and": combined_filter}
+    elif len(combined_filter) == 1:
+        query_kwargs["where"] = combined_filter[0]
+    # else: no "where" clause — retrieve all
+
+    # Debug print
+    debug_query = dict(query_kwargs)
+    debug_query["query_embeddings"] = ["<embedding omitted for readability>"]
+    print("\n🔍 Final query to ChromaDB:")
+    pprint(debug_query)
+
+    return collection.query(**query_kwargs)
+
+
+def rerank_results(query, documents, metadatas):
+    pairs = [(query, doc) for doc in documents]
+    scores = reranker.predict(pairs)
+    reranked = sorted(zip(documents, metadatas, scores), key=lambda x: x[2], reverse=True)
+    reranked_docs = [doc for doc, _, _ in reranked]
+    reranked_metas = [meta for _, meta, _ in reranked]
+    return reranked_docs, reranked_metas
+
+def build_prompt(model_id, docs, query):
+    # Check for summary intent (simple keyword check, could be replaced with NLP classifier later)
+    is_summary_request = "summarise" in query.lower() or "summarize" in query.lower()
+
+    # Use tailored prompt for summary requests
+    if is_summary_request:
+        if "internlm2" in model_id:
+            return (
+                "<|im_start|>system\n"
+                "You are a helpful assistant. ONLY use the provided documents to summarise the user's requested release. "
+                "Provide a bullet-point list of the top 10 most important changes. If the answer is not in the documents, say so.\n"
+                "<|im_end|>\n"
+                "<|im_start|>user\n"
+                "=== DOCUMENTS ===\n"
+                f"{docs}\n\n"
+                "=== QUESTION ===\n"
+                f"{query}\n"
+                "<|im_end|>\n"
+                "<|im_start|>assistant\n"
+                "- "
+            )
+        else:
+            return (
+                "Use the following technical documents to provide a summary of the requested release.\n"
+                "Return 10 bullet points of the most important changes only from that release.\n\n"
+                f"DOCS:\n{docs}\n\n"
+                f"QUESTION:\n{query}\n\n"
+                "ANSWER:\n- "
+            )
+
+    # Non-summary queries
+    return (
+        "You are a helpful assistant. Here are some technical documents followed by a question. Please answer it accurately.\n\n"
+        f"DOCS:\n{docs}\n\n"
+        f"QUESTION:\n{query}\n\n"
+        f"ANSWER:"
+    )
+
+
+# In rag_search.py, ensure that functions return outputs that can be easily displayed.
+# this is required for the streamlit version
+def perform_search(query, release, section, n_results, save_docs, rerank, where_filter):
+    # The logic stays mostly the same, just ensure the return value is formatted for Streamlit.
+    collection = load_collection()
+    queryembed = get_query_embedding(query)
+
+    # Perform the vector search
+    results = perform_vector_search(queryembed, collection, release=release)
+
+    relevantdocs = results["documents"][0]
+    metadatas = results["metadatas"][0]
+
+    if not relevantdocs:
+        return "⚠️ No relevant documents found. Abandoning search."
+
+    # If reranking is enabled
+    if rerank:
+        relevantdocs, metadatas = rerank_results(query, relevantdocs, metadatas)
+
+    docs = "\n\n".join(
+        f"[Doc {i+1}] (release: {meta.get('release', '?')}, section: {meta.get('section', '?')})\n{doc}"
+        for i, (doc, meta) in enumerate(zip(relevantdocs, metadatas))
+    )
+
+    # Return result
+    return docs
+
+
+
+def save_documents(relevantdocs, metadatas, query):
+    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+    filename = f"/mnt/500GB/rag_output/retrieved_docs_{timestamp}.txt"
+    with open(filename, "w") as f:
+        f.write(f"Query: {query}\n\n")
+        for i, (doc, meta) in enumerate(zip(relevantdocs, metadatas), 1):
+            f.write(f"[Document {i}]\n{doc}\n")
+            f.write(f"Metadata: {meta}\n\n")
+            f.write(f"---------------------------\n\n")
+    print(f"\n📄 Retrieved documents saved to {filename}\n")
+
+def log_vector_scores(query, documents, metadatas, distances):
+    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+    logfile = f"/mnt/500GB/rag_output/vector_scores_{timestamp}.log"
+    
+    with open(logfile, "w") as f:
+        f.write(f"Query: {query}\n\n")
+        for i, (doc, meta, dist) in enumerate(zip(documents, metadatas, distances)):
+            sim_score = 1 - dist  # cosine similarity
+            f.write(f"[Doc {i+1}]\nScore: {sim_score:.4f}\n")
+            f.write(f"Metadata: {meta}\n")
+            f.write(f"Content (first 300 chars):\n{doc[:300]}...\n")
+            f.write("--------------------------------------------------\n\n")
+    
+    print(f"\n📝 Vector similarity scores logged to: {logfile}")
+
+def log_all_vector_scores(query_embed, collection, original_query, full_log_limit=200):
+    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+    log_file = f"/mnt/500GB/rag_output/all_vector_scores_{timestamp}.log"
+
+    query_kwargs = {
+        "query_embeddings": [query_embed],
+        "n_results": full_log_limit,
+    }
+
+    full_results = collection.query(**query_kwargs)
+
+    with open(log_file, "w") as f:
+        f.write(f"Query: {original_query}\n\n")
+        
+        for i in range(len(full_results["documents"][0])):
+            doc = full_results["documents"][0][i]
+            meta = full_results["metadatas"][0][i]
+            
+            doc_embed = ollama.embeddings(model=getconfig()["embedmodel"], prompt=f"search_document: {doc}")['embedding']
+            
+            score = np.dot(query_embed, doc_embed) / (
+                np.linalg.norm(query_embed) * np.linalg.norm(doc_embed)
+            )
+            
+            f.write(f"[Document {i+1}]\n")
+            f.write(f"Score: {score:.4f}\n")
+            f.write(f"Metadata: {meta}\n")
+            f.write(f"Text: {doc[:500]}...\n")
+            f.write("-" * 40 + "\n\n")
+    
+    print(f"\n📊 All vector scores logged to {log_file}\n")
