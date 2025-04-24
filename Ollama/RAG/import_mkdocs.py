@@ -17,7 +17,7 @@ document_folder_path="/mnt/500GB/docs"
 
 embedmodel = getconfig()["embedmodel"]
 mainmodel = getconfig()["mainmodel"]
-allowed_extensions = [".md", ".txt", ".html"]
+allowed_extensions = [".md", ".txt", ".html", ".py", ".c", ".h"]
 
 # ------------------ Arg Parsing ------------------
 
@@ -130,6 +130,12 @@ def index_chunks(text, full_path, doc_type, collection):
         if doc_type_clean == "release note" and section_text == new_func_text:
             metadata["section"] = "new functionality"
 
+        if doc_type_clean == "source code":
+            language = ru.detect_language(full_path)
+            metadata["language"] = language
+            metadata["component"] = ru.classify_code_component(full_path)  # optional
+
+
         collection.add(
             ids=[doc_id],
             embeddings=[embed],
@@ -145,7 +151,11 @@ def index_chunks(text, full_path, doc_type, collection):
 def process_document(full_path, collection, flags, processed, skipped):
     try:
         text = readtext(full_path)
-        doc_type = ru.classify_doc_type(full_path, text)
+        is_code_file = full_path.endswith(('.py', '.c', '.h', '.cpp'))
+        if is_code_file:
+            doc_type = "source code"
+        else:
+            doc_type = ru.classify_doc_type(full_path, text)
 
         if flags["summarize"]:
             try:

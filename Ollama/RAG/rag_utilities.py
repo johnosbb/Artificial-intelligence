@@ -28,6 +28,41 @@ def smart_chunk(text):
     else:
         return chunk_by_sentences(text)  # Your existing method
 
+
+def detect_language(file_path):
+    if file_path.endswith('.py'):
+        return 'python'
+    if file_path.endswith(('.c', '.h')):
+        return 'c'
+    if file_path.endswith('.cpp'):
+        return 'cpp'
+    return 'unknown'
+
+
+
+def chunk_code_by_function(code_text):
+    pattern = r'(def\s+\w+\s*\(.*?\):|[\w\s\*]+?\s+\**\w+\s*\(.*?\)\s*\{)'  # crude but catches Python and C defs
+    lines = code_text.splitlines()
+    
+    chunks = []
+    current_chunk = []
+    in_function = False
+
+    for line in lines:
+        if re.match(pattern, line.strip()):
+            if current_chunk:
+                chunks.append("\n".join(current_chunk))
+                current_chunk = []
+            in_function = True
+        if in_function:
+            current_chunk.append(line)
+    
+    if current_chunk:
+        chunks.append("\n".join(current_chunk))
+    
+    return chunks
+
+
 def chunk_by_tables(text):
     """
     Extracts markdown-style tables and returns them as individual chunks.
