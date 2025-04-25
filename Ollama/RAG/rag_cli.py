@@ -133,7 +133,13 @@ def main():
     # Perform vector search
     if(config["release"]==None):
         release = ru.extract_release_version(config["prefixed_query"])
-    results = perform_vector_search(queryembed, collection, release=release,n_results=config["n_results"],doc_types=config["doc_types"])
+    results = perform_vector_search(
+        queryembed,
+        collection,
+        release=release,           # section not here!
+        n_results=config["n_results"],
+        doc_types=config["doc_types"]
+    )
 
     relevantdocs = results["documents"][0]
     # Check if relevantdocs is empty

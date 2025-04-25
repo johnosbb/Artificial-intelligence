@@ -29,7 +29,15 @@ def process_query(query, release, section, n_results, save_docs, rerank, doc_typ
     query_embed = rs.get_query_embedding(query)
 
     # Perform vector search
-    results = rs.perform_vector_search(query_embed, collection, release=release,doc_types=doc_types,n_results=n_results)
+    results = rs.perform_vector_search(
+    query_embed,
+    collection,
+    release=release,
+    section=section,  # Pass it here
+    doc_types=doc_types,
+    n_results=n_results
+    )
+
 
     relevant_docs = results["documents"][0]
     metadatas = results["metadatas"][0]
@@ -69,7 +77,7 @@ def process_query(query, release, section, n_results, save_docs, rerank, doc_typ
 st.title("MkDocs Search Application")
 
 # Set default based on the list defined above
-default_doc_types = ["Release Note"]  # You can also use all_doc_types if you want all pre-selected
+default_doc_types = ["Release Notes"]  # You can also use all_doc_types if you want all pre-selected
 query = st.text_input("🔍 Enter your question:")
 selected_doc_types = st.multiselect(
     "Select document types to include:",
