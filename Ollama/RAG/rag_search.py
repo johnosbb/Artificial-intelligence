@@ -4,9 +4,12 @@ import numpy as np
 from sentence_transformers import CrossEncoder
 from pprint import pprint
 from utilities import getconfig
-import rag_utilities as ru
 from datetime import datetime
+import json
+import os
 
+
+OUTPUT_DIRECTORY="/mnt/500GB/rag_output"
 # Reranking model
 reranker = CrossEncoder("BAAI/bge-reranker-large")
 
@@ -20,9 +23,30 @@ def load_collection():
         print("👉 Please make sure the Chroma server is running.")
         sys.exit(1)
 
-def get_query_embedding(query):
+def get_query_embedding(
+    query,
+    save_to_file=True,
+    load_from_file=False,
+    filename=f"{OUTPUT_DIRECTORY}/query_embedding.json"
+):
+    # Load embedding from file if requested
+    if load_from_file and os.path.exists(filename):
+        with open(filename, "r") as f:
+            embedding = json.load(f)
+        print(f"📥 Using previously saved embedding from {filename}")
+        return embedding
+
+    # Otherwise, generate embedding normally
     embedmodel = getconfig()["embedmodel"]
-    return ollama.embeddings(model=embedmodel, prompt=f"search_query: {query}")['embedding']
+    embedding = ollama.embeddings(model=embedmodel, prompt=f"search_query: {query}")['embedding']
+
+    # Optionally save the embedding
+    if save_to_file:
+        with open(filename, "w") as f:
+            json.dump(embedding, f)
+        print(f"📝 Saved embedding to {filename}")
+
+    return embedding
 
 def perform_vector_search(queryembed, collection, release=None, section=None,  n_results=5,doc_types=None,):
     query_kwargs = {
@@ -137,7 +161,7 @@ def perform_search(query, release, section, n_results, save_docs, rerank, where_
 
 def save_documents(relevantdocs, metadatas, query):
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-    filename = f"/mnt/500GB/rag_output/retrieved_docs_{timestamp}.txt"
+    filename = f"{OUTPUT_DIRECTORY}/retrieved_docs_{timestamp}.txt"
     with open(filename, "w") as f:
         f.write(f"Query: {query}\n\n")
         for i, (doc, meta) in enumerate(zip(relevantdocs, metadatas), 1):
@@ -148,7 +172,7 @@ def save_documents(relevantdocs, metadatas, query):
 
 def log_vector_scores(query, documents, metadatas, distances):
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-    logfile = f"/mnt/500GB/rag_output/vector_scores_{timestamp}.log"
+    logfile = f"{OUTPUT_DIRECTORY}/vector_scores_{timestamp}.log"
     
     with open(logfile, "w") as f:
         f.write(f"Query: {query}\n\n")
@@ -163,7 +187,7 @@ def log_vector_scores(query, documents, metadatas, distances):
 
 def log_all_vector_scores(query_embed, collection, original_query, full_log_limit=200):
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-    log_file = f"/mnt/500GB/rag_output/all_vector_scores_{timestamp}.log"
+    log_file = f"{OUTPUT_DIRECTORY}/all_vector_scores_{timestamp}.log"
 
     query_kwargs = {
         "query_embeddings": [query_embed],
