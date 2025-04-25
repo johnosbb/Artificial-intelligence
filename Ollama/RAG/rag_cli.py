@@ -2,7 +2,7 @@
 
 import sys
 from datetime import datetime
-from rag_search import load_collection, get_query_embedding, perform_vector_search, rerank_results, build_prompt, save_documents
+import rag_search as rs
 from utilities import getconfig
 import rag_utilities as ru
 import ollama
@@ -126,21 +126,22 @@ def parse_command_line():
 
 def main():
     config = parse_command_line()
-    collection = load_collection()
+    collection = rs.load_collection()
     print("Checking Embeddings.")
-    queryembed = get_query_embedding(config["prefixed_query"])
+    queryembed = rs.get_query_embedding(config["prefixed_query"])
     
     # Perform vector search
     if(config["release"]==None):
         release = ru.extract_release_version(config["prefixed_query"])
-    results = perform_vector_search(
-        queryembed,
-        collection,
-        release=release,   
-        section=config["section"],       
-        n_results=config["n_results"],
-        doc_types=config["doc_types"]
-    )
+    results = rs.perform_vector_search(
+    queryembed,
+    collection,
+    release=release,
+    section=config["section"], 
+    n_results=config["n_results"],
+    doc_types=config["doc_types"]
+)
+    print(f"Number of documents returned: {len(results['documents'][0])}")
 
     relevantdocs = results["documents"][0]
     # Check if relevantdocs is empty
@@ -156,12 +157,12 @@ def main():
         ru.log_vector_scores(config["query"], relevantdocs, metadatas, distances)
 
     if config["save_docs"]:
-        save_documents(relevantdocs, metadatas, config["query"])
+        rs.save_documents(relevantdocs, metadatas, config["query"])
 
     # If reranking is enabled, rerank the documents
     if config["rerank"]:
         print("\n🔄 Reranking documents with bge-reranker-large...")
-        relevantdocs, metadatas = rerank_results(config["query"], relevantdocs, metadatas)
+        relevantdocs, metadatas = rs.rerank_results(config["query"], relevantdocs, metadatas)
 
     # Combine documents into a prompt
     docs = "\n\n".join(
@@ -169,7 +170,7 @@ def main():
         for i, (doc, meta) in enumerate(zip(relevantdocs, metadatas))
     )
 
-    modelquery = build_prompt(getconfig()["mainmodel"], docs, config["query"])
+    modelquery = rs.build_prompt(getconfig()["mainmodel"], docs, config["query"])
     print(f"Prompt: {modelquery}\n")
     print("Sending Prompt to Model.")
     

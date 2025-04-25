@@ -91,9 +91,10 @@ def index_chunks(text, full_path, doc_type, collection):
 
     doc_type_clean = doc_type.strip(": ").lower()
     section_text = text
+    chunking_strategy = None  # Add a variable to track the chunking strategy
 
     # Try to extract relevant section from release notes
-    if doc_type_clean == "release note":
+    if doc_type_clean == "release notes":
         release_version = ru.extract_release_version(text)
         new_func_text = ru.extract_section(text, "New functionality")
         if new_func_text:
@@ -102,10 +103,13 @@ def index_chunks(text, full_path, doc_type, collection):
     # === Decide chunking strategy ===
     if ru.is_table_heavy(section_text):
         chunks = ru.chunk_by_tables(section_text)
+        chunking_strategy = "table"  # Store the strategy used
     elif ru.is_bullet_heavy(section_text):
         chunks = ru.chunk_by_bullets(section_text)
+        chunking_strategy = "bullet"  # Store the strategy used
     else:
         chunks = ru.chunk_by_sentences(source_text=section_text, sentences_per_chunk=7, overlap=0)
+        chunking_strategy = "sentence"  # Store the strategy used
 
     base_filename = os.path.splitext(os.path.basename(full_path))[0]
     source_label = f"{base_filename}"
@@ -122,12 +126,13 @@ def index_chunks(text, full_path, doc_type, collection):
         metadata = {
             "source": full_path,
             "doctype": doc_type_clean,
-            "source_label": f"{source_label}, chunk {index}"
+            "source_label": f"{source_label}, chunk {index}",
+            "chunking_strategy": chunking_strategy  # Add the chunking strategy to metadata
         }
 
         if release_version:
             metadata["release"] = release_version
-        if doc_type_clean == "release note" and section_text == new_func_text:
+        if doc_type_clean == "release notes" and section_text == new_func_text:
             metadata["section"] = "new functionality"
 
         if doc_type_clean == "source code":

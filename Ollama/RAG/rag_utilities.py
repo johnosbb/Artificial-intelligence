@@ -175,26 +175,35 @@ def is_bullet_heavy(text):
 # ------------------ Type Classification ------------------
 
 
-def classify_doc_type(file, text):
-    filename = file.lower()
 
-    # Check filename hints first
-    if "software_design" in filename or "sdd" in filename:
-        return "software design doc: "
-    if "feature_description" in filename or "feature" in filename:
-        return "feature description doc: "
-    if "release_notes" in filename or "release" in filename or "RELEASE_NOTES" in filename:
-        return "release note: "
+DOC_TYPE_LABELS = {
+    "software design": "Software Design Documents",
+    "feature description": "Feature Description Documents",
+    "release notes": "Release Notes",
+    "architectural": "Architectural Documents",
+    "technical": "Technical Documents",
+    "performance analysis": "Performance Analysis Documents",
+    "detailed product specification": "Detailed Product Specifications",
+}
 
-    # Check for Document Type in markdown table format
+def classify_doc_type(filename, text):
+    filename = filename.lower()
+
+    # First: Try to infer from filename
+    for key, label in DOC_TYPE_LABELS.items():
+        if key.replace(" ", "_") in filename or key in filename:
+            print(f"[match] Detected '{label}' from filename")
+            return label
+
+    # Second: Try to extract from markdown metadata
     match = re.search(r'\|\s*Document Type:\s*\|\s*(.+?)\s*\|', text, re.IGNORECASE)
     if match:
-        doc_type = match.group(1).strip().lower()
-        if "software design" in doc_type:
-            return "software design doc: "
-        if "feature description" in doc_type:
-            return "feature description doc: "
-        if "release note" in doc_type:
-            return "release note: "
+        doc_type_text = match.group(1).strip().lower()
+        for key, label in DOC_TYPE_LABELS.items():
+            if key in doc_type_text:
+                print(f"[match] Detected '{label}' from document content")
+                return label
 
-    return "technical doc: "
+    # Default fallback
+    print("[match] Defaulted to 'Technical Documents'")
+    return "Technical Documents"
