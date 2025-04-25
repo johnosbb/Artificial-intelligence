@@ -136,7 +136,8 @@ def main():
     results = perform_vector_search(
         queryembed,
         collection,
-        release=release,           # section not here!
+        release=release,   
+        section=config["section"],       
         n_results=config["n_results"],
         doc_types=config["doc_types"]
     )
