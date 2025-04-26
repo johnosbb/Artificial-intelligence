@@ -4,11 +4,16 @@ from typing import List
 from nltk.corpus import stopwords
 
 
-def extract_keywords(text):
+def extract_keywords(text, max_keywords=3):
     stop_words = set(stopwords.words('english'))
-    words = re.findall(r'\b\w+\b', text.lower())  # extract words
-    keywords = [word for word in words if word not in stop_words and len(word) > 2]
-    return keywords
+    words = re.findall(r'\b\w+\b', text.lower())
+    keywords = [word for word in words if word not in stop_words and len(word) > 3]
+    
+    # Prioritize longer and more unique words
+    keywords = sorted(set(keywords), key=lambda x: (-len(x), x))
+    
+    # Only take the top N keywords
+    return keywords[:max_keywords]
 
 
 def extract_release_version(text):

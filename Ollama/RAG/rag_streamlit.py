@@ -19,68 +19,59 @@ all_doc_types = [
 ]
 
 # Function to process the query
-def process_query(query, release, section, n_results, save_docs, rerank, doc_types, keyword_search_string):
+def process_query(query, release, section, n_results, save_docs, rerank, doc_types, keyword_search_string=None):
     collection = rs.load_collection()
-
-    # Prefix query
-    prefixed_query = "search_query: " + query
-
-    # Embedding
-    query_embed = rs.get_query_embedding(prefixed_query)
+    query_embed = rs.get_query_embedding(query)
 
     top_doc_ids = None
-
-    # If user entered manual keywords, use them
-    if keyword_search_string:
-        keyword_string_to_use = keyword_search_string
+    if not keyword_search_string:
+        extracted_keywords = extract_keywords(query)
+        keyword_search_string = " ".join(extracted_keywords)
+        st.info(f"🔎 Using automatically extracted keywords: {', '.join(extracted_keywords)}")
     else:
-        # Otherwise extract keywords automatically from query
-        extracted_keywords = ru.extract_keywords(query)
-        keyword_string_to_use = " ".join(extracted_keywords)
+        st.info(f"🔎 Using manually provided keywords: {keyword_search_string}")
 
-    if keyword_string_to_use:
-        keyword_hits = ks.keyword_search_with_stemming(keyword_string_to_use)
+    if keyword_search_string:
+        keyword_hits = ks.keyword_search_with_stemming(keyword_search_string)
         top_doc_ids = [hit["full_doc_id"] for hit in keyword_hits if hit.get("full_doc_id")]
-        st.info(f"🔍 Found {len(top_doc_ids)} documents matching keywords: {keyword_string_to_use}")
 
-        if not top_doc_ids:
-            return "⚠️ No documents matched the keyword search. Abandoning search."
+        if keyword_hits:
+            with st.expander("🧪 Keyword Search Hits"):
+                for hit in keyword_hits:
+                    st.write(f"Doc ID: {hit['doc_id']} Metadata: {hit.get('metadata', '')}")
+        else:
+            st.warning("⚠️ No keyword search hits.")
 
-    # Perform vector search
     results = rs.perform_vector_search(
         query_embed,
         collection,
         release=release,
         section=section,
-        n_results=n_results,
         doc_types=doc_types,
-        doc_ids=top_doc_ids  # pass filtered IDs if keyword search used
+        n_results=n_results,
+        doc_ids=top_doc_ids
     )
 
     relevant_docs = results["documents"][0]
     metadatas = results["metadatas"][0]
 
     if not relevant_docs:
-        return "⚠️ No relevant documents found after vector search."
+        return "⚠️ No relevant documents found. Abandoning search."
 
     if rerank:
         relevant_docs, metadatas = rs.rerank_results(query, relevant_docs, metadatas)
 
-    # Combine documents into a string for model input
     docs = "\n\n".join(
         f"[Doc {i+1}] (release: {meta.get('release', '?')}, section: {meta.get('section', '?')})\n{doc}"
         for i, (doc, meta) in enumerate(zip(relevant_docs, metadatas))
     )
 
-    # Save documents if needed
     if save_docs:
         rs.save_documents(relevant_docs, metadatas, query)
 
-    # Build prompt
     model_query = rs.build_prompt(getconfig()["mainmodel"], docs, query)
-    st.text_area("Prompt Sent to Model", model_query, height=300)
+    st.text_area("📄 Model Query Sent to Model", model_query, height=300)
 
-    # Stream the model response
     stream = ollama.generate(model=getconfig()["mainmodel"], prompt=model_query, stream=True)
 
     answer = ""
@@ -89,6 +80,7 @@ def process_query(query, release, section, n_results, save_docs, rerank, doc_typ
             answer += chunk["response"]
 
     return answer
+
 
 # Streamlit UI
 st.title("MkDocs Search Application")
