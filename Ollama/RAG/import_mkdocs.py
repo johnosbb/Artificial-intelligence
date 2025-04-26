@@ -136,13 +136,13 @@ def index_chunks(text, full_path, doc_type, collection):
         full_chunk = f"{dprefix}{doc_type} {citation_tag}\n{chunk}"
         embed = ollama.embeddings(model=embedmodel, prompt=full_chunk)['embedding']
         doc_id = f"{full_path}_chunk{index}"
-
+        full_doc_id = ks.build_full_doc_id(full_path,source_label,index)
         metadata = {
             "source": full_path,
             "doctype": doc_type_clean,
             "source_label": f"{source_label}, chunk {index}",
             "chunking_strategy": chunking_strategy,
-            "full_doc_id": f"{full_path}_{source_label.replace(', ', '_').replace(' ', '_')}_chunk{index}"  # <-- 🔥 Added full_doc_id here
+            "full_doc_id": full_doc_id
         }
 
         if release_version:
@@ -163,7 +163,6 @@ def index_chunks(text, full_path, doc_type, collection):
             metadatas=metadata
         )
         print(".", end="", flush=True)
-        metadata["full_doc_id"] = f"{metadata['source']}_{metadata['source_label'].replace(', ', '_').replace(' ', '_')}"
         ks.index_keyword_chunk(doc_id, chunk, metadata)
 
 

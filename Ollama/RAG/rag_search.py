@@ -23,6 +23,10 @@ def load_collection():
         print("👉 Please make sure the Chroma server is running.")
         sys.exit(1)
 
+
+
+
+
 def get_query_embedding(
     query,
     save_to_file=True,
@@ -52,7 +56,7 @@ def get_query_embedding(
 
 
 
-def build_chroma_query_kwargs(query_embed, n_results=5, release=None, section=None, doc_types=None, doc_ids=None):
+def build_chroma_query_kwargs(query_embed, n_results=5, release=None, section=None, doc_types=None, full_doc_ids=None):
     query_kwargs = {
         "query_embeddings": [query_embed],
         "n_results": n_results,
@@ -69,7 +73,7 @@ def build_chroma_query_kwargs(query_embed, n_results=5, release=None, section=No
         normalized_doc_types = [dt.lower() for dt in doc_types]
         filters.append({"doctype": {"$in": normalized_doc_types}})
     if doc_ids:
-        filters.append({"full_doc_id": {"$in": doc_ids}})
+        filters.append({"full_doc_id": {"$in": full_doc_ids}})
 
 
     if len(filters) == 1:

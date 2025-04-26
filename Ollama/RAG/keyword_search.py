@@ -58,6 +58,10 @@ def keyword_search(query_str, top_k=10):
         return hits
 
 
+def build_full_doc_id(full_path, source_label, chunk_index):
+    label = source_label.replace(', ', '_').replace(' ', '_')
+    return f"{full_path}_{label}_chunk{chunk_index}"
+
 def get_or_create_index():
     # Define the schema
     schema = Schema(
@@ -74,17 +78,20 @@ def get_or_create_index():
     else:
         return open_dir(INDEX_DIR)
 
-def index_keyword_chunk(doc_id, content, metadata=""):
+def index_keyword_chunk(doc_id, content, metadata):
     ix = get_or_create_index()
     writer = ix.writer()
-    metadata_dict = eval(metadata) if isinstance(metadata, str) else metadata  # make sure it's a dict
-    full_doc_id = metadata_dict.get("full_doc_id", "")  # get full_doc_id safely
+
+    # metadata is already a dict
+    full_doc_id = metadata.get("full_doc_id", "")  # no need for eval/parse
+
     writer.update_document(
         doc_id=doc_id,
         full_doc_id=full_doc_id,
         content=content,
-        metadata=str(metadata)
+        metadata=str(metadata)  # still store it as string inside the index
     )
     writer.commit()
+
 
 
