@@ -7,9 +7,9 @@ from utilities import getconfig
 from datetime import datetime
 import json
 import os
+from config_loader import get_index_dir,get_output_dir
 
-
-OUTPUT_DIRECTORY="/mnt/500GB/rag_output"
+OUTPUT_DIRECTORY=get_output_dir()
 # Reranking model
 reranker = CrossEncoder("BAAI/bge-reranker-large")
 
@@ -48,9 +48,13 @@ def get_query_embedding(
 
     return embedding
 
-def perform_vector_search(queryembed, collection, release=None, section=None,  n_results=5,doc_types=None,):
+
+
+
+
+def build_chroma_query_kwargs(query_embed, n_results=5, release=None, section=None, doc_types=None, doc_ids=None):
     query_kwargs = {
-        "query_embeddings": [queryembed],
+        "query_embeddings": [query_embed],
         "n_results": n_results,
         "include": ["documents", "metadatas", "distances"]
     }
@@ -62,25 +66,37 @@ def perform_vector_search(queryembed, collection, release=None, section=None,  n
     if section:
         filters.append({"section": {"$eq": section}})
     if doc_types:
-        # Normalize document types to lowercase
         normalized_doc_types = [dt.lower() for dt in doc_types]
         filters.append({"doctype": {"$in": normalized_doc_types}})
+    if doc_ids:
+        filters.append({"full_doc_id": {"$in": doc_ids}})
+
 
     if len(filters) == 1:
-        query_kwargs["where"] = filters[0]  # Single condition, no $and
+        query_kwargs["where"] = filters[0]
     elif len(filters) > 1:
-        query_kwargs["where"] = {"$and": filters}  # Multiple conditions
+        query_kwargs["where"] = {"$and": filters}
+
+    return query_kwargs
+
+
+def perform_vector_search(queryembed, collection, release=None, section=None, n_results=5, doc_types=None, doc_ids=None):
+    query_kwargs = build_chroma_query_kwargs(
+        query_embed=queryembed,
+        n_results=n_results,
+        release=release,
+        section=section,
+        doc_types=doc_types,
+        doc_ids=doc_ids
+    )
 
     # Debugging output
     debug_query = dict(query_kwargs)
-    debug_query["query_embeddings"] = ["<embedding omitted for readability>"]
+    debug_query["query_embeddings"] = ["<embedding omitted>"]
     print("\n🔍 Final query to ChromaDB:")
     pprint(debug_query)
 
     return collection.query(**query_kwargs)
-
-
-
 
 def rerank_results(query, documents, metadatas):
     pairs = [(query, doc) for doc in documents]

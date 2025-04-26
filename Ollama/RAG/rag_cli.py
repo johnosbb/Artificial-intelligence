@@ -5,6 +5,7 @@ from datetime import datetime
 import rag_search as rs
 from utilities import getconfig
 import rag_utilities as ru
+import keyword_search as ks
 import ollama
 from pprint import pprint
 
@@ -49,6 +50,7 @@ def parse_command_line():
     release_filter = None
     section_filter = None
     doc_types = []
+    keyword_search = None
 
 
     # Parse arguments
@@ -108,6 +110,17 @@ def parse_command_line():
             print("❌ Error: --n-results requires a numeric value")
             usage()
 
+    # Parse --keyword-search
+    if "--keyword-search" in args:
+        idx = args.index("--keyword-search")
+        try:
+            keyword_search = args[idx + 1]  # leave as string!
+            del args[idx:idx + 2]
+        except (IndexError, ValueError):
+            print("❌ Error: --keyword-search requires a string value")
+            usage()
+
+
     # Get the actual user query (the remaining arguments)
     query = " ".join(args)  # Combine remaining args as the query
     prefixed_query = "search_query: " + query
@@ -121,7 +134,8 @@ def parse_command_line():
         "save_docs": save_docs,
         "rerank": rerank,
         "doc_types": doc_types,  
-        "prefixed_query": prefixed_query
+        "prefixed_query": prefixed_query,
+        "keyword_search": keyword_search
     }
 
 def main():
@@ -131,15 +145,26 @@ def main():
     queryembed = rs.get_query_embedding(config["prefixed_query"])
     
     # Perform vector search
-    if(config["release"]==None):
+    release = config["release"]  # default from command line
+    if release is None:
         release = ru.extract_release_version(config["prefixed_query"])
+    top_doc_ids = None
+    if config["keyword_search"]:
+        keyword_hits = ks.keyword_search_with_stemming(config["keyword_search"])
+        top_doc_ids = [hit["full_doc_id"] for hit in keyword_hits if hit.get("full_doc_id")]
+        print("\n🧪 Keyword Search Hits:")
+        for hit in keyword_hits:
+            print(f"Doc ID: {hit['doc_id']} Metadata: {hit.get('metadata', '')}")
+
+    
     results = rs.perform_vector_search(
     queryembed,
     collection,
     release=release,
     section=config["section"], 
     n_results=config["n_results"],
-    doc_types=config["doc_types"]
+    doc_types=config["doc_types"],
+    doc_ids=top_doc_ids
 )
     print(f"Number of documents returned: {len(results['documents'][0])}")
 

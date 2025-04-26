@@ -2,8 +2,8 @@
 import json
 import chromadb
 
-
-OUTPUT_DIRECTORY="/mnt/500GB/rag_output"
+from config_loader import get_index_dir,get_output_dir
+OUTPUT_DIRECTORY=get_output_dir()
 
 # Connect to Chroma
 chroma = chromadb.HttpClient(

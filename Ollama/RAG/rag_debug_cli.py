@@ -1,4 +1,8 @@
 import argparse
+from config_loader import get_index_dir,get_output_dir
+
+OUTPUT_DIRECTORY=get_output_dir()
+
 from rag_search import (
     get_query_embedding,
     load_collection,
@@ -19,7 +23,7 @@ def main():
     parser.add_argument("--rerank", action="store_true", help="Enable reranking")
     parser.add_argument("--limit", type=int, default=200, help="Number of documents to compare")
     parser.add_argument("--use-embed-file", action="store_true", help="Use saved embedding")
-    parser.add_argument("--embed-file", type=str, default="/mnt/500GB/rag_output/query_embedding.json", help="Path to saved embedding")
+    parser.add_argument("--embed-file", type=str, default=f"{OUTPUT_DIRECTORY}query_embedding.json", help="Path to saved embedding")
 
     args = parser.parse_args()
 

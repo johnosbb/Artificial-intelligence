@@ -20,7 +20,7 @@ def main():
         if show_summaries_only:
             results = collection.get(where={"is_summary": {"$eq": True}}, limit=50)
         else:
-            results = collection.get(limit=50)
+            results = collection.get(limit=8000)
 
 
         if not results["documents"]:

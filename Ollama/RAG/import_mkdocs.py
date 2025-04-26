@@ -5,19 +5,32 @@ import re
 import chromadb
 import ollama
 from utilities import readtext, getconfig
-# from mattsollamatools import chunk_text_by_sentences
 import nltk
 import rag_utilities as ru
+import keyword_search as ks
+from whoosh.index import create_in, open_dir
+from whoosh.fields import Schema, TEXT, ID
+import os
+from config_loader import get_index_dir,get_document_folder_path,get_output_dir
+
+OUTPUT_DIRECTORY=get_output_dir()
+INDEX_DIR = get_index_dir()
+DOCUMENT_FOLDER_PATH = get_document_folder_path()
+
 
 nltk.download('punkt_tab')
 
 collectionname = "buildragwithpython"
-document_folder_path="/mnt/500GB/docs"
+
 # ------------------ Config & Globals ------------------
 
 embedmodel = getconfig()["embedmodel"]
 mainmodel = getconfig()["mainmodel"]
 allowed_extensions = [".md", ".txt", ".html", ".py", ".c", ".h"]
+
+
+
+
 
 # ------------------ Arg Parsing ------------------
 
@@ -38,9 +51,10 @@ def setup_collection(delete_existing=False):
     try:
         collection = chroma.get_collection(collectionname)
         if delete_existing:
-            print(f"🗑️  Deleting existing collection '{collectionname}'...")
+            print(f"🗑️  Deleting existing collection and keyword index'{collectionname}'...")
             chroma.delete_collection(collectionname)
             collection = chroma.get_or_create_collection(name=collectionname, metadata={"hnsw:space": "cosine"})
+            ks.delete_existing_index()
         else:
             print(f"📚 Using existing collection '{collectionname}'")
     except Exception:
@@ -127,7 +141,8 @@ def index_chunks(text, full_path, doc_type, collection):
             "source": full_path,
             "doctype": doc_type_clean,
             "source_label": f"{source_label}, chunk {index}",
-            "chunking_strategy": chunking_strategy  # Add the chunking strategy to metadata
+            "chunking_strategy": chunking_strategy,
+            "full_doc_id": f"{full_path}_{source_label.replace(', ', '_').replace(' ', '_')}_chunk{index}"  # <-- 🔥 Added full_doc_id here
         }
 
         if release_version:
@@ -148,6 +163,8 @@ def index_chunks(text, full_path, doc_type, collection):
             metadatas=metadata
         )
         print(".", end="", flush=True)
+        metadata["full_doc_id"] = f"{metadata['source']}_{metadata['source_label'].replace(', ', '_').replace(' ', '_')}"
+        ks.index_keyword_chunk(doc_id, chunk, metadata)
 
 
 
@@ -187,7 +204,7 @@ def main():
     processed_files, skipped_files = [], []
     starttime = time.time()
 
-    for root, dirs, files in os.walk(document_folder_path):
+    for root, dirs, files in os.walk(DOCUMENT_FOLDER_PATH):
         for file in files:
             full_path = os.path.join(root, file)
             if not any(file.lower().endswith(ext) for ext in allowed_extensions):
@@ -197,9 +214,9 @@ def main():
             process_document(full_path, collection, flags, processed_files, skipped_files)
 
     # Save logs
-    with open("processed.txt", "w") as f:
+    with open(f"{OUTPUT_DIRECTORY}/processed.txt", "w") as f:
         f.writelines(p + "\n" for p in processed_files)
-    with open("skipped.txt", "w") as f:
+    with open(f"{OUTPUT_DIRECTORY}/skipped.txt", "w") as f:
         f.writelines(s + "\n" for s in skipped_files)
 
     print(f"\n✅ Done! Processed {len(processed_files)} files in {time.time() - starttime:.2f} seconds.")
