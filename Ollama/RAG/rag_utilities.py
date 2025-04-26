@@ -207,3 +207,27 @@ def classify_doc_type(filename, text):
     # Default fallback
     print("[match] Defaulted to 'Technical Documents'")
     return "Technical Documents"
+
+
+def classify_code_component(file_path):
+    """
+    Try to classify code component based on file path or filename.
+    E.g., detect 'driver', 'api', 'service', 'utility', etc.
+    """
+    file_path = file_path.lower()
+
+    if "driver" in file_path:
+        return "driver"
+    if "api" in file_path:
+        return "api"
+    if "service" in file_path:
+        return "service"
+    if "util" in file_path or "utils" in file_path:
+        return "utility"
+    if "test" in file_path:
+        return "test"
+    if "core" in file_path:
+        return "core module"
+    
+    # fallback
+    return "miscellaneous"

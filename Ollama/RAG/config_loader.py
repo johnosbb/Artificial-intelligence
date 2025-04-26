@@ -17,7 +17,7 @@ def get_document_folder_path():
     return _config["DOCUMENT_FOLDER_PATH"]
 
 def get_output_dir():
-    return _config["OUTPUT_DIR"]
+    return _config["OUTPUT_DIRECTORY"]
 
 
 def get(key, default=None):
