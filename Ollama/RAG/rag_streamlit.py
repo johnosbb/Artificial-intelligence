@@ -22,17 +22,26 @@ all_doc_types = [
 def process_query(query, release, section, n_results, save_docs, rerank, doc_types, keyword_search_string):
     collection = rs.load_collection()
 
-    # Prefix query as done in CLI tool
+    # Prefix query
     prefixed_query = "search_query: " + query
 
-    # Get query embedding
+    # Embedding
     query_embed = rs.get_query_embedding(prefixed_query)
 
     top_doc_ids = None
+
+    # If user entered manual keywords, use them
     if keyword_search_string:
-        keyword_hits = ks.keyword_search_with_stemming(keyword_search_string)
+        keyword_string_to_use = keyword_search_string
+    else:
+        # Otherwise extract keywords automatically from query
+        extracted_keywords = ru.extract_keywords(query)
+        keyword_string_to_use = " ".join(extracted_keywords)
+
+    if keyword_string_to_use:
+        keyword_hits = ks.keyword_search_with_stemming(keyword_string_to_use)
         top_doc_ids = [hit["full_doc_id"] for hit in keyword_hits if hit.get("full_doc_id")]
-        st.info(f"🔍 Found {len(top_doc_ids)} documents matching keyword search.")
+        st.info(f"🔍 Found {len(top_doc_ids)} documents matching keywords: {keyword_string_to_use}")
 
         if not top_doc_ids:
             return "⚠️ No documents matched the keyword search. Abandoning search."

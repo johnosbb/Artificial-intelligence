@@ -149,12 +149,24 @@ def main():
     if release is None:
         release = ru.extract_release_version(config["prefixed_query"])
     top_doc_ids = None
-    if config["keyword_search"]:
-        keyword_hits = ks.keyword_search_with_stemming(config["keyword_search"])
+    keyword_string_to_use = config["keyword_search"]
+
+    if not keyword_string_to_use:
+        # If no keyword-search explicitly provided, extract automatically
+        extracted_keywords = ru.extract_keywords(config["query"])
+        keyword_string_to_use = " ".join(extracted_keywords)
+        print(f"🔎 Automatically extracted keywords: {keyword_string_to_use}")
+
+    if keyword_string_to_use:
+        keyword_hits = ks.keyword_search_with_stemming(keyword_string_to_use)
         top_doc_ids = [hit["full_doc_id"] for hit in keyword_hits if hit.get("full_doc_id")]
-        print("\n🧪 Keyword Search Hits:")
-        for hit in keyword_hits:
-            print(f"Doc ID: {hit['doc_id']} Metadata: {hit.get('metadata', '')}")
+
+        if keyword_hits:
+            print("\n🧪 Keyword Search Hits:")
+            for hit in keyword_hits:
+                print(f"Doc ID: {hit['doc_id']} Metadata: {hit.get('metadata', '')}")
+        else:
+            print("\n⚠️ No keyword search hits.")
 
     
     results = rs.perform_vector_search(

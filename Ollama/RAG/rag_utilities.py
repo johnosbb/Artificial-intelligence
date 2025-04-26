@@ -1,6 +1,14 @@
 import re
 from nltk.tokenize import sent_tokenize, word_tokenize
 from typing import List
+from nltk.corpus import stopwords
+
+
+def extract_keywords(text):
+    stop_words = set(stopwords.words('english'))
+    words = re.findall(r'\b\w+\b', text.lower())  # extract words
+    keywords = [word for word in words if word not in stop_words and len(word) > 2]
+    return keywords
 
 
 def extract_release_version(text):
