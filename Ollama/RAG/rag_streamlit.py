@@ -24,14 +24,8 @@ def process_query(query, release, section, n_results, save_docs, rerank, doc_typ
     query_embed = rs.get_query_embedding(query)
 
     top_doc_ids = None
-    if not keyword_search_string:
-        extracted_keywords = extract_keywords(query)
-        keyword_search_string = " ".join(extracted_keywords)
-        st.info(f"🔎 Using automatically extracted keywords: {', '.join(extracted_keywords)}")
-    else:
-        st.info(f"🔎 Using manually provided keywords: {keyword_search_string}")
-
     if keyword_search_string:
+        st.info(f"🔎 Using keywords for keyword search: {keyword_search_string}")
         keyword_hits = ks.keyword_search_with_stemming(keyword_search_string)
         top_doc_ids = [hit["full_doc_id"] for hit in keyword_hits if hit.get("full_doc_id")]
 
@@ -86,7 +80,9 @@ def process_query(query, release, section, n_results, save_docs, rerank, doc_typ
 st.title("MkDocs Search Application")
 
 query = st.text_input("🔍 Enter your question:")
-keyword_search_string = st.text_input("🧹 Optional keyword search string (advanced):")
+
+auto_generate_keywords = st.checkbox("✨ Automatically generate keywords from query")
+manual_keywords = st.text_input("🔑 Or provide specific keywords (comma-separated):")
 
 selected_doc_types = st.multiselect(
     "Select document types to include:",
@@ -96,7 +92,6 @@ selected_doc_types = st.multiselect(
 
 release = st.selectbox("📦 Filter by release version (optional):", release_versions)
 section = st.selectbox("📑 Filter by section (optional):", sections)
-
 n_results = st.slider("📄 Number of results to retrieve:", 1, 20, 5)
 rerank = st.checkbox("🔁 Rerank with bge-reranker-large", value=True)
 save_docs = st.checkbox("💾 Save retrieved documents")
@@ -107,6 +102,13 @@ if st.button("Ask"):
     else:
         with st.spinner("Thinking..."):
             try:
+                keyword_string = None
+                if manual_keywords.strip():
+                    keyword_string = manual_keywords
+                elif auto_generate_keywords:
+                    extracted = ru.extract_keywords(query)
+                    keyword_string = " ".join(extracted)
+
                 answer = process_query(
                     query,
                     release if release else None,
@@ -115,9 +117,10 @@ if st.button("Ask"):
                     save_docs,
                     rerank,
                     selected_doc_types,
-                    keyword_search_string.strip() if keyword_search_string else None
+                    keyword_search_string=keyword_string
                 )
                 st.success("✅ Answer:")
                 st.write(answer)
             except Exception as e:
                 st.error(f"An error occurred: {e}")
+
