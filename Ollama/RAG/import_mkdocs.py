@@ -109,9 +109,11 @@ def index_chunks(text, full_path, doc_type, collection):
 
 
     relative_path = os.path.relpath(full_path, DOCUMENT_FOLDER_PATH)
-    url_path = relative_path.replace("\\", "/")  # Windows compatibility
-    url_path = url_path.replace(".md", "").replace(".txt", "").replace(".html", "")  # Remove extension for clean URL
+    url_path = relative_path.replace("\\", "/")  # normalize Windows paths
+    url_path = re.sub(r'\.md$|\.txt$|\.html$', '', url_path)  # clean extension
+    url_path = url_path.rstrip('}/')  # remove trailing } or /
     full_url = f"http://10.211.129.241:8000/{url_path}/"
+
 
     # Try to extract relevant section from release notes
     if doc_type_clean == "release notes":
