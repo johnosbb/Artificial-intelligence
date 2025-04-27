@@ -72,8 +72,10 @@ def process_query(query, release, section, n_results, save_docs, rerank, doc_typ
     if save_docs:
         rs.save_documents(relevant_docs, metadatas, query)
 
-    model_query = rs.build_prompt(getconfig()["mainmodel"], docs, query)
     st.text_area("📄 Model Query Sent to Model", model_query, height=300)
+
+    st.markdown("### 🔗 Retrieved Documents:")
+    st.markdown(docs, unsafe_allow_html=True)
 
     stream = ollama.generate(model=getconfig()["mainmodel"], prompt=model_query, stream=True)
 
