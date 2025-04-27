@@ -107,6 +107,12 @@ def index_chunks(text, full_path, doc_type, collection):
     section_text = text
     chunking_strategy = None  # Add a variable to track the chunking strategy
 
+
+    relative_path = os.path.relpath(full_path, DOCUMENT_FOLDER_PATH)
+    url_path = relative_path.replace("\\", "/")  # Windows compatibility
+    url_path = url_path.replace(".md", "").replace(".txt", "").replace(".html", "")  # Remove extension for clean URL
+    full_url = f"http://10.211.129.241:8000/{url_path}/"
+
     # Try to extract relevant section from release notes
     if doc_type_clean == "release notes":
         release_version = ru.extract_release_version(text)
@@ -142,7 +148,8 @@ def index_chunks(text, full_path, doc_type, collection):
             "doctype": doc_type_clean,
             "source_label": f"{source_label}, chunk {index}",
             "chunking_strategy": chunking_strategy,
-            "full_doc_id": full_doc_id
+            "full_doc_id": full_doc_id,
+            "url": full_url
         }
 
         if release_version:

@@ -56,9 +56,11 @@ def process_query(query, release, section, n_results, save_docs, rerank, doc_typ
         relevant_docs, metadatas = rs.rerank_results(query, relevant_docs, metadatas)
 
     docs = "\n\n".join(
-        f"[Doc {i+1}] (release: {meta.get('release', '?')}, section: {meta.get('section', '?')})\n{doc}"
+        f"[Doc {i+1}] (release: {meta.get('release', '?')}, section: {meta.get('section', '?')}) "
+        f"[View Document]({meta.get('url', '#')})\n{doc}"
         for i, (doc, meta) in enumerate(zip(relevant_docs, metadatas))
     )
+
 
     if save_docs:
         rs.save_documents(relevant_docs, metadatas, query)
