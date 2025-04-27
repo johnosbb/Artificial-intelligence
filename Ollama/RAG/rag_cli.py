@@ -33,6 +33,8 @@ Options:
   --release <version>       Filter to a specific release version (e.g., 1.4.0)
   --section <name>          Filter to a specific section (e.g., "new functionality")
   --n-results <number>      Number of documents to retrieve (default: 5)
+  --keyword-search <string> Manually specify keywords for search
+  --auto-keywords           Automatically extract keywords from query
   --help                    Show this help message and exit
 
 Examples:
@@ -43,7 +45,7 @@ Examples:
     sys.exit(0)
 
 def parse_command_line():
-    # Initialize the config variables
+    # Initialize config variables
     save_docs = False
     rerank = False
     n_results = 5  # Default number of results
@@ -51,25 +53,20 @@ def parse_command_line():
     section_filter = None
     doc_types = []
     keyword_search = None
+    auto_generate_keywords = False
 
-
-    # Parse arguments
     args = sys.argv[1:]
 
-    # Flags for --save-docs and --rerank
     save_docs = "--save-docs" in args
     rerank = "--rerank" in args
 
-    # If --help flag is present, show usage
     if "--help" in args:
         usage()
 
-    # Clean up known flags
     for flag in ["--save-docs", "--rerank", "--help"]:
         if flag in args:
             args.remove(flag)
 
-    # Parse --doctype flag
     if "--doctype" in args:
         idx = args.index("--doctype")
         try:
@@ -80,7 +77,6 @@ def parse_command_line():
             print("❌ Error: --doctype requires a comma-separated list of types")
             usage()
 
-    # Parse --release flag
     if "--release" in args:
         idx = args.index("--release")
         try:
@@ -90,7 +86,6 @@ def parse_command_line():
             print("❌ Error: --release requires a value (e.g., 1.4.0)")
             usage()
 
-    # Parse --section flag
     if "--section" in args:
         idx = args.index("--section")
         try:
@@ -100,7 +95,6 @@ def parse_command_line():
             print("❌ Error: --section requires a value (e.g., \"new functionality\")")
             usage()
 
-    # Parse --n-results flag
     if "--n-results" in args:
         idx = args.index("--n-results")
         try:
@@ -110,22 +104,22 @@ def parse_command_line():
             print("❌ Error: --n-results requires a numeric value")
             usage()
 
-    # Parse --keyword-search
     if "--keyword-search" in args:
         idx = args.index("--keyword-search")
         try:
-            keyword_search = args[idx + 1]  # leave as string!
+            keyword_search = args[idx + 1]
             del args[idx:idx + 2]
         except (IndexError, ValueError):
             print("❌ Error: --keyword-search requires a string value")
             usage()
 
+    auto_generate_keywords = "--auto-keywords" in args
+    if auto_generate_keywords:
+        args.remove("--auto-keywords")
 
-    # Get the actual user query (the remaining arguments)
-    query = " ".join(args)  # Combine remaining args as the query
+    query = " ".join(args)
     prefixed_query = "search_query: " + query
 
-    # Return the config dictionary
     return {
         "query": query,
         "release": release_filter,
@@ -133,9 +127,10 @@ def parse_command_line():
         "n_results": n_results,
         "save_docs": save_docs,
         "rerank": rerank,
-        "doc_types": doc_types,  
+        "doc_types": doc_types,
         "prefixed_query": prefixed_query,
-        "keyword_search": keyword_search
+        "keyword_search": keyword_search,
+        "auto_generate_keywords": auto_generate_keywords
     }
 
 def main():
@@ -143,19 +138,23 @@ def main():
     collection = rs.load_collection()
     print("Checking Embeddings.")
     queryembed = rs.get_query_embedding(config["prefixed_query"])
-    
-    # Perform vector search
-    release = config["release"]  # default from command line
+
+    release = config["release"]
     if release is None:
         release = ru.extract_release_version(config["prefixed_query"])
-    top_doc_ids = None
-    keyword_string_to_use = config["keyword_search"]
 
-    if not keyword_string_to_use:
-        # If no keyword-search explicitly provided, extract automatically
+    top_doc_ids = None
+    keyword_string_to_use = None
+
+    if config["keyword_search"]:
+        keyword_string_to_use = config["keyword_search"]
+        print(f"\n🔑 Using manually specified keywords: {keyword_string_to_use}")
+    elif config["auto_generate_keywords"]:
         extracted_keywords = ru.extract_keywords(config["query"])
         keyword_string_to_use = " ".join(extracted_keywords)
-        print(f"🔎 Automatically extracted keywords: {keyword_string_to_use}")
+        print(f"\n✨ Auto-generated keywords from query: {', '.join(extracted_keywords)}")
+    else:
+        print("\n🚫 No keyword search will be performed (vector search only).")
 
     if keyword_string_to_use:
         keyword_hits = ks.keyword_search_with_stemming(keyword_string_to_use)
@@ -168,54 +167,51 @@ def main():
         else:
             print("\n⚠️ No keyword search hits.")
 
-    
     results = rs.perform_vector_search(
-    queryembed,
-    collection,
-    release=release,
-    section=config["section"], 
-    n_results=config["n_results"],
-    doc_types=config["doc_types"],
-    doc_ids=top_doc_ids
-)
+        queryembed,
+        collection,
+        release=release,
+        section=config["section"],
+        n_results=config["n_results"],
+        doc_types=config["doc_types"],
+        doc_ids=top_doc_ids
+    )
     print(f"Number of documents returned: {len(results['documents'][0])}")
 
     relevantdocs = results["documents"][0]
-    # Check if relevantdocs is empty
     if not relevantdocs:
         print("⚠️ No relevant documents found. Abandoning search.")
-        exit(0)  # Exit the function early or handle accordingly
+        exit(0)
 
     metadatas = results["metadatas"][0]
     distances = results["distances"][0]
 
-    # Save similarity scores to file
     if DEBUGGING:
         ru.log_vector_scores(config["query"], relevantdocs, metadatas, distances)
 
     if config["save_docs"]:
         rs.save_documents(relevantdocs, metadatas, config["query"])
 
-    # If reranking is enabled, rerank the documents
     if config["rerank"]:
         print("\n🔄 Reranking documents with bge-reranker-large...")
         relevantdocs, metadatas = rs.rerank_results(config["query"], relevantdocs, metadatas)
 
-    # Combine documents into a prompt
     docs = "\n\n".join(
         f"[Doc {i+1}] (release: {meta.get('release', '?')}, section: {meta.get('section', '?')})\n{doc}"
         for i, (doc, meta) in enumerate(zip(relevantdocs, metadatas))
     )
 
     modelquery = rs.build_prompt(getconfig()["mainmodel"], docs, config["query"])
-    print(f"Prompt: {modelquery}\n")
+    print(f"\nPrompt: {modelquery}\n")
+
     print("Sending Prompt to Model.")
-    
-    # Stream the answer from the model
+
     stream = ollama.generate(model=getconfig()["mainmodel"], prompt=modelquery, stream=True)
 
     for chunk in stream:
-        if chunk["response"]:
+        if chunk.get("done"):  # if your API uses a 'done' field
+            break
+        if chunk.get("response"):
             print(chunk["response"], end="", flush=True)
 
 

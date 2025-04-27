@@ -105,9 +105,11 @@ if st.button("Ask"):
                 keyword_string = None
                 if manual_keywords.strip():
                     keyword_string = manual_keywords
+                    st.info(f"🔑 Using manually provided keywords: {keyword_string}")
                 elif auto_generate_keywords:
                     extracted = ru.extract_keywords(query)
                     keyword_string = " ".join(extracted)
+                    st.info(f"✨ Auto-generated keywords from query: {', '.join(extracted)}")
 
                 answer = process_query(
                     query,
@@ -123,4 +125,5 @@ if st.button("Ask"):
                 st.write(answer)
             except Exception as e:
                 st.error(f"An error occurred: {e}")
+
 
