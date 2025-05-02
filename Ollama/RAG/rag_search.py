@@ -8,6 +8,7 @@ from datetime import datetime
 import json
 import os
 from config_loader import get_index_dir,get_output_dir
+from prompt_builder.factory import get_prompt_builder
 
 OUTPUT_DIRECTORY=get_output_dir()
 # Reranking model
@@ -110,44 +111,15 @@ def rerank_results(query, documents, metadatas):
     reranked_metas = [meta for _, meta, _ in reranked]
     return reranked_docs, reranked_metas
 
-def build_prompt(model_id, docs, query):
-    # Check for summary intent (simple keyword check, could be replaced with NLP classifier later)
-    is_summary_request = "summarise" in query.lower() or "summarize" in query.lower()
-
-    # Use tailored prompt for summary requests
-    if is_summary_request:
-        if "internlm2" in model_id:
-            return (
-                "<|im_start|>system\n"
-                "You are a helpful assistant. ONLY use the provided documents to summarise the user's requested release. "
-                "Provide a bullet-point list of the top 10 most important changes. If the answer is not in the documents, say so.\n"
-                "<|im_end|>\n"
-                "<|im_start|>user\n"
-                "=== DOCUMENTS ===\n"
-                f"{docs}\n\n"
-                "=== QUESTION ===\n"
-                f"{query}\n"
-                "<|im_end|>\n"
-                "<|im_start|>assistant\n"
-                "- "
-            )
-        else:
-            return (
-                "Use the following technical documents to provide a summary of the requested release.\n"
-                "Return 10 bullet points of the most important changes only from that release.\n\n"
-                f"DOCS:\n{docs}\n\n"
-                f"QUESTION:\n{query}\n\n"
-                "ANSWER:\n- "
-            )
-
-    # Non-summary queries
-    return (
-        "You are a helpful assistant. Here are some technical documents followed by a question. Please answer it accurately.\n\n"
-        f"DOCS:\n{docs}\n\n"
-        f"QUESTION:\n{query}\n\n"
-        f"ANSWER:"
+def build_prompt(model_id, docs, query,chat_history=None ):
+    prompt_builder = get_prompt_builder(model_id)
+    prompt = prompt_builder.build_prompt(
+        model_id=model_id,
+        docs=docs,             # your combined top retrieved documents
+        query=query,           # user's question
+        chat_history=chat_history      # optional for chat-based models
     )
-
+    return prompt
 
 # In rag_search.py, ensure that functions return outputs that can be easily displayed.
 # this is required for the streamlit version

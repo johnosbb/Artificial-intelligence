@@ -3,6 +3,7 @@ import rag_search as rs
 import rag_utilities as ru
 import keyword_search as ks
 from utilities import getconfig
+from prompt_builder.factory import get_prompt_builder
 import ollama
 
 # Predefined dropdown options
@@ -71,8 +72,9 @@ def process_query(query, release, section, n_results, save_docs, rerank, doc_typ
 
     if save_docs:
         rs.save_documents(relevant_docs, metadatas, query)
-
-    model_query = rs.build_prompt(getconfig()["mainmodel"], docs, query)
+    prompt_builder = get_prompt_builder(model_id)
+    #model_query = rs.build_prompt(getconfig()["mainmodel"], docs, query)
+    model_query = prompt_builder.build_prompt(model_id=model_id,docs=docs,query=query,chat_history=None )
     st.text_area("📄 Model Query Sent to Model", model_query, height=300)
     st.markdown("### 🔗 Retrieved Documents:")
     st.markdown(docs, unsafe_allow_html=True)

@@ -201,7 +201,7 @@ def main():
         for i, (doc, meta) in enumerate(zip(relevantdocs, metadatas))
     )
 
-    modelquery = rs.build_prompt(getconfig()["mainmodel"], docs, config["query"])
+    modelquery = rs.build_prompt(getconfig()["mainmodel"], docs, config["query"],None)
     print(f"\nPrompt: {modelquery}\n")
 
     print("Sending Prompt to Model.")

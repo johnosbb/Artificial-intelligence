@@ -22,23 +22,8 @@ all_doc_types = [
     "Detailed Product Specifications"
 ]
 
-# --- Prompt Builder with History ---
-def build_prompt_with_history(model, docs, query, chat_history):
-    history_str = ""
-    for turn in chat_history:
-        role = turn["role"]
-        content = turn["content"]
-        history_str += f"{role.upper()}: {content}\n"
 
-    return f"""You are an expert assistant helping with software documentation.
 
-Relevant documents:
-{docs}
-
-Conversation history:
-{history_str}
-USER: {query}
-ASSISTANT:"""
 
 # --- Main Query Processing Function ---
 def process_query(query, release, section, n_results, save_docs, rerank, doc_types, keyword_search_string=None):
@@ -93,7 +78,7 @@ def process_query(query, release, section, n_results, save_docs, rerank, doc_typ
     if save_docs:
         rs.save_documents(relevant_docs, metadatas, query)
 
-    model_query = build_prompt_with_history(getconfig()["mainmodel"], docs, query, st.session_state.chat_history)
+    model_query = rs.build_prompt(getconfig()["mainmodel"], docs, query, st.session_state.chat_history)
     st.text_area("📄 Model Query Sent to Model", model_query, height=300)
     st.markdown("### 🔗 Retrieved Documents:")
     st.markdown(docs, unsafe_allow_html=True)
