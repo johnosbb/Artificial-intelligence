@@ -16,7 +16,8 @@ all_doc_types = [
     "Feature Description Documents",
     "Technical Documents",
     "Performance Analysis Documents",
-    "Detailed Product Specifications"
+    "Detailed Product Specifications",
+    "Stage Gate Reviews"
 ]
 
 # Function to process the query
@@ -68,7 +69,7 @@ def process_query(query, release, section, n_results, save_docs, rerank, doc_typ
         docs_list.append(doc_entry)
 
     docs = "\n\n".join(docs_list)
-
+    model_id= getconfig()["mainmodel"]
 
     if save_docs:
         rs.save_documents(relevant_docs, metadatas, query)

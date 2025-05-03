@@ -200,13 +200,13 @@ def main():
         f"[Doc {i+1}] (release: {meta.get('release', '?')}, section: {meta.get('section', '?')})\n{doc}"
         for i, (doc, meta) in enumerate(zip(relevantdocs, metadatas))
     )
-
-    modelquery = rs.build_prompt(getconfig()["mainmodel"], docs, config["query"],None)
+    model_id = getconfig()["mainmodel"]
+    modelquery = rs.build_prompt( model_id, docs, config["query"],None)
     print(f"\nPrompt: {modelquery}\n")
 
-    print("Sending Prompt to Model.")
+    print(f"Sending Prompt to Model: {model_id}.")
 
-    stream = ollama.generate(model=getconfig()["mainmodel"], prompt=modelquery, stream=True)
+    stream = ollama.generate(model= model_id, prompt=modelquery, stream=True)
 
     for chunk in stream:
         if chunk.get("done"):  # if your API uses a 'done' field

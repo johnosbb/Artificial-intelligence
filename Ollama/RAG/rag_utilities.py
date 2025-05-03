@@ -197,6 +197,7 @@ DOC_TYPE_LABELS = {
     "technical": "Technical Documents",
     "performance analysis": "Performance Analysis Documents",
     "detailed product specification": "Detailed Product Specifications",
+    "stage gate review" : "Stage Gate Reviews"
 }
 
 def classify_doc_type(filename, text):

@@ -19,7 +19,8 @@ all_doc_types = [
     "Feature Description Documents",
     "Technical Documents",
     "Performance Analysis Documents",
-    "Detailed Product Specifications"
+    "Detailed Product Specifications",
+    "Stage Gate Reviews"
 ]
 
 
@@ -74,16 +75,16 @@ def process_query(query, release, section, n_results, save_docs, rerank, doc_typ
         docs_list.append(doc_entry)
 
     docs = "\n\n".join(docs_list)
-
+    model_id= getconfig()["mainmodel"]
     if save_docs:
         rs.save_documents(relevant_docs, metadatas, query)
 
-    model_query = rs.build_prompt(getconfig()["mainmodel"], docs, query, st.session_state.chat_history)
+    model_query = rs.build_prompt(model_id, docs, query, st.session_state.chat_history)
     st.text_area("📄 Model Query Sent to Model", model_query, height=300)
     st.markdown("### 🔗 Retrieved Documents:")
     st.markdown(docs, unsafe_allow_html=True)
 
-    stream = ollama.generate(model=getconfig()["mainmodel"], prompt=model_query, stream=True)
+    stream = ollama.generate(model=model_id, prompt=model_query, stream=True)
 
     answer = ""
     for chunk in stream:
