@@ -2,12 +2,9 @@
 
 import sys
 from datetime import datetime
-#import rag_search as rs
 from rag_search_class import RAGSearch
-#from utilities import getconfig
-#import rag_utilities as ru
 from rag_utilities_class import TextProcessingUtilities
-import keyword_search as ks
+import keyword_search_class as ks
 import ollama
 from pprint import pprint
 

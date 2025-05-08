@@ -10,7 +10,7 @@ import nltk
 
 from rag_utilities_class import TextProcessingUtilities
 from keyword_search_class import KeywordSearchEngine
-from config_loader import ConfigLoader
+from config_loader_class import ConfigLoader
 
 class DataIngestionPipeline:
     def __init__(self):
@@ -25,8 +25,8 @@ class DataIngestionPipeline:
         self.allowed_extensions = [".md", ".txt", ".html", ".py", ".c", ".h"]
         try:
             nltk.data.find('tokenizers/punkt')
-        except nltk.downloader.DownloadError:
-            nltk.download('punkt_tab')
+        except LookupError:
+            nltk.download('punkt')
 
     def parse_args(self):
         return {
