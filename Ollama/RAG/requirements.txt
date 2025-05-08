@@ -1,0 +1,9 @@
+beautifulsoup4==4.13.4
+chromadb==1.0.6
+nltk==3.9.1
+numpy==2.2.5
+ollama==0.4.8
+python_magic==0.4.27
+Requests==2.32.3
+sentence_transformers==4.1.0
+streamlit==1.44.1

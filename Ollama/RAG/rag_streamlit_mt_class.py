@@ -4,7 +4,7 @@ import streamlit as st
 from rag_search_class import RAGSearch
 from rag_utilities_class import TextProcessingUtilities
 from keyword_search_class import KeywordSearchEngine
-from .document_types import ALL_DOC_TYPES
+from document_types import ALL_DOC_TYPES
 # import keyword_search as ks
 #from utilities import getconfig
 import ollama
@@ -47,10 +47,10 @@ class MkDocsRAGChatAssistant:
         self.save_docs = st.checkbox("💾 Save retrieved documents")
 
     # --- Main Query Processing Function ---
-    def process_query(self, query, release, section, n_results, save_docs, rerank, doc_types, keyword_search_string=None):
+    def process_query(self, query, ru, release, section, n_results, save_docs, rerank, doc_types, keyword_search_string=None):
         rs = RAGSearch()
         collection = rs.load_collection()
-        query_embed = rs.get_query_embedding(query)
+        query_embed = rs.get_query_embedding(query,ru)
 
         top_doc_ids = None
         if keyword_search_string:
@@ -97,7 +97,7 @@ class MkDocsRAGChatAssistant:
             docs_list.append(doc_entry)
 
         docs = "\n\n".join(docs_list)
-        model_id = getconfig()["mainmodel"]
+        model_id = ru.get_config()["mainmodel"]
         if save_docs:
             rs.save_documents(relevant_docs, metadatas, query)
 
@@ -123,7 +123,7 @@ class MkDocsRAGChatAssistant:
             else:
                 st.markdown(f"**🤖 Assistant**: {turn['content']}")
 
-    def run(self):
+    def run(self,ru):
         if st.button("Ask"):
             if not self.query.strip():
                 st.warning("Please enter a question before submitting.")
@@ -145,6 +145,7 @@ class MkDocsRAGChatAssistant:
 
                         answer = self.process_query(
                             self.query,
+                            ru,
                             self.release if self.release else None,
                             self.section if self.section else None,
                             self.n_results,
@@ -165,5 +166,6 @@ class MkDocsRAGChatAssistant:
         self.display_chat_history()
 
 if __name__ == "__main__":
+    ru =  TextProcessingUtilities()
     app = MkDocsRAGChatAssistant()
-    app.run()
+    app.run(ru)

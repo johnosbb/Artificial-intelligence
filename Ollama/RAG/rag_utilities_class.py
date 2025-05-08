@@ -6,7 +6,7 @@ import configparser
 from bs4 import BeautifulSoup
 from urllib.parse import urlparse, unquote
 import magic
-from .document_types import DOC_TYPE_LABELS
+from document_types import DOC_TYPE_LABELS
 
 
 class TextProcessingUtilities:

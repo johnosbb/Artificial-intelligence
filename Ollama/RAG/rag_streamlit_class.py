@@ -7,7 +7,7 @@ from keyword_search_class import KeywordSearchEngine
 from utilities import getconfig
 from prompt_builder.factory import get_prompt_builder
 import ollama
-from .document_types import ALL_DOC_TYPES
+from document_types import ALL_DOC_TYPES
 
 class MkDocsSearchApp:
     def __init__(self,ru):
@@ -33,7 +33,7 @@ class MkDocsSearchApp:
     def process_query(self,ru,query, release, section, n_results, save_docs, rerank, doc_types, keyword_search_string=None):
         rs = RAGSearch()
         collection = rs.load_collection()
-        query_embed = rs.get_query_embedding(query)
+        query_embed = rs.get_query_embedding(query,ru)
 
         top_doc_ids = None
         if keyword_search_string:

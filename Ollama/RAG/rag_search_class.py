@@ -7,7 +7,7 @@ from rag_utilities_class import TextProcessingUtilities
 from datetime import datetime
 import json
 import os
-from config_loader import ConfigLoader
+from config_loader_class import ConfigLoader
 from prompt_builder.factory import get_prompt_builder
 import sys  # Import the sys module
 

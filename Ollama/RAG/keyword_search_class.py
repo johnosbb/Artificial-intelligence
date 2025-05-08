@@ -4,7 +4,7 @@ from whoosh.analysis import StemmingAnalyzer
 from whoosh.fields import Schema, TEXT, ID
 from whoosh.qparser import QueryParser
 import shutil
-from config_loader import ConfigLoader
+from config_loader_class import ConfigLoader
 
 class KeywordSearchEngine:
     def __init__(self):
