@@ -1,0 +1,8 @@
+#!/bin/sh
+#/etc/init.d/S99network_fixup
+echo "FIXUP: Fixing Ethernet configuration..."
+echo "[S99network_fixup] Restoring default route for wlan0" >> /var/log/fixroute.log
+echo -e "nameserver 8.8.8.8\nnameserver 1.1.1.1" > /etc/resolv.conf
+ip route del default 2>/dev/null
+ip route add default via 192.168.1.254 dev wlan0
+ip route >> /var/log/fixroute.log

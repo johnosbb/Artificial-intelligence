@@ -1,0 +1,10 @@
+auto lo
+iface lo inet loopback
+
+# eth0 is configured manually by script if link is detected
+iface eth0 inet static
+    address 192.168.1.202
+    netmask 255.255.255.0
+
+# wlan0 is configured manually via init script as well
+iface wlan0 inet manual

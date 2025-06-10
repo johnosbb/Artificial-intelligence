@@ -1,0 +1,86 @@
+#!/bin/sh
+# /etc/init.d/S40network
+LOG_FILE="/tmp/S40network.log"
+
+log() {
+    echo "[INFO] $1" | tee -a "$LOG_FILE"
+}
+
+log "=== Starting S40network ==="
+log "=== Disabling USB networking ==="
+rm  -rf /etc/init.d/S99usb0config
+
+log "=== Copying Customized files ==="
+cp /customised/resolv.conf /etc/
+cp /customised/wpa_supplicant.conf /etc/
+
+log "=== Starting S40network ==="
+log "Checking for Ethernet link..."
+sleep 5
+
+CARRIER=$(cat /sys/class/net/eth0/carrier 2>/dev/null)
+log "eth0 carrier = $CARRIER"
+
+if [ "$CARRIER" = "1" ]; then
+    log "Ethernet is connected. Using eth0."
+    ifconfig eth0 192.168.1.202 netmask 255.255.255.0 up
+    ip route del default 2>/dev/null
+    ip route add default via 192.168.1.254 dev eth0
+else
+    log "Ethernet not connected. Falling back to Wifi."
+    
+    ifconfig eth0 down
+    
+    log "Killing any existing wpa_supplicant..."
+    killall wpa_supplicant 2>/dev/null
+    
+    log "Starting wpa_supplicant with retry..."
+    MAX_RETRIES=3
+    TRY=1
+    while [ $TRY -le $MAX_RETRIES ]; do
+        log "Attempt $TRY: Starting wpa_supplicant..."
+        wpa_supplicant -B -i wlan0 -c /etc/wpa_supplicant.conf
+        sleep 5
+        
+        STATUS=$(iw wlan0 link)
+        echo "$STATUS" | tee -a "$LOG_FILE"
+        echo "$STATUS" | grep -q "Connected"
+        if [ $? -eq 0 ]; then
+            log "wpa_supplicant connected successfully."
+            break
+        else
+            log "wpa_supplicant not connected, killing and retrying..."
+            killall wpa_supplicant 2>/dev/null
+        fi
+        TRY=$((TRY + 1))
+    done
+    
+    if [ $TRY -gt $MAX_RETRIES ]; then
+        log "[ERROR] Failed to connect to Wi-Fi after $MAX_RETRIES attempts."
+        exit 1
+    fi
+    
+    log "Configuring wlan0 IP"
+    ifconfig wlan0 192.168.1.206 netmask 255.255.255.0 up
+    
+    log "Deleting existing default route if any"
+    ip route del default 2>/dev/null
+    
+    log "Setting default route for wlan0"
+    ip route add default via 192.168.1.254 dev wlan0
+    if [ $? -ne 0 ]; then
+        log "[ERROR] Failed to add default route for wlan0"
+    else
+        log "Default route set successfully"
+    fi
+    
+    log "Current route:"
+    ip route show | tee -a "$LOG_FILE"
+    
+    log "Wi-Fi setup complete"
+fi
+
+log "Writing resolv.conf"
+echo -e "nameserver 8.8.8.8\nnameserver 1.1.1.1" > /etc/resolv.conf
+
+log "S40network script complete."

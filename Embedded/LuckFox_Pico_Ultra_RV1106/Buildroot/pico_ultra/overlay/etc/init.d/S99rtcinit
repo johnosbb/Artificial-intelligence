@@ -1,0 +1,38 @@
+#!/bin/sh
+
+case $1 in
+start)
+    myIPaddress=$(ip addr show eth0 | grep "inet\b" | awk '{print $2}' | cut -d/ -f1)
+    echo $myIPaddress
+    # Wait for network
+    sleep 5
+    # Get RTC time, reformat for BusyBox
+    RTC_TIME=$(hwclock --show | sed 's/  *[0-9]\.[0-9]* seconds//' | awk '{print $3 " " $2 " " $6 " " $4}')
+    RTC_EPOCH=$(date -d "$RTC_TIME" +%s 2>/dev/null || echo "0")
+    BASELINE_EPOCH=$(date -d "2025-01-01" +%s)
+
+    if [ "$RTC_EPOCH" -lt "$BASELINE_EPOCH" ] || [ "$RTC_EPOCH" = "0" ]; then
+        echo "RTC time calibration needed"
+        # Stop ntpd to free port 123
+        killall ntpd 2>/dev/null
+        sleep 1
+        if command -v ntpdate >/dev/null 2>&1; then
+            ntpdate -b 192.168.1.1 || date -s "2025-01-01"
+        else
+            echo "ntpdate not found, setting fallback time"
+            date -s "2025-01-01"
+        fi
+        # Write to RTC
+        hwclock -w
+        # Restart ntpd
+        ntpd -g -c /etc/ntp.conf &
+    else
+        echo "RTC does not require time calibration"
+    fi
+    # Sync RTC to system time (redundant but safe)
+    hwclock --systohc
+    ;;
+*)
+    exit 1
+    ;;
+esac
