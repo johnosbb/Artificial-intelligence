@@ -1,6 +1,14 @@
 # Unlocking On-Device AI: Image Classification on the Luckfox Ultra with MobileNet
 
-The world of embedded AI is rapidly expanding, bringing powerful machine learning capabilities to compact, low-power devices. It's amazing how much intelligence we can now pack into something as small as the Luckfox Ultra. The Ultra is a cost effective highly integrated edge AI computing platform from Luckfox. In this article, we'll explore a practical example: performing image classification using a pre-trained MobileNetV1 model on this neat little device.
+The world of embedded AI is rapidly expanding, bringing powerful machine learning capabilities to compact, low-power devices. It's amazing how much intelligence we can now pack into something as small as the Luckfox Ultra. The Ultra is a cost effective highly integrated edge AI computing platform from Luckfox. It integrates ARM Cortex-A7/RISC-V MCU/NPU/ISP Processors in a single device. In this article, we'll explore a practical example: performing image classification using a pre-trained MobileNetV1 model on this neat little device.
+
+## The Luckfox Ultra Specifications
+
+- Single-core ARM Cortex-A7 32-bit core with integrated NEON and FPU
+- Built-in Rockchip self-developed 4th generation NPU, features high computing precision and supports int4, int8, and int16 hybrid quantization. The int8 computing power of RV1106G3 is 1TOPS, and RV1106G2 is 0.5TOPS
+- Built-in self-developed third-generation ISP3.2, supports 5-Megapixel, with multiple image enhancement and correction algorithms such as HDR, WDR, multi-level noise reduction, etc.
+- Features powerful encoding performance, supports intelligent encoding mode and adaptive stream saving according to the scene, saves more than 50% bit rate of the conventional CBR mode so that the images from camera are high-definition with smaller size
+- Built-in 16-bit DRAM DDR3L, which is capable of sustaining demanding memory bandwidths
 
 ## The Luckfox Ultra and MobileNet
 
@@ -58,9 +66,9 @@ ret = rknn_query(ctx, RKNN_QUERY_IN_OUT_NUM, &io_num, sizeof(io_num));
 rknn_tensor_attr input_attrs[io_num.n_input];
 rknn_tensor_attr output_attrs[io_num.n_output];
 // ... query details for each tensor ...
-This section does a couple of vital things: it initializes the RKNN context, essentially waking up the NPU and loading the .rknn model's "brain." Then, it queries the model. This is like asking the model, "Hey, what kind of data do you expect as input? And what kind of data will you give me back as output?" Understanding these input and output requirements (number of tensors, their dimensions, data types, and any quantization parameters) is super important for preparing data correctly.
-
 ```
+
+This section does a couple of vital things: it initializes the RKNN context, essentially waking up the NPU and loading the .rknn model's "brain." Then, it queries the model. This is like asking the model, "Hey, what kind of data do you expect as input? And what kind of data will you give me back as output?" Understanding these input and output requirements (number of tensors, their dimensions, data types, and any quantization parameters) is super important for preparing data correctly.
 
 ```mermaid
 graph LR
@@ -104,7 +112,7 @@ graph TD
 
 ### Data Transfer and Inference Execution
 
-Once the image is beautifully preprocessed, it needs to be transferred to the NPU's special memory. The RKNN API helps here with rknn_create_mem to allocate this NPU-accessible memory, and rknn_set_io_mem to link this memory to the model's input and output "ports."
+Once the image is preprocessed, it needs to be transferred to the NPU's special memory. The RKNN API helps here with rknn_create_mem to allocate this NPU-accessible memory, and rknn_set_io_mem to link this memory to the model's input and output "ports."
 
 ```C
 
@@ -134,18 +142,17 @@ ret = rknn_run(ctx, NULL);
 
 ```
 
-A really important detail here, especially for quantized models like INT8 MobileNetV1, is how we handle the output data type. The model spits out INT8 values, which are essentially compressed numbers. These need to be de-quantized back into regular floating-point numbers to become meaningful scores. The code intelligently checks the model's native output tensor type (output_attrs[i].type). It either relies on the RKNN runtime to de-quantize automatically (if we tell it to expect RKNN_TENSOR_FLOAT32 with rknn_set_io_mem) or prepares for us to do it manually.
+A really important detail here, especially for quantized models like INT8 MobileNetV1, is how we handle the output data type. The model outputs INT8 values, which are essentially compressed numbers. These need to be de-quantized back into regular floating-point numbers to become meaningful scores. The code checks the model's native output tensor type (output_attrs[i].type). It either relies on the RKNN runtime to de-quantize automatically (if we tell it to expect RKNN_TENSOR_FLOAT32 with rknn_set_io_mem) or prepares for us to do it manually.
 
-If the model's output type is INT8 (which our debug logs confirmed), you absolutely must ensure these values are correctly converted to float using the scale and zp (zero point) parameters provided by the model's rknn_tensor_attr. The rknn_GetTopN_int8 function is designed to do exactly this: float prob = (pProb[i] - zp) \* scale;. Getting this step right is often the key to moving from all-zero outputs to meaningful predictions!
+If the model's output type is INT8 (which our debug logs confirmed), we must ensure these values are correctly converted to float using the scale and zp (zero point) parameters provided by the model's rknn_tensor_attr. The rknn_GetTopN_int8 function is designed to do exactly this: float prob = (pProb[i] - zp) \* scale;.
 
 ```mermaid
-
 graph TD
-    A[Preprocessed Image Data (CPU)] --> B(rknn_create_mem);
-    B --> C[Input Tensor Memory (NPU-accessible)];
+    A["Preprocessed Image Data (CPU)"] --> B(rknn_create_mem);
+    B --> C["Input Tensor Memory (NPU-accessible)"];
     C --memcpy--> D[Image Data in NPU Memory];
     D --rknn_set_io_mem--> E[RKNN Model Input];
-    F[RKNN Model Output] --rknn_create_mem--> G[Output Tensor Memory (NPU-accessible)];
+    F[RKNN Model Output] --rknn_create_mem--> G["Output Tensor Memory (NPU-accessible)"];
     G --rknn_set_io_mem--> H[Bind Output Memory];
     E & H --rknn_run--> I(NPU Executes Inference);
     I --> J[Raw Output in Output Tensor Memory];
@@ -180,6 +187,8 @@ for (uint32_t i = 0; i < io_num.n_output; i++) {
     }
 }
 ```
+
+We can wee the output from the process below:
 
 ```bash
 ./run_demo.sh
@@ -249,9 +258,8 @@ Begin perf ...
 When you see output like 12.322632 - 283, it means the model is pretty confident about class 283, giving it a score of 12.322632. But what is class 283? To translate that number into something meaningful (like "Persian cat"), you absolutely need a label map file (often called synset.txt for ImageNet models). This simple file lists the human-readable names for each class index, turning numbers into understandable categories!
 
 ```mermaid
-
 graph TD
-    A[Raw Output Scores (NPU Memory)] --> B{Check Output Type};
+    A["Raw Output Scores (NPU Memory)"] --> B{Check Output Type};
     B --INT8--> C(rknn_GetTopN_int8);
     B --FLOAT32--> D(rknn_GetTopN);
     C --> E[De-quantized Scores];
