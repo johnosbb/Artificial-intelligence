@@ -14,13 +14,13 @@ The world of embedded AI is rapidly expanding, bringing powerful machine learnin
 
 ## The Luckfox Ultra and MobileNet
 
-The [Luckfox Ultra](https://www.luckfox.com/EN-Luckfox-Pico-Ultra) (based on Rockchip's RV1106/RV1103 SoC) is specifically designed for edge AI. It has a dedicated Neural Processing Unit (NPU) built right in, which is like a specialized co-processor for AI tasks. This allows AI models to run directly on the device, minimizing latency (things happen super fast!) and reducing reliance on distant cloud servers. It's all about keeping the intelligence close to where the action is.
+The [Luckfox Ultra](https://www.luckfox.com/EN-Luckfox-Pico-Ultra) (based on Rockchip's RV1106/RV1103 SoC) is specifically designed for edge AI. It has a dedicated Neural Processing Unit (NPU) built right in, which is like a specialized co-processor for AI tasks. This allows AI models to run directly on the device, minimizing latency and reducing reliance on distant cloud servers. It's all about keeping the intelligence close to where the action is.
 
 [MobileNetV1](https://huggingface.co/docs/transformers/en/model_doc/mobilenet_v1) is a family of incredibly efficient convolutional neural networks. They were literally designed with mobile and embedded vision applications in mind. Their lightweight architecture makes them ideal for deployment on resource-constrained devices like the Luckfox Ultra, all while still delivering strong performance on tasks like image classification.
 
 ## The Classification Workflow: A High-Level Overview
 
-At its core, the image classification example follows a standard AI inference pipeline. It's a little like a factory assembly line for understanding images:
+At its core, the image classification example follows a standard AI inference pipeline. It's a little like an assembly line for understanding images:
 
 - Model Loading: First, the specialized "knowledge" of the pre-trained MobileNetV1 model (in a format called .rknn) is loaded onto the device.
 - Image Preprocessing: Next, an input image (say, a photo of a dog or a cat) is loaded and carefully prepared, usually by resizing it to match the model's exact expectations.
@@ -70,7 +70,7 @@ rknn_tensor_attr output_attrs[io_num.n_output];
 // ... query details for each tensor ...
 ```
 
-This section does a couple of vital things: it initializes the RKNN context, essentially waking up the NPU and loading the .rknn model's "brain." Then, it queries the model. This is like asking the model, "Hey, what kind of data do you expect as input? And what kind of data will you give me back as output?" Understanding these input and output requirements (number of tensors, their dimensions, data types, and any quantization parameters) is super important for preparing data correctly.
+This section does a couple of vital things: it initializes the RKNN context, essentially preparing the NPU and loading the .rknn model's internal structures. Then, it queries the model as to the type of data it expects and the type of data it will output.
 
 ```mermaid
 graph LR
@@ -162,7 +162,7 @@ graph TD
 
 ## Post-processing: Getting Top N Results
 
-The raw numerical output from the NPU is a long list of scores, one for each possible class the model knows about. Our goal is to find the classes with the highest scores – these are the model's top predictions! The rknn_GetTopN (or rknn_GetTopN_int8) function sorts through these scores and gracefully returns the top 5 predicted classes along with their confidence scores.
+The raw numerical output from the NPU is a long list of scores, one for each possible class the model knows about. Our goal is to find the classes with the highest scores – these are the model's top predictions. The rknn_GetTopN (or rknn_GetTopN_int8) function sorts through these scores and gracefully returns the top 5 predicted classes along with their confidence scores.
 
 ```C
 
@@ -190,7 +190,7 @@ for (uint32_t i = 0; i < io_num.n_output; i++) {
 }
 ```
 
-We can wee the output from the process below:
+We can see the output from the process below:
 
 ```bash
 ./run_demo.sh
