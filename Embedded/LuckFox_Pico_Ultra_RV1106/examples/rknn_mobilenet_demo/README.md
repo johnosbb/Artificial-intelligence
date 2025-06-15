@@ -2,9 +2,11 @@
 
 The world of embedded AI is rapidly expanding, bringing powerful machine learning capabilities to compact, low-power devices. It's amazing how much intelligence we can now pack into something as small as the Luckfox Ultra. The Ultra is a cost effective highly integrated edge AI computing platform from Luckfox. It integrates ARM Cortex-A7/RISC-V MCU/NPU/ISP Processors in a single device. In this article, we'll explore a practical example: performing image classification using a pre-trained MobileNetV1 model on this neat little device.
 
+![image](https://github.com/user-attachments/assets/8d8741cc-c816-435a-b8d9-97f58c19c48e)
+
 ## The Luckfox Ultra Specifications
 
-- Single-core ARM Cortex-A7 32-bit core with integrated NEON and FPU
+- The [Luckfox Ultra](https://www.luckfox.com/EN-Luckfox-Pico-Ultra) is a single-core ARM Cortex-A7 32-bit core with integrated NEON and FPU
 - Built-in Rockchip self-developed 4th generation NPU, features high computing precision and supports int4, int8, and int16 hybrid quantization. The int8 computing power of RV1106G3 is 1TOPS, and RV1106G2 is 0.5TOPS
 - Built-in self-developed third-generation ISP3.2, supports 5-Megapixel, with multiple image enhancement and correction algorithms such as HDR, WDR, multi-level noise reduction, etc.
 - Features powerful encoding performance, supports intelligent encoding mode and adaptive stream saving according to the scene, saves more than 50% bit rate of the conventional CBR mode so that the images from camera are high-definition with smaller size
@@ -12,9 +14,9 @@ The world of embedded AI is rapidly expanding, bringing powerful machine learnin
 
 ## The Luckfox Ultra and MobileNet
 
-The Luckfox Ultra (based on Rockchip's RV1106/RV1103 SoC) is specifically designed for edge AI. It has a dedicated Neural Processing Unit (NPU) built right in, which is like a specialized co-processor for AI tasks. This allows AI models to run directly on the device, minimizing latency (things happen super fast!) and reducing reliance on distant cloud servers. It's all about keeping the intelligence close to where the action is.
+The [Luckfox Ultra](https://www.luckfox.com/EN-Luckfox-Pico-Ultra) (based on Rockchip's RV1106/RV1103 SoC) is specifically designed for edge AI. It has a dedicated Neural Processing Unit (NPU) built right in, which is like a specialized co-processor for AI tasks. This allows AI models to run directly on the device, minimizing latency (things happen super fast!) and reducing reliance on distant cloud servers. It's all about keeping the intelligence close to where the action is.
 
-MobileNetV1 is a family of incredibly efficient convolutional neural networks. They were literally designed with mobile and embedded vision applications in mind. Their lightweight architecture makes them ideal for deployment on resource-constrained devices like the Luckfox Ultra, all while still delivering strong performance on tasks like image classification.
+[MobileNetV1](https://huggingface.co/docs/transformers/en/model_doc/mobilenet_v1) is a family of incredibly efficient convolutional neural networks. They were literally designed with mobile and embedded vision applications in mind. Their lightweight architecture makes them ideal for deployment on resource-constrained devices like the Luckfox Ultra, all while still delivering strong performance on tasks like image classification.
 
 ## The Classification Workflow: A High-Level Overview
 
