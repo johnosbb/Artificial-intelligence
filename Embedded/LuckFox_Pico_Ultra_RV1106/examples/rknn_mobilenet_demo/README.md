@@ -44,11 +44,11 @@ graph TD
 
 ## Exploring the Code
 
-The provided C code gives us a hands-on look at this workflow. We'll focus on the critical functions and data structures that make it all possible.
+The [provided C code](https://github.com/johnosbb/Artificial-intelligence/tree/main/Embedded/LuckFox_Pico_Ultra_RV1106/examples/rknn_mobilenet_demo) gives us a hands-on look at this workflow. We'll focus on the critical functions and data structures that make it all possible.
 
 ### Model Loading and Querying
 
-The RKNN API is our gateway to interacting with the NPU. It's how we tell the Luckfox Ultra's AI hardware what to do.
+The [RKNN API](https://github.com/rockchip-linux/rknn-toolkit2) is our gateway to interacting with the NPU. It's how we tell the Luckfox Ultra's AI hardware what to do.
 
 ```C
 
