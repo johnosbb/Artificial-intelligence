@@ -1,0 +1,1 @@
+./rknn_yolov5_demo ./model/RV1106/yolov5s-640-640.rknn model/image_640_640.jpg ./model/coco_80_labels_list.txt
