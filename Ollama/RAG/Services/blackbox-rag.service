@@ -1,0 +1,25 @@
+[Unit]
+Description=Blackbox RAG (Streamlit UI)
+Wants=network-online.target chroma.service
+After=network-online.target chroma.service
+
+[Service]
+Type=simple
+# Wait for Ollama then Chroma (TCP 8000). Adjust port if needed.
+ExecStartPre=/usr/bin/bash -c 'for i in $(seq 1 60); do /usr/bin/curl -fsS http://127.0.0.1:11434/api/tags >/dev/null && exit 0; sleep 1; done; echo "Ollama not ready after 60s" >&2; exit 1'
+ExecStartPre=/usr/bin/bash -c 'for i in $(seq 1 60); do : >/dev/tcp/127.0.0.1/8000 2>/dev/null && exit 0; sleep 1; done; echo "Chroma port 8000 not ready after 60s" >&2; exit 1'
+
+# Launch Streamlit directly with absolute paths
+ExecStart=/usr/bin/bash -lc 'exec /home/snuc/.local/bin/streamlit run /home/snuc/EmbeddedDocsAI/RAG/rag_streamlit_class.py --server.headless true --server.port 8501'
+
+WorkingDirectory=/home/snuc/EmbeddedDocsAI/RAG
+Restart=always
+RestartSec=5
+
+# Ensure PATH and HOME are sane for user services
+Environment=HOME=/home/snuc
+Environment=PATH=/home/snuc/.local/bin:/usr/local/bin:/usr/bin:/bin
+Environment=PYTHONUNBUFFERED=1
+
+[Install]
+WantedBy=default.target

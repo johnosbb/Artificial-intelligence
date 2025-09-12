@@ -1,0 +1,63 @@
+Background: - In simple terms:
+Bezel compensation makes a video wall look right — ensuring that images, text, and graphics align across multiple screens as if the bezels weren’t there.
+
+What It Does
+Bezel compensation adjusts the video content sent to each screen by shifting or cropping pixels so that the displayed image accounts for the hidden area behind the bezels.
+
+This makes the overall image look like one large, seamless display, even though part of the picture is physically “lost” behind the frames.
+
+Example
+Imagine a 2×2 video wall showing a large grid:
+
+Without bezel compensation → the gridlines don’t line up; they’re interrupted by the bezels.
+
+With bezel compensation → the system offsets the image, so the gridlines continue straight across the bezels, maintaining correct proportions.
+
+Boxilla/DESKVUE Requirement - This is a videowall Feature and will only be possible in a managed system with video wall license.
+
+Open the Boxilla Video Wall Setup Area
+
+In the extender’s management software (e.g., Boxilla, or the receiver’s local OSD/configuration page), select “Video Wall” mode.
+
+Define Wall Layout
+
+Enter the wall dimensions: 2 columns × 2 rows.
+
+Assign each receiver (one per display) to its correct physical location in the matrix.
+
+Enter Panel Resolution
+
+Specify the native resolution of each panel (e.g., 1920 × 1080).
+
+The system will calculate total wall resolution before bezel compensation (3840 × 2160).
+
+Configure Bezel Compensation
+
+Input the horizontal bezel width (e.g., 10 mm) and vertical bezel height (e.g., 10 mm).
+
+The system converts this to pixel offsets based on the display’s DPI. For instance:
+
+10 mm bezel ≈ ~38 pixels at 1080p panel density.
+
+The controller instructs each receiver to shift its active video window by this number of pixels.
+
+Apply Compensation
+
+Now the image is slightly “cropped” per display so that when viewed across the wall, lines, text, and graphics appear aligned as if bezels are invisible.
+
+Test & Fine-Tune
+
+Display a grid test pattern (often built into the extender or wall controller).
+
+Verify that straight lines run seamlessly across all panels without breaks or overlaps.
+
+Adjust bezel compensation values if necessary.
+
+Result
+Without bezel compensation:
+
+A circle stretched across all 4 panels looks “split” and misaligned due to bezels.
+
+With bezel compensation:
+
+The circle looks continuous and correctly proportioned across the 2×2 layout.

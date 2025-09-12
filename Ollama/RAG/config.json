@@ -1,5 +1,5 @@
 {
-    "INDEX_DIR": "/mnt/500GB/keyword_index",
-    "DOCUMENT_FOLDER_PATH": "/mnt/500GB/docs",
-    "OUTPUT_DIRECTORY": "/mnt/500GB/rag_output"
+    "INDEX_DIR": "/home/snuc/EmbeddedDocsAI/keyword_index",
+    "DOCUMENT_FOLDER_PATH": "/home/snuc/EmbeddedDocsAI/inputs/docs",
+    "OUTPUT_DIRECTORY": "/home/snuc/EmbeddedDocsAI/analysis"
 }

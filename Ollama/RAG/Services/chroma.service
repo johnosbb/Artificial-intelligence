@@ -1,0 +1,31 @@
+[Unit]
+Description=ChromaDB server
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+Type=simple
+# Wait for Ollama API to be ready (port 11434)
+ExecStartPre=/usr/bin/bash -c 'for i in $(seq 1 60); do /usr/bin/curl -fsS http://127.0.0.1:11434/api/tags >/dev/null && exit 0; sleep 1; done; echo "Ollama not ready after 60s" >&2; exit 1'
+
+# Run Chroma directly (same command your script used)
+ExecStart=/home/snuc/.local/bin/chroma run --path /home/snuc/EmbeddedDocsAI/ChromaDB
+
+# Optional: pin host/port explicitly (uncomment if you want these fixed)
+# ExecStart=/home/snuc/.local/bin/chroma run --path /home/snuc/EmbeddedDocsAI/ChromaDB --host 127.0.0.1 --port 8000
+
+# If you want the DB directory as CWD (not required)
+WorkingDirectory=/home/snuc/EmbeddedDocsAI/RAG
+
+Restart=always
+RestartSec=5
+
+# Ensure a sane PATH/HOME for user services
+Environment=HOME=/home/snuc
+Environment=PATH=/home/snuc/.local/bin:/usr/local/bin:/usr/bin:/bin
+
+# If your embedding code reads OLLAMA_HOST, set it here:
+# Environment=OLLAMA_HOST=http://127.0.0.1:11434
+
+[Install]
+WantedBy=default.target
